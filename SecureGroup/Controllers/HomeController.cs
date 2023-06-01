@@ -33,6 +33,7 @@ namespace SecureGroup.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult User()
         {
 
