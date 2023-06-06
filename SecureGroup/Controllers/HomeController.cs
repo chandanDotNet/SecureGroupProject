@@ -45,7 +45,7 @@ namespace SecureGroup.Controllers
             //vm = (from user in myDbContext.User.Cast<UserViewModel>()                            
             //                select user).ToList();
 
-
+            //Chandan
            vm = DataAccessLayer.GetAllUser().ToList();
 
             return View(vm);
