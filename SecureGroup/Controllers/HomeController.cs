@@ -15,12 +15,14 @@ namespace SecureGroup.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private MsDBContext myDbContext;       
+        private MsDBContext myDbContext;
+        DataAccessLayer DataAccessLayer = null;
 
         public HomeController(ILogger<HomeController> logger, MsDBContext context)
         {
             _logger = logger;
             myDbContext = context;
+            DataAccessLayer = new DataAccessLayer();
         }
 
         public IActionResult Index()
@@ -38,8 +40,13 @@ namespace SecureGroup.Controllers
         {
 
            List<UserViewModel> vm = new List<UserViewModel>();
-            vm = (from user in myDbContext.User.Cast<UserViewModel>()                            
-                            select user).ToList();
+
+
+            //vm = (from user in myDbContext.User.Cast<UserViewModel>()                            
+            //                select user).ToList();
+
+
+           vm = DataAccessLayer.GetAllUser().ToList();
 
             return View(vm);
         }
