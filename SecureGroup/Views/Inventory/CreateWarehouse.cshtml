@@ -1,0 +1,190 @@
+﻿@model SecureGroup.ViewModel.WarehouseViewModel
+
+@{
+    ViewData["Title"] = "CreateWarehouse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/devjs/js_createwarehouse.js"></script>
+<h1>CreateWarehouse</h1>
+
+<h4>WarehouseViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateWarehouse">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="WarehouseName" class="control-label"></label>
+                <input asp-for="WarehouseName" class="form-control" />
+                <span asp-validation-for="WarehouseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" id="ddlCountry"
+                        class="form-control"
+                        asp-items="@(new SelectList(Model.CountryList,"Value", "Text"))">
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StateId" class="control-label"></label>
+                <select asp-for="StateId" id="ddlStateId"
+                        class="form-control"
+                        asp-items="@(new SelectList(Model.StateList,"Value", "Text"))">
+                </select>
+                <span asp-validation-for="StateId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CityId" class="control-label"></label>
+                <select asp-for="CityId" id="ddlCityId"
+                        class="form-control"
+                        asp-items="@(new SelectList(Model.CityList,"Value", "Text"))">
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>          
+            
+            <div class="form-group">
+                <label asp-for="ZipCode" class="control-label"></label>
+                <input asp-for="ZipCode" class="form-control" />
+                <span asp-validation-for="ZipCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" id="ddlUserId"
+                        class="form-control"
+                        asp-items="@(new SelectList(Model.UserList,"Value", "Text"))">
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AdminName" class="control-label"></label>
+                <input asp-for="AdminName" class="form-control" id="AdminName" />
+                <span asp-validation-for="AdminName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdminContactNo" class="control-label"></label>
+                <input asp-for="AdminContactNo" class="form-control" id="AdminContactNo" />
+                <span asp-validation-for="AdminContactNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdminEmailId" class="control-label"></label>
+                <input asp-for="AdminEmailId" class="form-control" id="AdminEmailId" />
+                <span asp-validation-for="AdminEmailId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+   
+}
+
+
+@*<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#ddlCountry").on("change", function () {
+
+            var valu = $("#ddlCountry").val();
+            var ValueType = "State";
+
+            $.ajax(
+                {
+                    url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+                    type: 'GET',
+                    data: "",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        PopulateDropDown("#ddlStateId", data);
+                        //$("#ddlStateId").html(data);
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+        });
+
+        $("#ddlStateId").on("change", function () {
+
+            var valu = $("#ddlStateId").val();
+            var ValueType = "City";
+            //debugger;
+            alert(ValueType);
+            $.ajax(
+                {
+                    url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+                    type: 'GET',
+                    data: "",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        PopulateDropDown("#ddlCityId", data);
+                        //$("#ddlStateId").html(data);
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+        });
+
+        $("#ddlUserId").on("change", function () {
+
+            var valu = $("#ddlUserId").val();
+
+            //debugger;
+
+            $.ajax(
+                {
+                    url: '/Inventory/GetUserDetailsById?Id=' + valu,
+                    type: 'GET',
+                    data: "",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        //debugger;
+                        $("#AdminName").val(data.name);
+                        $("#AdminContactNo").val(data.email);
+                        $("#AdminEmailId").val(data.contactNo);
+
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+        });
+
+
+        function PopulateDropDown(dropDownId, list, selectedId) {
+
+            $(dropDownId).empty();
+            $(dropDownId).append("<option>--Please Select--</option>")
+            $.each(list, function (index, row) {
+                //debugger;
+                var a = row.value;
+                $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>")
+            });
+        }
+    });
+</script>*@

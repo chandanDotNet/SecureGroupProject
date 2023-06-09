@@ -17,16 +17,18 @@ namespace SecureGroup.Controllers
 
         private MsDBContext myDbContext;
         DataAccessLayer DataAccessLayer = null;
-
+        DataAccessLayerLinq DataAccessLayerLinq = null;
         public HomeController(ILogger<HomeController> logger, MsDBContext context)
         {
             _logger = logger;
             myDbContext = context;
             DataAccessLayer = new DataAccessLayer();
+            DataAccessLayerLinq = new DataAccessLayerLinq(context);
         }
 
         public IActionResult Index()
         {
+           // DataAccessLayer.GetCountry();
             return View();
         }
 
