@@ -1,0 +1,460 @@
+﻿
+@{
+    ViewData["Title"] = "VendorDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="warehouse-data table-responsive">
+
+
+    <div class="vendor-profile">
+        <img src="~/images\avatar.png" />
+    </div>
+
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="basiic-info-tab" data-bs-toggle="tab" data-bs-target="#basic-info" type="button" role="tab" aria-controls="basic-info" aria-selected="true">BASIC INFORMATION</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-info-tab" data-bs-toggle="tab" data-bs-target="#contact-info" type="button" role="tab" aria-controls="contact-info" aria-selected="false">CONTACT INFORMATION</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="b-info-tab" data-bs-toggle="tab" data-bs-target="#b-info" type="button" role="tab" aria-controls="b-info" aria-selected="false">BUSINESS INFORMATION</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="bank-info-tab" data-bs-toggle="tab" data-bs-target="#bank-info" type="button" role="tab" aria-controls="bank-info" aria-selected="false">BANK INFORMATION</button>
+        </li>
+
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="basic-info" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-info-container">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+
+                        <div class="basic-info-card">
+                            <div class="icon">
+                                <img src="~/images\s-case.svg" />
+                            </div>
+                            <div class="info">
+                                <span>Business Name</span>
+                                <p>Lorem Ipsum is simply dummy</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-4">
+
+                        <div class="basic-info-card">
+                            <div class="icon">
+                                <img src="~/images\user-icon.svg" />
+                            </div>
+                            <div class="info">
+                                <span>Contact Person Name</span>
+                                <p>Ravi Sharma</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-4">
+
+                        <div class="basic-info-card">
+                            <div class="icon">
+                                <img src="~/images\mobile-icon.svg" />
+                            </div>
+                            <div class="info">
+                                <span>Contact Number</span>
+                                <p>91234567890</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-6 mb-4">
+
+                        <div class="basic-info-card">
+                            <div class="icon">
+                                <img src="~/images\envelop-icon.svg" />
+                            </div>
+                            <div class="info">
+                                <span>Email ID</span>
+                                <p>ravi.sharma@gmail.com</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="contact-info" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-info-container">
+                <div class="row">
+                    <div class="col-md-6 mb-5">
+
+                        <h4>Registered Address</h4>
+
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Postal Address</td>
+                                <td>
+                                    Ram Mandir Road, Nr Ram Mandir
+                                    Next To Movistar, Nr Ram Mandir Next To
+                                    Movistar, Motilal Nagar
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Landmark</td>
+                                <td>Ram Mandir</td>
+                            </tr>
+
+                            <tr>
+                                <td>City</td>
+                                <td>Mumbai</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Pin code</td>
+                                <td>499802</td>
+
+                            <tr>
+                                <td>Region</td>
+                                <td>Mumbai</td>
+                            </tr>
+
+                            <tr>
+                                <td>State</td>
+                                <td>Mumbai</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <div class="col-md-6 mb-5">
+
+                        <h4>Communication Address</h4>
+
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Postal Address</td>
+                                <td>
+                                    Ram Mandir Road, Nr Ram Mandir
+                                    Next To Movistar, Nr Ram Mandir Next To
+                                    Movistar, Motilal Nagar
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Landmark</td>
+                                <td>Ram Mandir</td>
+                            </tr>
+
+                            <tr>
+                                <td>City</td>
+                                <td>Mumbai</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Pin code</td>
+                                <td>499802</td>
+
+                            <tr>
+                                <td>Region</td>
+                                <td>Mumbai</td>
+                            </tr>
+
+                            <tr>
+                                <td>State</td>
+                                <td>Mumbai</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Office Mobile Number</td>
+                                <td>
+                                    91234567890
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Office Landline Number</td>
+                                <td>033-6754345</td>
+                            </tr>
+
+                            <tr>
+                                <td>Name of Contact Person</td>
+                                <td>Indranil Sen</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Email ID</td>
+                                <td>indra@gmail.com</td>
+                            </tr>
+
+
+
+                        </table>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Mobile Number</td>
+                                <td>
+                                    6291332961
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Website</td>
+                                <td>indra.com</td>
+                            </tr>
+
+                            <tr>
+                                <td>Is Your Firm MSME</td>
+                                <td>Yes</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Type of Supply / Service</td>
+                                <td>Service</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="b-info" role="tabpanel" aria-labelledby="contact-tab">
+
+            <div class="tab-info-container vendor-contact-tab">
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <h4>Photo & Signature of Director/Owner</h4>
+
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Director’s Photo</td>
+                                <td>
+                                    <div class="directore-img">
+                                        <img src="~/images\vendor-img.png" />
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Director’s Signature</td>
+                                <td>
+                                    <div class="signature-img">
+                                        <img src="~/images\signature.png" />
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <h4>Communication Address</h4>
+
+                        <table class="table-responsive">
+                            <tr>
+                                <td>
+                                    Authorised Person’s
+                                    Photo
+                                </td>
+                                <td>
+                                    <div class="directore-img">
+                                        <img src="~/images\vendor-img.png" />
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Authorised Person’ssignature-img
+                                    Signaturee
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <img src="~/images\signature.png" />
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <div class="col-12 col-md-12 divider-bottom my-5"></div>
+
+
+                    <div class="col-md-5">
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Name of The Firm</td>
+                                <td>
+                                    IS Firm
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Country</td>
+                                <td>India</td>
+                            </tr>
+
+                            <tr>
+                                <td>PAN No</td>
+                                <td>JHYGS7654K</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>ESIC No</td>
+                                <td>983342jjkfds9898</td>
+                            </tr>
+
+                            <tr>
+                                <td>Trade Licence</td>
+                                <td>987dsfhjfds98kj</td>
+                            </tr>
+
+
+
+                        </table>
+
+                    </div>
+
+                    <div class="col-1 col-md-1 col-lg-1 divider-right"></div>
+
+                    <div class="col-md-5">
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Type of The Firm</td>
+                                <td>
+                                    Service
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>GST TIN No</td>
+                                <td>India</td>
+                            </tr>
+
+                            <tr>
+                                <td>PAN No</td>
+                                <td>872376348974328943289</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>TAN No</td>
+                                <td>89fdj98kjjk</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="bank-info" role="tabpanel" aria-labelledby="contact-tab">
+
+            <div class="tab-info-container vendor-bank-info-tab">
+                <div class="row">
+
+
+                    <div class="col-md-5">
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Account Holder Name</td>
+                                <td>
+                                    IS Firm
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bank Name</td>
+                                <td>HDFC</td>
+                            </tr>
+
+                            <tr>
+                                <td>Branch</td>
+                                <td>Konnagra</td>
+                            </tr>
+
+
+
+                        </table>
+
+                    </div>
+
+                    <div class="col-1 col-md-1 col-lg-1 divider-right"></div>
+
+                    <div class="col-md-5">
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Account Number</td>
+                                <td>
+                                    98367334903243
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>IFSC Code</td>
+                                <td>HDFC000876</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <table class="table-responsive">
+                            <tr>
+                                <td>Cancelled Cheque</td>
+                                <td>
+                                    <div class="checque-img">
+                                        <img src="~/images\cheque.png" />
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

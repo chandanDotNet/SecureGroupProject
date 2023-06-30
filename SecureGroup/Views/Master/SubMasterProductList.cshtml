@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.SubProductMasterViewModel>
+
+@{
+    ViewData["Title"] = "SubMasterProductList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="common-title-headeer">
+    <h1>Master Sub Product List</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a asp-controller="Master" asp-action="AddSubMasterProduct"> ADD SUB PRODUCT</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Sub Product Name</th>
+                <th>UOM</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubProductId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit)
+                    </td>
+                    <td>
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>@Html.ActionLink("Edit", "EditSubMasterProduct", new { Id=item.SubProductId}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteSubMasterProduct", new { Id=item.SubProductId},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+</div>

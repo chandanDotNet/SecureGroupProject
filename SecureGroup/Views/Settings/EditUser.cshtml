@@ -1,0 +1,155 @@
+﻿@model SecureGroup.ViewModel.UserViewModel
+@{
+    ViewData["Title"] = "EditUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="common-title-headeer">
+    <h1>Edit User</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Settings" asp-action="UsersList"> User List</a></button>
+        </li>
+    </ul>
+</div>
+
+<div class="form-inner">
+    <form asp-action="EditUser">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <input asp-for="UserId" class="form-control" type="hidden"/>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="RoleId" class="control-label">Role<span>*</span></label>
+                    <select asp-for="RoleId" id="ddlRoleId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.RoleList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="RoleId" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* <div class="col-md-12 mb-3">
+            <div class="pl-3">
+            <div class="form-check form-switch">
+            <input asp-for="IsSupplier" class="form-check-input" type="checkbox" />
+            <label asp-for="IsSupplier" class="form-check-label">Is Supplier? <span class="text-danger">(* switch to Supplier)</span></label>
+
+            </div>
+            </div>
+            </div>*@
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="BusinessName" class="control-label">Company Name<span>*</span></label>
+                    <input asp-for="BusinessName" class="form-control" value="Secure Group" />
+
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Name" class="control-label">Full Name<span>*</span></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Email" class="control-label">EmailId<span>*</span></label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Password" class="control-label">Password</label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ContactNo" class="control-label">Contact Number<span>*</span></label>
+                    <input asp-for="ContactNo" class="form-control" type="number" />
+                    <span asp-validation-for="ContactNo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="JobTitle" class="control-label">Job Title<span>*</span></label>
+                    <input asp-for="JobTitle" class="form-control" />
+                    <span asp-validation-for="JobTitle" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="UserCode" class="control-label">Emp.Code<span>*</span></label>
+                    <input asp-for="UserCode" class="form-control" />
+                    <span asp-validation-for="UserCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="DepartmentId" class="control-label">Department<span>*</span></label>
+                    <select asp-for="DepartmentId" id="ddlDepartmentId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.DepartmentList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ReportingTo" class="control-label">Reporting To<span>*</span></label>
+                    <select asp-for="ReportingTo" id="ddlReportingTo"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.UserList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="ReportingTo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="LoginTime" class="control-label">Login Time<span>*</span></label>
+                    <input asp-for="LoginTime" class="form-control" type="time" />
+                    <span asp-validation-for="LoginTime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="LogoutTime" class="control-label">Logout Time<span>*</span></label>
+                    <input asp-for="LogoutTime" class="form-control" type="time" />
+                    <span asp-validation-for="LogoutTime" class="text-danger"></span>
+                </div>
+            </div>
+            <hr />
+            <div class="col-md-12 mb-3">
+                <div class="pl-3">
+                    <div class="form-check form-switch">
+                        <input asp-for="IsFlexibleTime" class="form-check-input" type="checkbox" />
+                        <label asp-for="IsFlexibleTime" class="form-check-label">Is Flexible Time? <span class="text-danger">(* switch to Flexible Time)</span></label>
+
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" value="Update" class="data-save-btn" />
+
+
+
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

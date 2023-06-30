@@ -1,0 +1,46 @@
+﻿@model SecureGroup.ViewModel.UserRoleViewModel
+
+@{
+    ViewData["Title"] = "EditRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>Edit Role</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-action="RoleList">Role List</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="form-inner">
+
+    <form asp-action="EditRole">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <input asp-for="UserRoleId" class="form-control" type="hidden" />
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="RoleName" class="control-label">Role Name<span>*</span></label>
+                    <input asp-for="RoleName" class="form-control" />
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input type="submit" value="Update" class="data-save-btn" />
+
+        </div>
+    </form>
+
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,62 @@
+﻿@model SecureGroup.ViewModel.ProductMasterViewModel
+
+@{
+    ViewData["Title"] = "EditMasterProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>Edit Master Product</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Master" asp-action="MasterProductList"> PRODUCT LIST</a></button>
+        </li>
+    </ul>
+</div>
+
+<div class="form-inner">
+    <div class="row">
+        <form asp-action="EditMasterProduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="ProductId" class="form-control" type="hidden" />
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ProductName" class="control-label">Product Name<span>*</span></label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Specifications" class="control-label">Specifications<span>*</span></label>
+                    <input asp-for="Specifications" class="form-control" />
+                    <span asp-validation-for="Specifications" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="UnitId" class="control-label">UOM<span>*</span></label>
+                    <select asp-for="UnitId" id="ddlUnitList"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.UnitList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="UnitId" class="text-danger"></span>
+                </div>
+            </div>
+           
+
+            <input type="submit" value="Update" class="data-save-btn" />
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

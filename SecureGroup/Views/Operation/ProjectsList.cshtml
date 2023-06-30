@@ -1,0 +1,559 @@
+﻿
+@{
+    ViewData["Title"] = "ProjectsList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ul class="addbtns">
+    <li>
+        <button class="header-add-btn" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i class="fa fa-plus" aria-hidden="true"></i>ADD PROJECT</button>
+    </li>
+</ul>
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Project ID</th>
+                <th>Project Name</th>
+                <th>Status</th>
+                <th>Task Progress</th>
+                <th>Dates</th>
+                <th>Priority</th>
+                <th>No of Assignee</th>
+                <th></th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>#01</td>
+                <td>
+                    <div class="table-inner-card">
+                        <div class="icon">
+                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>Construction Project</h3>
+                            <p>Site Work</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="status-card on-track">
+                        <h3>On Track</h3>
+                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-progress-bar">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        </div>
+                        <p>72%</p>
+                    </div>
+                </td>
+                <td><p>Jan 05 - Mar 31</p></td>
+                <td><span class="priority-badge medium-badge">Medium</span></td>
+                <td><p class="n-assignee">11</p></td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>#02</td>
+                <td>
+                    <div class="table-inner-card">
+                        <div class="icon">
+                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>Construction Project</h3>
+                            <p>Site Work</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="status-card on-risk">
+                        <h3>On Risk</h3>
+                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-progress-bar">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        </div>
+                        <p>72%</p>
+                    </div>
+                </td>
+                <td><p>Jan 05 - Mar 31</p></td>
+                <td><span class="priority-badge high-badge">high</span></td>
+                <td><p class="n-assignee">11</p></td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>#01</td>
+                <td>
+                    <div class="table-inner-card">
+                        <div class="icon">
+                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>Construction Project</h3>
+                            <p>Site Work</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="status-card on-track">
+                        <h3>On Track</h3>
+                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-progress-bar">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        </div>
+                        <p>72%</p>
+                    </div>
+                </td>
+                <td><p>Jan 05 - Mar 31</p></td>
+                <td><span class="priority-badge medium-badge">Medium</span></td>
+                <td><p class="n-assignee">11</p></td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>#01</td>
+                <td>
+                    <div class="table-inner-card">
+                        <div class="icon">
+                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>Construction Project</h3>
+                            <p>Site Work</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="status-card on-risk">
+                        <h3>On Risk</h3>
+                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-progress-bar">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        </div>
+
+                        <p>72%</p>
+                    </div>
+                </td>
+                <td><p>Jan 05 - Mar 31</p></td>
+                <td><span class="priority-badge low-badge">low</span></td>
+                <td><p class="n-assignee">11</p></td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>#01</td>
+                <td>
+                    <div class="table-inner-card">
+                        <div class="icon">
+                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>Construction Project</h3>
+                            <p>Site Work</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="status-card on-track">
+                        <h3>On Track</h3>
+                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-progress-bar">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        </div>
+                        <p>72%</p>
+                    </div>
+                </td>
+                <td><p>Jan 05 - Mar 31</p></td>
+                <td><span class="priority-badge medium-badge">Medium</span></td>
+                <td><p class="n-assignee">11</p></td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>#02</td>
+                <td>
+                    <div class="table-inner-card">
+                        <div class="icon">
+                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>Construction Project</h3>
+                            <p>Site Work</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="status-card on-risk">
+                        <h3>On Risk</h3>
+                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-progress-bar">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        </div>
+                        <p>72%</p>
+                    </div>
+                </td>
+                <td><p>Jan 05 - Mar 31</p></td>
+                <td><span class="priority-badge high-badge">high</span></td>
+                <td><p class="n-assignee">11</p></td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>#01</td>
+                <td>
+                    <div class="table-inner-card">
+                        <div class="icon">
+                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>Construction Project</h3>
+                            <p>Site Work</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="status-card on-track">
+                        <h3>On Track</h3>
+                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-progress-bar">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        </div>
+                        <p>72%</p>
+                    </div>
+                </td>
+                <td><p>Jan 05 - Mar 31</p></td>
+                <td><span class="priority-badge medium-badge">Medium</span></td>
+                <td><p class="n-assignee">11</p></td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>#01</td>
+                <td>
+                    <div class="table-inner-card">
+                        <div class="icon">
+                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>Construction Project</h3>
+                            <p>Site Work</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="status-card on-risk">
+                        <h3>On Risk</h3>
+                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-progress-bar">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        </div>
+
+                        <p>72%</p>
+                    </div>
+                </td>
+                <td><p>Jan 05 - Mar 31</p></td>
+                <td><span class="priority-badge low-badge">low</span></td>
+                <td><p class="n-assignee">11</p></td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+
+
+        </tbody>
+    </table>
+
+    <!-- addwarehouse -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="side-slide-form">
+            <div class="side-slide-header">
+                <h2>ADD NEW PROJECT</h2>
+                <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+
+
+
+            <form>
+                <div class="form-inner">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Project ID</label>
+                                <input type="text" placeholder="Project ID" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Project Name</label>
+                                <input type="text" placeholder="Project ID" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Project Description</label>
+                                <textarea placeholder="Project Description">
+                                </textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+                            <div class="custom-form-control">
+                                <label>Project Start Date</label>
+                                <input type="date" placeholder="Project Start Date" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="custom-form-control">
+                                <label>Project Due Date</label>
+                                <input type="date" placeholder="Project Due Date" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Project Budget</label>
+                                <input type="text" placeholder="Project Budget" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Project Head</label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>Project Head</option>
+                                    <option value="a">Project Head</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>State</label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>State</option>
+                                    <option value="a">state</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>City</label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>City</option>
+                                    <option value="a">City</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Block</label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>Block</option>
+                                    <option value="a">City</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Scheme</label>
+                                <input type="text" placeholder="Scheme" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Zone</label>
+                                <input type="text" placeholder="Zone" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>GP</label>
+                                <input type="text" placeholder="GP" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>RV</label>
+                                <input type="text" placeholder="RV" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Habitations</label>
+                                <input type="text" placeholder="Habitations" />
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <button class="data-save-btn">Save</button>
+            </form>
+
+
+
+        </div>
+    </aside>
+
+
+
+</div>
+

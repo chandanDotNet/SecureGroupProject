@@ -1,0 +1,77 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.UserViewModel>
+@{
+    ViewData["Title"] = "UsersList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="common-title-headeer">
+    <h1>User List</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a  asp-action="AddUser"> ADD USER</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+                <th>SL No.</th>
+               @* <th>Name of Firm</th>*@
+                <th>Name</th>
+                <th>Contact No</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Where(x => x.RoleId!=0))
+            {
+                <tr>
+                    <td>#@Html.DisplayFor(modelItem => item.UserId)</td>
+                   @* <td>
+                        <div class="custom-author">
+                            <div class="img"><img src="~/images\avatar.png" /></div>
+                            <p>@Html.DisplayFor(modelItem => item.BusinessName)</p>
+                        </div>
+                    </td>*@
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ContactNo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RoleName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DepartmentName)</td>
+
+                    <td>
+
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>@Html.ActionLink("Edit", "EditUser", new { Id=item.UserId}, new { @class = "dropdown-item"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteUser", new { Id=item.UserId},new { @class = "dropdown-item"})</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+  
+  
+
+
+
+</div>
+
+

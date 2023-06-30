@@ -1,0 +1,60 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.UserRoleViewModel>
+
+@{
+    ViewData["Title"] = "RoleList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>Role List</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a asp-action="AddRole"> ADD ROLE</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Role Id
+                </th>
+                <th>
+                    Role Name
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        #@Html.DisplayFor(modelItem => item.UserRoleId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoleName)
+                    </td>
+                    <td>
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>@Html.ActionLink("Edit", "EditRole", new { Id=item.UserRoleId}, new { @class = "dropdown-item"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteRole", new { Id=item.UserRoleId},new { @class = "dropdown-item"})</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

@@ -1,0 +1,78 @@
+﻿@model SecureGroup.ViewModel.UserViewModel
+
+@{
+    ViewData["Title"] = "EditVendor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>Edit Vender/Supplier</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Vendor" asp-action="VendorList"> Vender/Supplier List</a></button>
+        </li>
+    </ul>
+</div>
+
+<div class="form-inner">
+    <div class="row">
+        <form asp-action="EditVendor">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="UserId" class="form-control" type="hidden" />
+            <input asp-for="RoleId" class="form-control" type="hidden" />
+            <div class="col-md-12 mb-3">
+                <div class="pl-3">
+                    <div class="form-check form-switch">
+                        <input asp-for="IsSupplier" class="form-check-input" type="checkbox" />
+                        <label asp-for="IsSupplier" class="form-check-label">Is Supplier? <span class="text-danger">(* switch to Supplier)</span></label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="BusinessName" class="control-label">Business Name<span>*</span></label>
+                    <input asp-for="BusinessName" class="form-control" />
+                    <span asp-validation-for="BusinessName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Name" class="control-label">Contact Person<span>*</span></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Email" class="control-label">EmailId<span>*</span></label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Password" class="control-label">Password</label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ContactNo" class="control-label">Contact Number<span>*</span></label>
+                    <input asp-for="ContactNo" class="form-control" type="number" />
+                    <span asp-validation-for="ContactNo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input type="submit" value="Update" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

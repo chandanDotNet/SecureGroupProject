@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.DepartmentViewModel>
+
+@{
+    ViewData["Title"] = "DepartmentList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>Department List</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a asp-action="AddDepartment"> ADD DEPARTMENT</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Department Id
+                </th>
+                <th>
+                    Department Name
+                </th>
+                <th>
+                    Department's' Head Name
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        #@Html.DisplayFor(modelItem => item.DepartmentId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartmentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartmentHeadName)
+                    </td>
+                    <td>
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>@Html.ActionLink("Edit", "EditDepartment", new { Id=item.DepartmentId}, new { @class = "dropdown-item"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteDepartment", new { Id=item.DepartmentId},new { @class = "dropdown-item"})</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

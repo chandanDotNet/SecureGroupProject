@@ -1,0 +1,123 @@
+﻿@model SecureGroup.ViewModel.WHStockTransferManageViewModel
+
+@{
+    ViewData["Title"] = "Transferproduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/js/devjs/js_transferproduct.js"></script>
+
+<div class="common-title-headeer">
+    <h1>Transfer Product</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Inventory" asp-action="WarehouseStock"> STOCK</a></button>
+        </li>
+    </ul>
+</div>
+
+<div class="form-inner">
+    <div class="row">
+        <form asp-action="Transferproduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="TransferType" class="control-label"></label>
+                    <select asp-for="TransferType" id="ddlTransferType"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.TransferTypeList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="TransferType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="SourceId" id="lblSource" class="control-label">Source</label>
+                    <select asp-for="SourceId" id="ddlSource"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.WareHouseList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="SourceId" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="DestinationId" id="lblDestination" class="control-label">Destination</label>
+                    <select asp-for="DestinationId" id="ddlDestination"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.WareHouseList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="DestinationId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ProductId" class="control-label">Product</label>
+                    <select asp-for="ProductId" id="ddlProductList"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.ProductList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="ProductId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="SubProductId" class="control-label">Sub Product</label>
+                    <select asp-for="SubProductId" id="ddlSubProductList"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.SubProductList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="SubProductId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control uom-field">
+                    <label asp-for="TransferQuantity" class="control-label">Transfer Quantity</label>
+                    <label asp-for="TransferQuantity" id="lblQuantityUnit" class="control-label uom-label">UOM</label>
+                    <input asp-for="TransferQuantity" class="form-control" />
+                    <span asp-validation-for="TransferQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="TransferDate" class="control-label">Transfer Date</label>
+                    <input asp-for="TransferDate" class="form-control" />
+                    <span asp-validation-for="TransferDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            @*<div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="TransferBy" class="control-label"></label>
+                    <input asp-for="TransferBy" class="form-control" />
+                    <span asp-validation-for="TransferBy" class="text-danger"></span>
+                </div>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

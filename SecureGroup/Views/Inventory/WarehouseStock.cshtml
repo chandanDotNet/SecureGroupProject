@@ -1,0 +1,237 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.WHStockProductViewModel>
+@{
+    ViewData["Title"] = "WarehouseStock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/js/devjs/js_createwarehouse.js"></script>
+
+
+<div class="common-title-headeer">
+    <h1>Warehouse Stock</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a asp-controller="Inventory" asp-action="Transferproduct"> TRANSFER PRODUCT</a></button>
+        </li>
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a asp-controller="Inventory" asp-action="AddProductItem"> ADD PRODUCT</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Warehouse Name</th>
+                <th>Product</th>
+                <th>Sub Product</th>
+                <th>Quantity</th>
+               @* <th>Unit</th>
+                <th>Amount</th>*@
+                @*<th>Quantity On Hand</th>
+                <th>Quantity On Order</th>
+                <th>Quantity Allocated</th>
+                <th>Reorder Point</th>*@
+                <th></th>
+                <th></th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.WareHouseId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WareHouse)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SubProduct)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                @*    <td>@Html.DisplayFor(modelItem => item.Unit)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>*@
+                    <td>@Html.ActionLink("View", "WarehouseStockDetails", new { WareHouseId=item.WareHouseId},new { @class = "view-td-details fa fa-eye"})</td>
+                   
+
+                    <td>
+
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                @*<li><a class="dropdown-item" href="">Edit</a></li>
+                                <li><a class="dropdown-item" href="#">Delete</a></li>*@
+                                <li>@Html.ActionLink("Edit", "EditProductItem", new { Id=item.Id}, new { @class = "dropdown-item"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteProductItem", new { Id=item.Id},new { @class = "dropdown-item"})</li>
+
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- addwarehouse -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="side-slide-form">
+            <div class="side-slide-header">
+                <h2>Add Product</h2>
+                <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+
+            <form>
+                <div class="form-inner">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Product Name</label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>Add Product Name</option>
+                                    <option value="a">Add Product Name</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Product Category</label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>Product Category</option>
+                                    <option value="a">Product Category</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control p-quantity">
+                                <label>Product Quantity</label>
+                                <input type="text" placeholder="Product Quantity" />
+                                <div class="dropdown p-quantity-dr">
+                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        unit
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="data-save-btn">Save</button>
+            </form>
+
+
+
+        </div>
+    </aside>
+
+    <!-- Transferproduct -->
+    <aside id="side-bar-slide-toggle" class="control-sidebar1  control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="side-slide-form">
+            <div class="side-slide-header">
+                <h2>Add Product</h2>
+                <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+
+            <div id="divProductItemAdd1">
+            </div>
+            @* <form>
+            <div class="form-inner">
+            <div class="row">
+
+
+            <div class="col-md-12 mb-3">
+            <div class="custom-form-control">
+            <label>Product Code</label>
+            <input type="text"  placeholder="Product Code"/>
+            </div>
+            </div>
+            <div class="col-md-12 mb-3">
+            <div class="custom-form-control">
+            <label>Source Warehouse </label>
+            <select name="" id="">
+            <option value="" disabled selected hidden>Source Warehouse</option>
+            <option value="a">Add Product Name</option>
+            </select>
+            </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+            <div class="custom-form-control">
+            <label>Destination Warehouse</label>
+            <select name="" id="">
+            <option value="" disabled selected hidden>Destination Warehouse</option>
+            <option value="a">Product Category</option>
+            </select>
+            </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+            <div class="custom-form-control p-quantity">
+            <label>Product Quantity</label>
+            <input type="text" placeholder="Product Quantity" />
+            <div class="dropdown p-quantity-dr">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            unit
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+
+            </ul>
+            </div>
+            </div>
+
+
+            </div>
+
+
+            <div class="col-md-12 mb-3">
+            <div class="custom-form-control">
+            <label>Transfer By</label>
+            <input type="time" />
+            </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+            <div class="custom-form-control">
+            <label>Transfer By</label>
+            <select name="" id="">
+            <option value="" disabled selected hidden>Transfer By</option>
+            <option value="a">Product Category</option>
+            </select>
+            </div>
+            </div>
+
+
+            </div>
+
+            </div>
+
+            <button class="data-save-btn">Save</button>
+            </form>*@
+
+
+
+        </div>
+    </aside>
+
+
+
+</div>
+

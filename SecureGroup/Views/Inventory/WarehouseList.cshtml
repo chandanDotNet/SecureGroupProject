@@ -1,102 +1,198 @@
-﻿@model IEnumerable<SecureGroup.ViewModel.WarehouseViewModel>
+﻿@model SecureGroup.ViewModel.WarehouseRapViewModel
 
 @{
     ViewData["Title"] = "WarehouseList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>WarehouseList</h1>
 
-<p>
-    <a asp-action="CreateWarehouse">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.WarehouseId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WarehouseName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CityId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StateId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.State)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ZipCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdminName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdminContactNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdminEmailId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.WarehouseId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WarehouseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CityId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StateId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.State)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ZipCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdminName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdminContactNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdminEmailId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/devjs/js_createwarehouse.js"></script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+<link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+      rel="stylesheet" type="text/css" />
+
+
+
+
+<div class="common-title-headeer">
+    <h1>Warehouse List</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a asp-controller="Inventory" asp-action="CreateWarehouse"> ADD WAREHOUSE</a></button>
+        </li>
+    </ul>
+</div>
+
+
+
+
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Warehouse Name</th>
+                <th>Location</th>
+                <th>Admin Name</th>
+                <th>Admin Contact Details (PH/EMAIL)</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.warehouseViewModel)
+            {
+            <tr>
+                    <td>@Html.DisplayFor(modelItem => item.WarehouseId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WarehouseName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Address),@Html.DisplayFor(modelItem => item.City),@Html.DisplayFor(modelItem => item.State),
+                        @Html.DisplayFor(modelItem => item.Country),@Html.DisplayFor(modelItem => item.ZipCode)
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.AdminName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AdminContactNo) / @Html.DisplayFor(modelItem => item.AdminEmailId)</td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>@Html.ActionLink("Edit", "EditWarehouse", new { Id=item.WarehouseId}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteWarehouse", new { Id=item.WarehouseId},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+            }
+           
+        </tbody>
+    </table>
+
+    <!-- addwarehouse -->
+@*    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="side-slide-form">
+            <div class="side-slide-header">
+                <h2>Add Warehouse</h2>
+                <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+
+            <form>
+                <div class="form-inner">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Warehouse Name<span>*</span></label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>Warehouse Name</option>
+                                    <option value="a">Warehouse Name</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Warehouse Location<span>*</span></label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>Warehouse Location</option>
+                                    <option value="a">Warehouse Location</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Select Admin<span>*</span></label>
+                                <select name="" id="">
+                                    <option value="" disabled selected hidden>Select</option>
+                                    <option value="a">Select</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Admin Phone No<span>*</span></label>
+                                <input type="number" placeholder="Warehouse Admin Phone No" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label>Admin Email Id<span>*</span></label>
+                                <input type="email" placeholder="Warehouse Admin Email Id" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button class="data-save-btn">Save</button>
+            </form>
+
+            @{
+                Layout = "_CreateWarehouse";
+            }
+
+        </div>
+    </aside>
+*@
+
+    <div id="dialog">
+    </div>
+
+
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="side-slide-form">
+            <div class="side-slide-header">
+                <h2>Add Warehouse</h2>
+                <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+            <div id="popupdata">
+
+            </div>
+            
+           
+        </div>
+            
+    </aside>
+
+</div>
+
+
+
+
+@*<script type="text/javascript">
+
+    $("#AddnewWH").click(function () {
+
+    $.ajax({
+        type: "GET",
+        url: "/Inventory/CreateWarehouse",
+        data: {  },
+        success: function (response) {
+            $('#dialog').html(response);
+            $('#dialog').dialog('open');
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });
+    });
+
+    </script>*@

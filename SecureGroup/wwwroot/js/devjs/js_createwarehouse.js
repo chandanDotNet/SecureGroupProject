@@ -3,6 +3,7 @@ $(document).ready(function () {
 
     $("#ddlCountry").on("change", function () {
 
+        //debugger;
         var valu = $("#ddlCountry").val();
         var ValueType = "State";
 
@@ -27,7 +28,7 @@ $(document).ready(function () {
         var valu = $("#ddlStateId").val();
         var ValueType = "City";
         //debugger;
-       // alert(ValueType);
+        // alert(ValueType);
         $.ajax(
             {
                 url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
@@ -57,8 +58,8 @@ $(document).ready(function () {
                 success: function (data) {
                     //debugger;
                     $("#AdminName").val(data.name);
-                    $("#AdminContactNo").val(data.email);
-                    $("#AdminEmailId").val(data.contactNo);
+                    $("#AdminContactNo").val(data.contactNo);
+                    $("#AdminEmailId").val(data.email);
                 },
                 error: function () {
                     alert("error");
@@ -66,6 +67,98 @@ $(document).ready(function () {
             });
     });
 
+
+
+    $("#btnShow").click(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "/Inventory/CreateWarehouse",
+            success: function (response) {
+                //debugger;
+                $('#popupdata').html(response);
+                //$('#dialog').dialog('open');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#btnAddProductItem").click(function () {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: "/Inventory/AddProductItem",
+            success: function (response) {
+                //debugger;
+                $('#divProductItemAdd').html(response);
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    //$('#Delete').click(function () {
+    //    alert("dd");
+    //   // $('#dialog-form').dialog('open');
+    //});
+
+
+    $("#APProductId").on("change", function () {
+
+        var valu = $("#APProductId").val();
+        var ValueType = "SubProduct";
+        debugger;
+        $.ajax(
+            {
+                url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+                type: 'GET',
+                data: "",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    PopulateDropDown("#APSubProductId", data);
+
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+    });
+
+
+    $('#APUnitPrice').keyup(function () {
+
+        var UnitPrice = $(this).val();
+        var Quantity = $("#APQuantity").val();
+        var Amount = 0.00;
+        //$('#APAmount').val(11.10);
+        funCalculateAmount(UnitPrice, Quantity, Amount);
+        //alert($(this).val());
+    });
+    $('#APQuantity').keyup(function () {
+
+        var Quantity = $(this).val();
+        var UnitPrice = $("#APUnitPrice").val();
+        var Amount = 0.00;
+        //$('#APAmount').val(11.10);
+        funCalculateAmount(UnitPrice, Quantity, Amount);
+        //alert($(this).val());
+    });
+
+    function funCalculateAmount(UnitPrice, Quantity, Amount) {
+         Amount = UnitPrice * Quantity;
+        //$("#APAmount$").html(Amount);
+        $("#APAmount").val(Amount);
+    };
 
     function PopulateDropDown(dropDownId, list, selectedId) {
 

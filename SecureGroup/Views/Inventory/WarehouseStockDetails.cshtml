@@ -1,0 +1,82 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.WHStockProductDetailsViewModel>
+
+@{
+    ViewData["Title"] = "WarehouseStockDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<label>WareHouse :- </label>  <label>@TempData["WareHouseName"]</label>
+
+<div class="warehouse-data table-responsive">
+<table>
+    <thead>
+        <tr>
+           
+          @*  <th>
+                    WareHouse Name
+            </th>*@
+          
+            <th>
+                    Product Name
+            </th>
+           
+            <th>
+                    SubProduct Name
+            </th>
+            <th>
+                    Purchase Quantity
+            </th>
+            <th>
+                    Stock In
+            </th>
+            <th>
+                    Stock Out
+            </th>
+            <th>
+                    Closing Quantity
+            </th>
+           @* <th>
+                @Html.DisplayNameFor(model => model.TransferType)
+            </th>*@
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           
+          @*  <td>
+                @Html.DisplayFor(modelItem => item.WareHouseName)
+
+            </td>*@
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.SubProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductAddQty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalQty)
+            </td>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.TransferType)
+            </td>*@
+           
+        </tr>
+}
+    </tbody>
+</table>
+
+</div>
+

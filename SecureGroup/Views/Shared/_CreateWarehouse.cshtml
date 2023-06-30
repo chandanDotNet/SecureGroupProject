@@ -1,0 +1,119 @@
+﻿@model SecureGroup.ViewModel.WarehouseViewModel
+
+<script src="~/js/devjs/js_createwarehouse.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="form-inner">
+    <div class="row">
+        <form asp-action="CreateWarehouse">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="WarehouseName" class="control-label"></label>
+                    <input asp-for="WarehouseName" class="form-control" />
+                    <span asp-validation-for="WarehouseName" class="text-danger"></span>
+                    <span style="color: red;" class="field-validation-valid" data-valmsg-for="WarehouseName" data-valmsg-replace="true"></span>
+
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="CountryId" class="control-label">Country</label>
+                    <select asp-for="CountryId" id="ddlCountry"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.CountryList,"Value", "Text",Model.CountryId=101))">
+                    </select>
+                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="StateId" class="control-label">State</label>
+                    <select asp-for="StateId" id="ddlStateId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.StateList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="StateId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="CityId" class="control-label">City</label>
+                    <select asp-for="CityId" id="ddlCityId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.CityList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="CityId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ZipCode" class="control-label">Zip Code</label>
+                    <input asp-for="ZipCode" class="form-control" />
+                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="UserId" class="control-label">User</label>
+                    <select asp-for="UserId" id="ddlUserId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.UserList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="AdminName" class="control-label">Admin Name</label>
+                    <input asp-for="AdminName" class="form-control" id="AdminName" />
+                    <span asp-validation-for="AdminName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="AdminContactNo" class="control-label">Admin Contact No.</label>
+                    <input asp-for="AdminContactNo" class="form-control" id="AdminContactNo" />
+                    <span asp-validation-for="AdminContactNo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="AdminEmailId" class="control-label">Admin EmailId</label>
+                    <input asp-for="AdminEmailId" class="form-control" id="AdminEmailId" />
+                    <span asp-validation-for="AdminEmailId" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+            <input type="submit" value="Create" class="btn btn-primary" />
+           @* <input name="_RequestVerificationToken" type="hidden" value="CfDJ8C-7mCG55hBDrFHYMGeG3xGBvY_epwiSr_q_mFnFRpTKHxdV8s0kZB-v0LZtzzOrKOpTHvxPvb_4oukqQCBdOj3idVTMAiic9h-oZahWfai5LK6MOVbEpsiqyzyKAD89JX8O7YfiXSegLbcDZpHcQQI" />*@
+
+        </form>
+
+    </div>
+</div>
+
+
+
