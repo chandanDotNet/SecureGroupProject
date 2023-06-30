@@ -162,7 +162,4 @@ namespace SecureGroup.Controllers
     }
 }
 
-
-//aftab shadi karega
-//AD ko pata nahi
-// ad c hai
+//test
