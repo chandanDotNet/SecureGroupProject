@@ -1,4 +1,4 @@
-﻿
+﻿@model SecureGroup.ViewModel.LoginViewModel
 @{
     Layout = null;
 }
@@ -26,24 +26,36 @@
                 <img src="~/images/logo.svg" class="login-logo" alt="">
             </div>
 
-            <h2>Login as Admin</h2>
-
-            <form>
-                <div class="mb-3 custom-form-control">
-                    <input type="text" class="form-control" placeholder="Phone No or Email Address">
+            
+            <form asp-action="Login">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="logas">
+                    <h2>Login as Admin</h2>
+                <select asp-for="RoleId" id="ddlRoleId"
+                        class="form-control"
+                        asp-items="@(new SelectList(Model.RoleList,"Value", "Text"))">
+                </select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 custom-form-control">                  
+                    
+                    <input asp-for="Username" class="form-control" placeholder="Phone No or Email Address" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
 
                 </div>
                 <div class="mb-3 custom-form-control" id="show_hide_password">
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input asp-for="Password" class="form-control" placeholder="Password" type="password" />
+                    <span asp-validation-for="Username" class="text-danger"></span>                   
                     <a href="javascript:void(0)" class="toggle-pass"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 </div>
 
                 <a href="" class="f-pass-btn">Forgot Password?</a>
                 <img src="~/images/robot.png" class="rbt-png">
                 
-                <a asp-controller="Home" asp-action="Dashboard" class="login-process-btn" style="display:flex; align-items:center; justify-content:center; text-decoration:none; margin:50px auto 0 auto;">
+               @* <a asp-controller="Home" asp-action="Dashboard" class="login-process-btn" style="display:flex; align-items:center; justify-content:center; text-decoration:none; margin:50px auto 0 auto;">
                     Submit                   
-                </a>
+                </a>*@
+                <input type="submit" value="Submit" class="login-process-btn" />
             </form>
 
         </div>

@@ -26,6 +26,7 @@ namespace SecureGroup
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession(); //Add this line to register the session service
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContextPool<MsDBContext>(option => option.UseSqlServer(connectionString));
@@ -50,7 +51,7 @@ namespace SecureGroup
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

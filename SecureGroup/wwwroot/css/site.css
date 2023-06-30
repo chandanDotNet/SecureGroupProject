@@ -159,11 +159,11 @@ a.f-pass-btn {
 }
 
 .login-process-btn {
-    width: 178px;
-    height: 50px;
-    background: linear-gradient(89.93deg, #1795C7 5.71%, #465F8B 97.94%);
-    border-radius: 100px;
-    border: 0px;
+    width: 178px !important;
+    height: 50px !important;
+    background: linear-gradient(89.93deg, #1795C7 5.71%, #465F8B 97.94%) !important;
+    border-radius: 100px !important;
+    border: 0px !important;
     font-weight: 500;
     font-size: 16px;
     line-height: 19px;
@@ -171,7 +171,7 @@ a.f-pass-btn {
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #FFFFFF;
-    margin-top: 28px;
+    margin-top: 28px !important;
     transition: all 0.3s ease-in-out;
 }
 

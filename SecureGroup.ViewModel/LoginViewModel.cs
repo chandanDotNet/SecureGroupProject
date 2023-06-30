@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace SecureGroup.ViewModel
 
         [Required, Range(1, int.MaxValue, ErrorMessage = "Must Choose a Role")]
         public int RoleId { get; set; }
+
+        public IList<SelectListItem> RoleList { get; set; }
     }
 }

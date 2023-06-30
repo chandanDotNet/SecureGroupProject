@@ -69,9 +69,12 @@ namespace SecureGroup.Controllers
 
         public IActionResult Login()
         {
+            var RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0);
 
+            LoginViewModel _loginViewModel = new LoginViewModel();
+            _loginViewModel.RoleList = RoleList;
 
-            return View();
+            return View(_loginViewModel);
         }
 
         [HttpPost]
