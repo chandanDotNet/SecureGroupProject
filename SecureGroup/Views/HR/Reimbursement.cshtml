@@ -1,0 +1,269 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model SecureGroup.ViewModel.WrapperReimbursementViewModel
+
+@{
+    ViewData["Title"] = "Reimbursement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    string UserRoleId = @Context.Session.GetString("RoleID");
+    string UserRoleName = @Context.Session.GetString("RoleName");
+}
+
+<script type="text/javascript" src="d:\projects-2023\dot net\securegroupproject\securegroup\wwwroot\js\devjs\js_createwarehouse.js"></script>
+<div class="common-title-headeer">
+
+    <h1>Reimbursement List</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a asp-controller="HR" asp-action="AddReimbursement"> ADD REIMBURSEMENT</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+               @* <th>ID</th>*@
+                <th>Claim By</th>
+                <th>Expense For</th>
+                <th>Total Expense Amount</th>
+                <th>Claim Amount</th>
+              @*  <th>Approved Amount</th>*@
+                <th>Expense Date</th>
+                <th>Approved By</th>
+                <th>Approved Date</th>
+                <th>Status</th>
+                <th>Comments</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.ReimbursementList)
+            {
+                <tr>
+                    @*<td>
+                        <label asp-for="Id" class="control-label"></label>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClaimByName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExpenseFor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalExpenseAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClaimAmount)
+                    </td>
+                  @*  <td>
+                        @Html.DisplayFor(modelItem => item.ApprovedAmount)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExpenseDate) - @Html.DisplayFor(modelItem => item.ExpenseToDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApprovedByName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApprovedDate)
+                    </td>
+                    <td>
+
+                        @if (item.Status == "Approve")
+                        {
+                            <span class="approve-tag">Approved</span>
+                        }
+                        else if (item.Status == "Rejecet")
+                        {
+                            <span class="pending-tag">Rejecet</span>
+                        }
+                        else if (item.Status == "Apply")
+                        {
+                            <span class="pending-tag">Pending</span>
+                        }
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comments)
+                        <input type="hidden" class="inpReimId" name="NameReimId" value="@item.Id">
+                        <input type="hidden" class="clsComments" name="nameComments" value="@item.Comments">
+                        <input type="hidden" class="clsStatusId" name="nameStatusId" value="@item.StatusId">
+                    </td>
+                    <td>
+                        @if (UserRoleId=="1")
+                        {
+                            <input type="button" value="Approve/Reject" class="btn btn-secondary approve-reject-btn btnrowvalue1" data-bs-toggle="modal" data-bs-target="#comment-modal" />
+                        }
+                        @if (UserRoleId == "4" && item.Status != "Approve")
+                        {
+                            <div class="dropdown td-action-dot">
+                                <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li>@Html.ActionLink("Edit", "EditReimbursement", new { Id=item.Id}, new { @class = "dropdown-item"})</li>
+                                    <li>@Html.ActionLink("Delete", "DeleteReimbursement", new { Id=item.Id},new { @class = "dropdown-item"})</li>
+                                </ul>
+                            </div>
+                        }
+
+                        <input type="button" value="Show" class="btn btn-secondary approve-reject-btn btnrowvalueFile" data-bs-toggle="modal" data-bs-target="#comment-modal1" />
+
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+
+<div class="modal fade add-remark-modal" id="comment-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Account Approval Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="warehouse-data table-responsive">
+
+                    <form asp-action="UpdateReimbursementStatus">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div>
+                            <div class="form-inner">
+                                <div class="row">
+                                    <input type="hidden" asp-for="Id" id="ReimbursementId" />
+                                    <div class="col-md-12 mb-3">
+                                        <div class="custom-form-control">
+                                            <label asp-for="StatusId" class="control-label">Status</label>
+                                            <select asp-for="StatusId" id="ddlStatusId"
+                                                    class="form-control"
+                                                    asp-items="@(new SelectList(Model.StatusList,"Value", "Text"))">
+                                            </select>
+                                            <span asp-validation-for="StatusId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mb-3">
+                                        <div class="custom-form-control">
+                                            <label asp-for="Comments" class="control-label">Comments</label>
+                                            <textarea asp-for="Comments" class="form-control txtComments" rows="4" id="txtCommentsId"></textarea>
+                                            <span asp-validation-for="Comments" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <input type="submit" value="Update" class="data-save-btn" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade " id="comment-modal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Document List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="warehouse-data table-responsive">
+                    <div id="partial-documentList-load">
+
+                       
+
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $(".btnrowvalue1").click(function () {
+            var tr = $(this).closest('tr');
+            var id = tr.find('input[name="NameReimId"]').val();
+            var Comments = tr.find('input[name="nameComments"]').val();
+            var StatusId = tr.find('input[name="nameStatusId"]').val();
+            if (StatusId == null || StatusId == "") {
+                StatusId = "0";
+            }
+            console.log(StatusId);
+            //alert('Type1 : ' + id);
+            $('#ReimbursementId').val(id);
+            $('#txtCommentsId').val(Comments);
+            $('#ddlStatusId').val(StatusId);
+        });
+
+        $(".btnrowvalueFile").click(function () {
+            var tr = $(this).closest('tr');
+            var id = tr.find('input[name="NameReimId"]').val();
+            $('#partial-documentList-load').load('/HR/_documentListPartial?Id=' + id);
+
+        });
+
+
+
+        //Get All Rows Value of HTML Value
+        //$(".btngetvalue").click(function () {
+        //    var address = [];
+        //    $("table tr td input[type='text']").each(function () {
+        //        var textval = $(this).val();
+        //        address.push(textval);
+        //    });
+        //    var wholetabledata = address.toString();
+        //    $("#allrowsdata").text("ALL ROWS DATA :" + "\n\n\n" + wholetabledata);
+        //});
+        //METHOD 1 to get Table Row Value
+        //Method 1 is good and reliable  than Method 2
+
+        //METHOD 2 to get Table Row Value
+        //$(".btnrowvalue2").click(function () {
+        //    var tr = $(this).closest('tr');
+        //    var FirstCol = tr.find('td:eq(0) input').val();;
+        //    var SecondCol = tr.find('td:eq(1) input').val();
+        //    var ThirdCol = tr.find('td:eq(2) input').val();
+        //    alert('Type2 : ' + FirstCol + ' ' + SecondCol + ' ' + ThirdCol);
+        //});
+    });
+</script>

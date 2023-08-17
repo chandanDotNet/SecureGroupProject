@@ -36,6 +36,10 @@ namespace SecureGroup.ViewModel
         public string SupplierName { get; set; }
         public string SupplierContactDetails { get; set; }
         public int CreatedBy { get; set; }
+        public string Comment { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public int GSTTypeId { get; set; }
+        public decimal GSTAmount { get; set; }
        
 
         public IList<SelectListItem> ProductList { get; set; }

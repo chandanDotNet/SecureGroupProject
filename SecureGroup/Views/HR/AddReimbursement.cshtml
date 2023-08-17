@@ -1,0 +1,177 @@
+﻿@model SecureGroup.ViewModel.ReimbursementViewModel
+
+@{
+    ViewData["Title"] = "AddReimbursement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript" src="https://cdn.rawgit.com/mobomo/sketch.js/master/lib/sketch.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+
+
+<div class="common-title-headeer">
+    <h1>Add Reimbursement</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="HR" asp-action="Reimbursement"> REIMBURSEMENT</a></button>
+        </li>
+    </ul>
+</div>
+
+
+
+<div class="form-inner">
+    <div class="row">
+        <form asp-action="AddReimbursement" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ExpenseFor" class="control-label">Expense For</label>
+                    <input asp-for="ExpenseFor" class="form-control" />
+                    <span asp-validation-for="ExpenseFor" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="TotalExpenseAmount" class="control-label">Total Expense Amount</label>
+                    <input asp-for="TotalExpenseAmount" class="form-control" type="number" />
+                    <span asp-validation-for="TotalExpenseAmount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ClaimAmount" class="control-label">Claim Amount</label>
+                    <input asp-for="ClaimAmount" class="form-control" type="number" />
+                    <span asp-validation-for="ClaimAmount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ExpenseDate" class="control-label">Expense Form Date</label>
+                    <input asp-for="ExpenseDate" class="form-control" type="date" />
+                    <span asp-validation-for="ExpenseDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ExpenseToDate" class="control-label">Expense To Date</label>
+                    <input asp-for="ExpenseToDate" class="form-control" type="date" />
+                    <span asp-validation-for="ExpenseToDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="">
+                    <label asp-for="ExpenseDocument" class="control-label">Expense Document</label>
+                    <input type="file" asp-for="ExpenseDocument" class="form-control" multiple />
+
+                </div>
+            </div>
+            <div class="col-md-12 mb-12">
+                <div class="">
+                    <label class="control-label">Signature</label>
+
+                    <div class="tools">
+                        <button type="button" id="eraser"
+                                class="btn btn-primary">
+
+                            <i class="fa fa-eraser" aria-hidden="true"></i>
+                            Eraser
+                        </button>
+                    </div>
+                   
+                        <div class="card card-body">
+                        <canvas width="880" height="200" id="signature"
+                                    style="border:1px solid black"></canvas>
+                        </div>
+                    
+
+                    @*  <button type="button" id="accept"
+                    class="btn btn-primary">
+                    Accept signature
+                    </button>
+                    <button type="submit" id="save"
+                    class="btn btn-primary">
+                    Save
+                    </button><br>
+                    <img width="100" height="200" id="savetarget"
+                    style="border:1px solid black"><br>*@
+                    <input type="hidden" asp-for="SignatureDataUrl">
+
+
+                </div>
+            </div>
+
+
+
+
+            <input id="btnSave" type="submit" value="Create" class="data-save-btn" />
+
+        </form>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        $(function () {
+
+            var canvas = document.querySelector('#signature');
+            var pad = new SignaturePad(canvas);
+
+            $('#btnSave').click(function () {
+
+                //alert("ee");
+                var data = pad.toDataURL();
+
+                // $('#savetarget').attr('src', data);
+                $('#SignatureDataUrl').val(data);
+                pad.off();
+
+            });
+
+            $('#eraser').click(function () {
+
+                //alert("ee");
+                var data = pad.toDataURL();
+
+                /// $('#savetarget').attr('src', "");
+                $('#SignatureDataUrl').val("");
+                pad.clear();
+                pad.on();
+
+            });
+
+        });
+    </script>
+}
+
+
+
+
+
+
+@*<script type="text/javascript">
+    //$("body").on("click", "#btnSubmit", function () {
+    //    var base64 = $('#colors_sketch')[0].toDataURL();
+    //    $("input[name=base64String]").val(base64);
+    //});
+    $(function () {
+        $("#colors_sketch").sketch();
+        $(".tools a").eq(0).attr("style", "color:#000");
+        $(".tools a").click(function () {
+            $(".tools a").removeAttr("style");
+            $(this).attr("style", "color:#000");
+        });
+    });
+</script>*@

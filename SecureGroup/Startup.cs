@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SecureGroup.DBContexts;
+//using SecureGroup.Concrete;
+//using SecureGroup.Interface;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +31,11 @@ namespace SecureGroup
             services.AddControllersWithViews();
             services.AddSession(); //Add this line to register the session service
 
+            services.AddMvc();
+
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContextPool<MsDBContext>(option => option.UseSqlServer(connectionString));
+          //  services.AddSingleton<IHR, HRConcrete>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +47,7 @@ namespace SecureGroup
             }
             else
             {
+
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -57,6 +64,7 @@ namespace SecureGroup
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Login}/{id?}");
+                   // pattern: "{controller=Order}/{action=Abc}/{id?}");
             });
         }
     }

@@ -97,6 +97,12 @@
                     <span asp-validation-for="TransferDate" class="text-danger"></span>
                 </div>
             </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Comment" class="control-label">Comment</label>
+                    <textarea asp-for="Comment" class="form-control"></textarea>
+                </div>
+            </div>
 
             @*<div class="col-md-12 mb-3">
                 <div class="custom-form-control">
@@ -112,9 +118,7 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{

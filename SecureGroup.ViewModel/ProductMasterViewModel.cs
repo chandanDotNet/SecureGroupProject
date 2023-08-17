@@ -19,8 +19,14 @@ namespace SecureGroup.ViewModel
         [Required, Range(1, int.MaxValue, ErrorMessage = "Must Choose a UOM")]
         public int UnitId { get; set; }
         public string UnitName { get; set; }
+        [Required, Range(1, int.MaxValue, ErrorMessage = "Must Choose a GST Type")]
+        public int GSTTypeId { get; set; }
+        public string GSTTypeName { get; set; }
+        [Required(ErrorMessage = "Please enter Percentage")]
+        public decimal GSTPercen { get; set; }
         public Boolean IsActive { get; set; }
 
         public IList<SelectListItem> UnitList { get; set; }
+        public IList<SelectListItem> GSTTypeList { get; set; }
     }
 }

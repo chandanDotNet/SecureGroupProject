@@ -27,6 +27,7 @@ namespace SecureGroup.ViewModel
         [Required(ErrorMessage = "Please Enter Transfer Date")]
         public DateTime TransferDate { get; set; }
         public int TransferBy { get; set; }
+        public string Comment { get; set; }
 
 
         public IList<SelectListItem> TransferTypeList { get; set; }

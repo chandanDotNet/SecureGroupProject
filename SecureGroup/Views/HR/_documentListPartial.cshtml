@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<SecureGroup.ViewModel.DocumentListViewModel>
+
+@{
+    string UserRoleId = @Context.Session.GetString("RoleID");
+    string UserRoleName = @Context.Session.GetString("RoleName");
+}
+<table>
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Document Name
+            </th>
+            <th>
+                Uploaded Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadedDate)
+                </td>
+                <td>
+
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            @if (UserRoleId == "4")
+                            {
+                                <li> @Html.ActionLink("Download", "DownloadFile", new {  filename=item.DocumentName },new{@class = "dropdown-item"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteFile", new {  filename=item.DocumentName,id=item.DocumentId,ReimId=item.ReimbursementId },new{@class = "dropdown-item"})</li>
+
+                            }
+                            @if (UserRoleId == "1")
+                            {
+                                <li> @Html.ActionLink("Download", "DownloadFile", new {  filename=item.DocumentName },new{@class = "dropdown-item"})</li>
+                            }
+
+                        </ul>
+                    </div>
+
+
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

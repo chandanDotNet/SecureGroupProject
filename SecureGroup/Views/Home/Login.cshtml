@@ -15,12 +15,40 @@
     <!-- font awesome css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+
+    <link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+    <link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
 </head>
 <body>
 
     <div class="welcome-pages">
 
         <div class="welcome-wrapper">
+
+           @* @if (ViewBag.errormessage != null)
+            {
+                <p class="alert alert-danger" id="successMessage">@ViewBag.errormessage</p>
+                <script type="text/javascript">
+                    window.onload = function () {
+                        swal("Good job!", '@ViewBag.errormessage, "error");
+                    };
+                </script>
+            }*@
+
+            @if (TempData["errormessage"] != null)
+            {
+                <script type="text/javascript">
+                    window.onload = function () {
+                        swal("Error!", '@TempData["errormessage"]', "error");
+                    };
+                </script>
+            }
 
             <div class="welcome-header">
                 <img src="~/images/logo.svg" class="login-logo" alt="">
@@ -30,7 +58,7 @@
             <form asp-action="Login">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="logas">
-                    <h2>Login as Admin</h2>
+                    <h2>Login as </h2>
                 <select asp-for="RoleId" id="ddlRoleId"
                         class="form-control"
                         asp-items="@(new SelectList(Model.RoleList,"Value", "Text"))">
@@ -55,7 +83,7 @@
                @* <a asp-controller="Home" asp-action="Dashboard" class="login-process-btn" style="display:flex; align-items:center; justify-content:center; text-decoration:none; margin:50px auto 0 auto;">
                     Submit                   
                 </a>*@
-                <input type="submit" value="Submit" class="login-process-btn" />
+                <input type="submit" value="Login" class="login-process-btn" />
             </form>
 
         </div>
@@ -65,12 +93,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-           <script>
+          @* <script>
         $("#slide-toggle-btn").click(function () {
             alert("hi i am working");
             $("#side-bar-slide-toggle").toggleClass("slide-sidebar-new");
         });
-    </script>
+    </script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>

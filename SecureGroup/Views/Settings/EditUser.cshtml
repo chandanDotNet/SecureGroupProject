@@ -79,6 +79,24 @@
             </div>
             <div class="col-md-12 mb-3">
                 <div class="custom-form-control">
+                    <label asp-for="MobileNo" class="control-label">Mobile Number</label>
+                    <input asp-for="MobileNo" class="form-control" type="number" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="LandlineNo" class="control-label">Landline Number</label>
+                    <input asp-for="LandlineNo" class="form-control" type="number" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="AlternativeNo" class="control-label">Alternative Number</label>
+                    <input asp-for="AlternativeNo" class="form-control" type="number" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
                     <label asp-for="JobTitle" class="control-label">Job Title<span>*</span></label>
                     <input asp-for="JobTitle" class="form-control" />
                     <span asp-validation-for="JobTitle" class="text-danger"></span>
@@ -109,6 +127,27 @@
                             asp-items="@(new SelectList(Model.UserList,"Value", "Text"))">
                     </select>
                     <span asp-validation-for="ReportingTo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="PresentAddress" class="control-label">Present Address<span>*</span></label>
+                    <textarea asp-for="PresentAddress" class="form-control"></textarea>
+                    <span asp-validation-for="PresentAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="PermanentAddress" class="control-label">Permanent Address<span>*</span></label>
+                    <textarea asp-for="PermanentAddress" class="form-control"></textarea>
+                    <span asp-validation-for="PermanentAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="JoiningDate" class="control-label">Joining Date<span>*</span></label>
+                    <input asp-for="JoiningDate" class="form-control" type="date" />
+                    <span asp-validation-for="JoiningDate" class="text-danger"></span>
                 </div>
             </div>
 

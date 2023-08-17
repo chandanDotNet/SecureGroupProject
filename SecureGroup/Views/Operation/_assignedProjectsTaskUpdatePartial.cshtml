@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.ProjectViewModel>
+<div class="form-inner">
+    <div class="warehouse-data table-responsive">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Task Name</th>
+                    <th>Time</th>                   
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.TaskId</td>
+                        <td>
+                            @item.TaskName
+                        </td>
+                        <td>
+                            <div class="status-card on-track">
+                                <h3>@item.SpentTime</h3>
+                            </div>
+                        </td>                       
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

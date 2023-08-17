@@ -58,13 +58,16 @@
                 @Html.DisplayFor(modelItem => item.SubProductName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductAddQty)
+               @* @Html.DisplayFor(modelItem => item.ProductAddQty)*@
+                        @Html.ActionLink(""+item.ProductAddQty, "WHProductPurchaseDetails", new { WareHouseId=item.WareHouseId,ProductId=item.ProductId,SubProductId=item.SubProductId},new { @class = "view-td-details fa fa-eye"})
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StockIn)
+                @*@Html.DisplayFor(modelItem => item.StockIn)*@
+                        @Html.ActionLink(""+item.StockIn, "WHProductStockInDetails", new { WareHouseId=item.WareHouseId,ProductId=item.ProductId,SubProductId=item.SubProductId},new { @class = "view-td-details fa fa-eye"})
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StockOut)
+                @*@Html.DisplayFor(modelItem => item.StockOut)*@
+                        @Html.ActionLink(""+item.StockOut, "WHProductStockOutDetails", new { WareHouseId=item.WareHouseId,ProductId=item.ProductId,SubProductId=item.SubProductId},new { @class = "view-td-details fa fa-eye"})
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalQty)

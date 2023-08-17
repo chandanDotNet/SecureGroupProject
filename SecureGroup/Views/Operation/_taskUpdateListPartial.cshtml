@@ -1,0 +1,48 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.TaskUpdateViewModel>
+
+
+<table>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <p class="task_update_list">
+                        Updated By  -  @item.CreatedByName
+                    </p>
+                    <h3>
+                        Comment
+                    </h3>
+                    <div class="task_update_list_box">
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </div>
+
+                    <ul class="coment-status-details">
+                        <li>  Status-  @Html.DisplayFor(modelItem => item.TaskStatusValue)</li>
+                        @if (item.TaskDocumentName == null || item.TaskDocumentName == "")
+                        {
+                         
+                        }else
+                        {
+                        <li>
+                            @Html.ActionLink("Download", "DownloadFile", new { filename=item.TaskDocumentName}, new { @class = "btn btn-info fa fa-download",@id="btnDownload"})
+                        </li>
+                        }
+
+                        <li>
+
+                            Spent Time - <i class="fa fa-clock-o" aria-hidden="true"></i> @Html.DisplayFor(modelItem => item.SpentTime)
+
+                        </li>
+                    </ul>
+
+
+
+                </td>
+
+            </tr>
+
+        }
+    </tbody>
+</table>

@@ -1,0 +1,87 @@
+@model SecureGroup.ViewModel.WHStockTransferManageViewModel
+@{
+    ViewData["Title"] = "Transferproduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+    <form>
+        <div class="form-inner">
+            <div class="row">
+
+
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label>Product Code</label>
+                        <input type="text" placeholder="Product Code" />
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label>Source Warehouse </label>
+                        <select name="" id="">
+                            <option value="" disabled selected hidden>Source Warehouse</option>
+                            <option value="a">Add Product Name</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label>Destination Warehouse</label>
+                        <select name="" id="">
+                            <option value="" disabled selected hidden>Destination Warehouse</option>
+                            <option value="a">Product Category</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control p-quantity">
+                        <label>Product Quantity</label>
+                        <input type="text" placeholder="Product Quantity" />
+                        <div class="dropdown p-quantity-dr">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                unit
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label>Transfer Time</label>
+                        <input type="time" />
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label>Transfer By</label>
+                        <select name="" id="">
+                            <option value="" disabled selected hidden>Transfer By</option>
+                            <option value="a">Product Category</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <button class="data-save-btn">Save</button>
+    </form>
+
+
+
+
+

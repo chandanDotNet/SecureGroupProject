@@ -657,7 +657,7 @@ nav.main-header {
     border: 1px solid #D9D9D9;
 }
 
-.custom-form-control label {
+.custom-form-control label, .control-label {
     display: block;
     width: 100%;
     font-weight: 400 !important;
@@ -1636,7 +1636,7 @@ li.nav-item.menu-is-opening.menu-open > a .fa-angle-down:before {
 }
 
 .add-remark-modal .modal-content {
-    max-width: 356px;
+    max-width: 543px;
     margin: 0 auto;
 }
 
@@ -2127,4 +2127,228 @@ button.download-btn {
 
 .content table tbody tr:last-child {
     border-bottom: 0px !important;
+}
+
+.logas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+    .logas select {
+        max-width: 151px;
+        border: 1.4px solid #1795c7;
+        box-shadow: none !important;
+        color: #1795c7;
+    }
+
+.task-allocation-tabular-data .rows {
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+    .task-allocation-tabular-data .rows:hover {
+        box-shadow: 0px 0px 4px 2px #00000021;
+    }
+
+
+
+.tasklist-assing-update {
+    background: #f8f8f8;
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px #0000002e;
+}
+
+#partial-taskDetailsList-load table {
+    width: 100%;
+}
+
+.task_update_list_box {
+    height: 100px;
+    width: 100%;
+    border: 1px solid #000;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 12px 0px;
+}
+
+ul.coment-status-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0px;
+}
+
+    ul.coment-status-details li {
+        color: #0000008a;
+        font-size: 12px;
+        border: 1px solid #000;
+        padding: 10px;
+        border-radius: 30px;
+    }
+
+.task_update_list {
+    text-align: right;
+    max-width: 100% !important;
+    background: green;
+    padding: 5px;
+    color: #fff !important;
+    max-width: 157px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-top: 30px;
+    font-weight: 600 !important;
+    padding: 7px 0px;
+}
+
+button.edit_tsk_upd {
+    width: 136px;
+    height: 41px;
+    background: linear-gradient(89.93deg, #1795C7 5.71%, #465F8B 97.94%);
+    border-radius: 100px;
+    border: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    margin-left: auto;
+    margin-right: 24px;
+    gap: 5px;
+}
+
+a#btnDownload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 106px !important;
+    /* display: flex; */
+    justify-content: center;
+}
+
+.tools {
+    text-align: right;
+    padding-bottom: 17px;
+}
+
+.approve-reject-btn {
+    background: linear-gradient(89.93deg, #1795C7 5.71%, #465F8B 97.94%);
+    border-radius: 100px;
+    border: 0px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 17px;
+    text-align: center;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    transition: 0.3s ease-in-out;
+    padding: 10px 17px;
+    display: inline-block;
+}
+
+div#example_filter {
+    float: right;
+    clear: both;
+}
+button.verfied {
+    position: relative;
+    background: #1cbb1c;
+    max-width: 150px !important;
+    min-width: 158px;
+    padding-left: 39px;
+}
+
+    button.verfied span {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        background: #fff;
+        color: #1cbb1c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        position: absolute;
+        left: 7px;
+    }
+
+.ver-badge, .unver-badge, .upload-badge {
+    padding: 3px 8px;
+    border-radius: 30px;
+    font-size: 10px;
+    text-transform: capitalize;
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+}
+
+.ver-badge {
+    background: #1cbb1c;
+    color: #fff;
+}
+    .unver-badge {
+    background: red;
+    color: #fff;
+}
+
+.upload-badge {
+    background: #ffc107;
+    color: #222;
+}
+
+.w-30 {
+    max-width: 300px;
+}
+
+a.fa-download {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+.no-data-badge {
+    color: red;
+}
+
+.bootom-action-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    list-style:none;
+}
+ul.bootom-action-btn li:last-child .header-add-btn {
+    background: red;
+}
+ul.bootom-action-btn .header-add-btn {
+    min-width: 100px;
+}
+
+.btn-Remove {
+    border-radius: 30px;
+    background-color: red;
+    border: 0px;
+    color: #fff;
+    padding: 9px 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.custom-radio-btn {
+    width: unset !important;
+    height: unset !important;
 }

@@ -132,6 +132,33 @@ $(document).ready(function () {
                     alert("error");
                 }
             });
+
+        $.ajax(
+            {
+                url: '/Master/GetProductGSTDetails?Id=' + valu,
+                type: 'GET',
+                data: "",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+
+                    debugger;
+                    var ab = data.gstPercen;
+                    var GstTypeId = data.gstTypeId;
+                    $("#GSTPercen").val(ab);
+                    $("#GSTTypeId").val(GstTypeId);
+                    $("#lblgsttype").text("(" + data.gstTypeName + ")");
+
+                    if (GstTypeId == 19) {
+                        $(".CSGSTDiv").show();
+                       
+                    } else {
+                        $(".CSGSTDiv").hide();
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
     });
 
 
@@ -140,8 +167,9 @@ $(document).ready(function () {
         var UnitPrice = $(this).val();
         var Quantity = $("#APQuantity").val();
         var Amount = 0.00;
+        var percent = $("#GSTPercen").val();
         //$('#APAmount').val(11.10);
-        funCalculateAmount(UnitPrice, Quantity, Amount);
+        funCalculateAmount(UnitPrice, Quantity, Amount, percent);
         //alert($(this).val());
     });
     $('#APQuantity').keyup(function () {
@@ -149,15 +177,31 @@ $(document).ready(function () {
         var Quantity = $(this).val();
         var UnitPrice = $("#APUnitPrice").val();
         var Amount = 0.00;
+        var PerAmount = 0.00;
+        var percent = $("#GSTPercen").val();
         //$('#APAmount').val(11.10);
-        funCalculateAmount(UnitPrice, Quantity, Amount);
+        funCalculateAmount(UnitPrice, Quantity, Amount, percent);
         //alert($(this).val());
     });
 
-    function funCalculateAmount(UnitPrice, Quantity, Amount) {
-         Amount = UnitPrice * Quantity;
+    function funCalculateAmount(UnitPrice, Quantity, Amount, percent) {
+
+        var percentVal = percent;
+       var ProductAmount = UnitPrice * Quantity;
+        var PercentageAmount = percentage(percentVal, ProductAmount);
+        Amount = (parseFloat(ProductAmount) + parseFloat(PercentageAmount));
+        debugger;
+        var CSGSTAmount = (parseFloat(PercentageAmount) / 2);
         //$("#APAmount$").html(Amount);
         $("#APAmount").val(Amount);
+        $("#GSTAmount").val(PercentageAmount);
+        $("#CGSTAmount").val(CSGSTAmount);
+        $("#SGSTAmount").val(CSGSTAmount);
+    };
+    function percentage(percent, total) {
+        var perAmount = ((percent / 100) * total).toFixed(2);
+
+        return perAmount;
     };
 
     function PopulateDropDown(dropDownId, list, selectedId) {
@@ -170,6 +214,10 @@ $(document).ready(function () {
             $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>")
         });
     }
+
+
+
+   
 });
 
 

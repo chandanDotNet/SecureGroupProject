@@ -1,0 +1,102 @@
+﻿@model SecureGroup.ViewModel.UserKYC
+
+@{
+    ViewData["Title"] = "UserKYCUpload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="common-title-headeer">
+    <h1>KYC Upload</h1>
+
+   @* <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-check-circle" aria-hidden="true"></i> Verified</button>
+        </li>
+    </ul>*@
+</div>
+
+<div class="form-inner">
+
+
+    <form asp-action="UserKYCUpload" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+
+            <div class="col-md-10 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="AadhaarCard" class="control-label">Aadhaar Card<span>*</span></label>
+                    <input asp-for="AadhaarCard" class="form-control" />
+                    <span asp-validation-for="AadhaarCard" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-2 mb-3">
+                <div class="custom-form-control">
+                    @if (Model.AadhaarCardName == null || Model.AadhaarCardName == "")
+                    {
+                        <label></label>
+                        <i class="fa fa-times no-data-badge mt-4" aria-hidden="true"></i>
+                        @*<i class="btn btn-info fa fa-download" aria-hidden="true"></i><a asp-controller="Home" asp-action="DownloadFile" asp-route-filename="@Model.AadhaarCardName"> Download</a>*@
+                       
+                    }else
+                    {
+                        <label></label>
+                        @Html.ActionLink("", "DownloadFile", new { filename=Model.AadhaarCardName}, new { @class = "text-success mt-5 fa fa-download",@id="btnAadhaarCardName"})
+                    }
+                </div>
+            </div>
+            <div class="col-md-10 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="PanCard" class="control-label">Pan Card<span>*</span></label>
+                    <input asp-for="PanCard" class="form-control" />
+                    <span asp-validation-for="PanCard" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-2 mb-3">
+                <div class="custom-form-control">
+                    @if (Model.PanCardName == null || Model.PanCardName == "")
+                    {
+                        <label></label>
+                        @* <button class="header-add-btn"><i class="fa fa-file-download" aria-hidden="true"></i><a asp-controller="Home" asp-action="DownloadFile" asp-route-filename="@Model.PanCardName"> Download</a></button>*@
+                        <i class="fa fa-times no-data-badge mt-4" aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        <label></label>
+                        @Html.ActionLink("", "DownloadFile", new { filename=Model.PanCardName}, new { @class = "text-success mt-5 fa fa-download",@id="btnPanCardName"})
+                    }
+                </div>
+            </div>
+            <div class="col-md-10 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="VoterCard" class="control-label">Voter Card</label>
+                    <input asp-for="VoterCard" class="form-control" />                   
+                </div>
+            </div>
+            <div class="col-md-2 mb-3">
+                <div class="custom-form-control">
+                    @if (Model.VoterCardName == null || Model.VoterCardName == "")
+                    {
+                        <i class="fa fa-times no-data-badge mt-4" aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("", "DownloadFile", new { filename=Model.VoterCardName}, new { @class = "text-success mt-5 fa fa-download",@id="btnVoterCardName"})
+                    }
+                </div>
+            </div>
+
+
+            <input type="hidden" asp-for="UserId" class="form-control" />
+            <input type="submit" value="Upload" class="data-save-btn ml-0 mt-4" />
+
+        </div>
+    </form>
+
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

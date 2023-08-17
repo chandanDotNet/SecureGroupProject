@@ -30,29 +30,19 @@
                     </select>
                     <span asp-validation-for="RoleId" class="text-danger"></span>
                 </div>
-            </div>
-
-           @* <div class="col-md-12 mb-3">
-                <div class="pl-3">
-                    <div class="form-check form-switch">
-                        <input asp-for="IsSupplier" class="form-check-input" type="checkbox" />
-                        <label asp-for="IsSupplier" class="form-check-label">Is Supplier? <span class="text-danger">(* switch to Supplier)</span></label>
-
-                    </div>
-                </div>
-            </div>*@
+            </div>          
 
             <div class="col-md-12 mb-3">
                 <div class="custom-form-control">
                     <label asp-for="BusinessName" class="control-label">Company Name<span>*</span></label>
-                    <input asp-for="BusinessName" class="form-control" value="Secure Group" readonly="readonly" />
+                    <input asp-for="BusinessName" class="form-control" value="SIFSL" />
                    
                 </div>
             </div>
             <div class="col-md-12 mb-3">
                 <div class="custom-form-control">
                     <label asp-for="Name" class="control-label">Full Name<span>*</span></label>
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control" id="txtFullName" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
@@ -79,6 +69,28 @@
             </div>
             <div class="col-md-12 mb-3">
                 <div class="custom-form-control">
+                    <label asp-for="MobileNo" class="control-label">Mobile Number</label>
+                    <input asp-for="MobileNo" class="form-control" type="number" />
+                    <span asp-validation-for="MobileNo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="LandlineNo" class="control-label">Landline Number</label>
+                    <input asp-for="LandlineNo" class="form-control" type="number" />
+                    <span asp-validation-for="LandlineNo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="AlternativeNo" class="control-label">Alternative Number</label>
+                    <input asp-for="AlternativeNo" class="form-control" type="number" />
+                    <span asp-validation-for="AlternativeNo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
                     <label asp-for="JobTitle" class="control-label">Job Title<span>*</span></label>
                     <input asp-for="JobTitle" class="form-control" />
                     <span asp-validation-for="JobTitle" class="text-danger"></span>
@@ -87,7 +99,7 @@
             <div class="col-md-12 mb-3">
                 <div class="custom-form-control">
                     <label asp-for="UserCode" class="control-label">Emp.Code<span>*</span></label>
-                    <input asp-for="UserCode" class="form-control" />
+                    <input asp-for="UserCode" class="form-control" id="txtUserCode" />
                     <span asp-validation-for="UserCode" class="text-danger"></span>
                 </div>
             </div>
@@ -111,7 +123,27 @@
                     <span asp-validation-for="ReportingTo" class="text-danger"></span>
                 </div>
             </div>
-
+            <div class="col-md-6 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="PresentAddress" class="control-label">Present Address<span>*</span></label>
+                    <textarea asp-for="PresentAddress" class="form-control" ></textarea>
+                    <span asp-validation-for="PresentAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="PermanentAddress" class="control-label">Permanent Address<span>*</span></label>
+                    <textarea asp-for="PermanentAddress" class="form-control" ></textarea>
+                    <span asp-validation-for="PermanentAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="JoiningDate" class="control-label">Joining Date<span>*</span></label>
+                    <input asp-for="JoiningDate" class="form-control" type="date" />
+                    <span asp-validation-for="JoiningDate" class="text-danger"></span>
+                </div>
+            </div>
             <div class="col-md-6 mb-3">
                 <div class="custom-form-control">
                     <label asp-for="LoginTime" class="control-label">Login Time<span>*</span></label>
@@ -137,6 +169,7 @@
                 </div>
             </div>
 
+
             <input type="submit" value="Create" class="data-save-btn" />
 
            
@@ -154,3 +187,28 @@
 }
 
 
+<script type="text/javascript">
+
+    $('#txtFullName').keyup(function () {
+
+        var FullName = $(this).val();
+
+        $.ajax({
+            type: "GET",
+            url: "/Settings/GenerateEmployeeID?Name=" + FullName,
+            success: function (response) {
+                debugger;
+                $('#txtUserCode').html(response);
+                $("#txtUserCode").val(response);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+
+       // $("#txtUserCode").val(FullName);        
+    });
+</script>

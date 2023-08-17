@@ -22,10 +22,10 @@
 
 
 <div class="form-inner">
-    <div class="row">
+   
         <form asp-action="AddProductItem">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+        <div class="row">
             <div class="col-md-12 mb-3">
                 <div class="custom-form-control">
                     <label asp-for="WareHouseId" class="control-label">WareHouse<span>*</span></label>
@@ -93,6 +93,44 @@
                     <label asp-for="Amount" class="control-label">Amount (INR)<span>*</span></label>
                     <input asp-for="Amount" class="form-control" id="APAmount" />
                     <span asp-validation-for="Amount" class="text-danger"></span>
+                    <input type="hidden" asp-for="GSTTypeId" class="form-control" id="GSTTypeId" />
+                    <input type="hidden" class="form-control" id="GSTPercen" />
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Amount" class="control-label">GST Amount<span id="lblgsttype"></span></label>
+                    <input asp-for="GSTAmount" class="form-control" id="GSTAmount" />
+                   
+                </div>
+            </div>
+           
+                <div class="col-md-4 mb-3 CSGSTDiv" style="display:none;">
+                <div class="custom-form-control">
+                    <label  class="control-label">CGST Amount</label>
+                    <input  class="form-control" id="CGSTAmount" />
+
+                </div>
+            </div>
+                <div class="col-md-4 mb-3 CSGSTDiv" style="display:none;">
+                <div class="custom-form-control">
+                    <label class="control-label">SGST Amount</label>
+                    <input  class="form-control" id="SGSTAmount" />
+
+                </div>
+            </div>
+            
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Comment" class="control-label">Comment</label>
+                    <textarea asp-for="Comment" class="form-control"></textarea>                    
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="CreatedDate" class="control-label">Date<span>*</span></label>
+                    <input asp-for="CreatedDate" class="form-control"  />
+                    <span asp-validation-for="CreatedDate" class="text-danger"></span>
                 </div>
             </div>
 
@@ -107,12 +145,13 @@
                 </div>
             </div>
 
-
+            <div class="col-md-6 mb-3">
             <input type="submit" value="Create" class="btn btn-primary" />
-
+            </div>
+        </div>
         </form>
-
-    </div>
+        
+  
 </div>
 
 @section Scripts {

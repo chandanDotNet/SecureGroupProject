@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,7 @@ namespace SecureGroup.Controllers
         {
             ProductMasterViewModel productMasterViewModel = new ProductMasterViewModel();
             productMasterViewModel.UnitList=_dataAccessLayerLinq.GetDropDownListData("Unit",0).ToList();
+            productMasterViewModel.GSTTypeList=_dataAccessLayerLinq.GetDropDownListData("SysVal", 0, "GSTType").ToList();
 
             return View(productMasterViewModel);
         }
@@ -61,14 +63,24 @@ namespace SecureGroup.Controllers
 
             try
             {
-                // TODO: Add insert logic here
-               int Response= _dataAccessLayer.AddUpdateMasterProductData(productMasterViewModel, 2);
-                return RedirectToAction(nameof(MasterProductList));
+                
+               int response= _dataAccessLayer.AddUpdateMasterProductData(productMasterViewModel, 2);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(MasterProductList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+               
             }
             catch (Exception ex)
             {
-                return View();
-            }          
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
 
             return View(productMasterViewModel);
         }
@@ -86,10 +98,12 @@ namespace SecureGroup.Controllers
                 }
                 
                 _productMasterViewModel.UnitList = _dataAccessLayerLinq.GetDropDownListData("Unit", 0).ToList();
+                _productMasterViewModel.GSTTypeList = _dataAccessLayerLinq.GetDropDownListData("SysVal", 0, "GSTType").ToList();
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }
 
             return View(_productMasterViewModel);
@@ -103,12 +117,22 @@ namespace SecureGroup.Controllers
             try
             {
                 // TODO: Add insert logic here
-                int Response = _dataAccessLayer.AddUpdateMasterProductData(productMasterViewModel, 3);
-                return RedirectToAction(nameof(MasterProductList));
+                int response = _dataAccessLayer.AddUpdateMasterProductData(productMasterViewModel, 3);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been updated successfully";
+                    return RedirectToAction(nameof(MasterProductList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+                
             }
             catch (Exception ex)
             {
-                return View();
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }
 
             return View(productMasterViewModel);
@@ -121,15 +145,25 @@ namespace SecureGroup.Controllers
             try
             {
                 // TODO: Add insert logic here
-                int Response = _dataAccessLayer.AddUpdateMasterProductData(_productMasterViewModel, 4);
-                return RedirectToAction(nameof(MasterProductList));
+                int response = _dataAccessLayer.AddUpdateMasterProductData(_productMasterViewModel, 4);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(MasterProductList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+                
             }
             catch (Exception ex)
             {
-                return View();
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }
 
-            return View(_productMasterViewModel);
+            return RedirectToAction(nameof(MasterProductList));
         }
 
         public IActionResult SubMasterProductList()
@@ -141,7 +175,8 @@ namespace SecureGroup.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }
             return View(_listSubproductMaster);
         }
@@ -149,9 +184,15 @@ namespace SecureGroup.Controllers
         public IActionResult AddSubMasterProduct()
         {
             SubProductMasterViewModel _subproductMasterViewModel = new SubProductMasterViewModel();
-            _subproductMasterViewModel.ProductList= _dataAccessLayerLinq.GetDropDownListData("Product", 0).ToList();
-            _subproductMasterViewModel.UnitList = _dataAccessLayerLinq.GetDropDownListData("Unit", 0).ToList();
-
+            try
+            {
+                _subproductMasterViewModel.ProductList = _dataAccessLayerLinq.GetDropDownListData("Product", 0).ToList();
+                _subproductMasterViewModel.UnitList = _dataAccessLayerLinq.GetDropDownListData("Unit", 0).ToList();
+            }catch(Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
             return View(_subproductMasterViewModel);
         }
 
@@ -163,12 +204,22 @@ namespace SecureGroup.Controllers
             try
             {
                 // TODO: Add insert logic here
-                int Response = _dataAccessLayer.AddUpdateMasterSubProductData(subproductMasterViewModel, 5);
+                int response = _dataAccessLayer.AddUpdateMasterSubProductData(subproductMasterViewModel, 5);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(MasterProductList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
                 return RedirectToAction(nameof(SubMasterProductList));
             }
             catch (Exception ex)
             {
-                return View();
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }
 
             return View(subproductMasterViewModel);
@@ -191,7 +242,8 @@ namespace SecureGroup.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }           
 
             return View(_subproductMasterViewModel);
@@ -205,12 +257,22 @@ namespace SecureGroup.Controllers
             try
             {
                 // TODO: Add insert logic here
-                int Response = _dataAccessLayer.AddUpdateMasterSubProductData(subproductMasterViewModel, 6);
-                return RedirectToAction(nameof(SubMasterProductList));
+                int response = _dataAccessLayer.AddUpdateMasterSubProductData(subproductMasterViewModel, 6);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been updated successfully";
+                    return RedirectToAction(nameof(SubMasterProductList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+                
             }
             catch (Exception ex)
             {
-                return View();
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }
 
             return View(subproductMasterViewModel);
@@ -223,18 +285,46 @@ namespace SecureGroup.Controllers
             try
             {
                 // TODO: Add insert logic here
-                int Response = _dataAccessLayer.AddUpdateMasterSubProductData(subproductMasterViewModel, 7);
-                return RedirectToAction(nameof(SubMasterProductList));
+                int response = _dataAccessLayer.AddUpdateMasterSubProductData(subproductMasterViewModel, 7);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(SubMasterProductList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+                
             }
             catch (Exception ex)
             {
-                return View();
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }
 
             return View(subproductMasterViewModel);
         }
 
 
+
+        public JsonResult GetProductGSTDetails(int Id)
+        {
+            ProductMasterViewModel _productMasterViewModel = new ProductMasterViewModel();            
+            try
+            {
+                _productMasterViewModel = _dataAccessLayerLinq.GetMasterProductList(Id).FirstOrDefault();               
+
+              
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+
+            return Json(_productMasterViewModel);
+        }
 
     }
 }

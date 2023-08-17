@@ -1,0 +1,100 @@
+﻿@model SecureGroup.ViewModel.ReimbursementViewModel
+
+@{
+    ViewData["Title"] = "EditReimbursement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="common-title-headeer">
+    <h1>Edit Reimbursement</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="HR" asp-action="Reimbursement"> REIMBURSEMENT</a></button>
+        </li>
+    </ul>
+</div>
+
+
+
+<div class="form-inner">
+    <div class="row">
+        <form asp-action="EditReimbursement" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id" class="form-control" type="hidden" id="ReimId" />
+            <input asp-for="StatusId" class="form-control" type="hidden" />
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ExpenseFor" class="control-label">Expense For</label>
+                    <input asp-for="ExpenseFor" class="form-control" />
+                    <span asp-validation-for="ExpenseFor" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="TotalExpenseAmount" class="control-label">Total Expense Amount</label>
+                    <input asp-for="TotalExpenseAmount" class="form-control" type="number" />
+                    <span asp-validation-for="TotalExpenseAmount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ClaimAmount" class="control-label">Claim Amount</label>
+                    <input asp-for="ClaimAmount" class="form-control" type="number" />
+                    <span asp-validation-for="ClaimAmount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="">
+                    <label asp-for="ExpenseDate1" class="control-label">Expense Form Date</label>
+                    <input asp-for="ExpenseDate1" class="form-control" type="date" />
+                    <span asp-validation-for="ExpenseDate1" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ExpenseToDate1" class="control-label">Expense To Date</label>
+                    <input asp-for="ExpenseToDate1" class="form-control" type="date" />
+                    <span asp-validation-for="ExpenseToDate1" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="">
+                    <label asp-for="ExpenseDocument" class="control-label">Expense Document</label>
+                    <input type="file" asp-for="ExpenseDocument" class="form-control" multiple />
+
+                </div>
+            </div>
+           
+
+            <div id="partial-documentList-load">
+            </div>
+
+
+            <input id="btnSave" type="submit" value="Update" class="data-save-btn" />
+
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(function () {
+
+            var id = $("#ReimId").val();
+
+            $('#partial-documentList-load').load('/HR/_documentListPartial?Id=' + id);
+
+           
+
+        });
+    </script>
+}

@@ -1,0 +1,574 @@
+﻿@model SecureGroup.ViewModel.PurchaseOrderViewModel
+
+@{
+    ViewData["Title"] = "CreatePurchaseOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>Create Purchase Order</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Order" asp-action="PurchaseOrderList"> Purchase Order List</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="form-inner">
+
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="CreatePurchaseOrder">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="PurchaseNo" class="control-label">Purchase No</label>
+                        <input asp-for="PurchaseNo" class="form-control" />
+                        <span asp-validation-for="PurchaseNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="PurchaseDate" class="control-label">Purchase Date</label>
+                        <input asp-for="PurchaseDate" class="form-control" type="date" />
+                        <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="VendorId" class="control-label">Vendor Name</label>
+                        <select asp-for="VendorId" id="VendorId"
+                                class="form-control"
+                                asp-items="@(new SelectList(Model.VendorList,"Value", "Text"))">
+                        </select>
+                        <span asp-validation-for="VendorId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="VendorAddress" class="control-label">Vendor Address</label>
+                        <textarea asp-for="VendorAddress" class="form-control" rows="3" id="VendorAddress"></textarea>
+                        <span asp-validation-for="VendorAddress" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="VendorEmail" class="control-label">Vendor Email</label>
+                        <input asp-for="VendorEmail" class="form-control" id="VendorEmail" />
+                        <span asp-validation-for="VendorEmail" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="VendorGSTNo" class="control-label">Vendor GST No.</label>
+                        <input asp-for="VendorGSTNo" class="form-control" id="VendorGSTNo" />
+                        <span asp-validation-for="VendorGSTNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="VendorMobileNo" class="control-label">Vendor Mobile No.</label>
+                        <input asp-for="VendorMobileNo" class="form-control" id="VendorMobileNo" />
+                        <span asp-validation-for="VendorMobileNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="VendorCode" class="control-label">Vendor Code</label>
+                        <input asp-for="VendorCode" class="form-control" id="VendorCode" />
+                        <span asp-validation-for="VendorCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="ShipTo" class="control-label">Ship To</label>                      
+                        <input asp-for="ShipTo" class="form-control" id="ShipTo" />
+                        <span asp-validation-for="ShipTo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="ShipToAddress" class="control-label">Ship To Address</label>
+                        <textarea asp-for="ShipToAddress" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="ShipToAddress" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="BillTo" class="control-label">Bill To</label>
+                        <input asp-for="BillTo" class="form-control" id="BillTo" />
+                        <span asp-validation-for="BillTo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="BillToAddress" class="control-label">Bill To Address</label>
+                        <textarea asp-for="BillToAddress" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="BillToAddress" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="BillToGSTNo" class="control-label">Bill To GST No.</label>
+                        <textarea asp-for="BillToGSTNo" class="form-control"></textarea>
+                        <span asp-validation-for="BillToGSTNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="TermsConditions" class="control-label">Terms & Conditions</label>
+                        <textarea asp-for="TermsConditions" class="form-control"></textarea>
+                        <span asp-validation-for="TermsConditions" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <table id="maintable" class="table table-striped table-bordered bulk_action">
+                   
+                    <th>Product</th>
+                    <th>Sub Product</th>                  
+                    <th>UOM</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                    <th>GST Type</th>
+                    <th>GST%</th>
+                    <th>GST Amount</th>                   
+                    <th>Total Amount</th>
+                    <th>Remove</th>
+
+                    @for (int i = 0; i < Model.PurchaseOrderDetails.Count; i++)
+                    {
+                        <tr class="data-contact-person">
+                           @* <td>
+                                <input asp-for="@Model.PurchaseOrderDetails[i].PurchaseOrderId" class="form-control PurchaseOrderId" />
+                            </td>*@
+                            <td>
+                                <select asp-for="@Model.PurchaseOrderDetails[i].ProductId"
+                                        class="form-control ProductId"
+                                        asp-items="@(new SelectList(Model.ProductList,"Value", "Text"))">
+                                </select>
+                            </td>
+                            <td>
+                                <select asp-for="@Model.PurchaseOrderDetails[i].SubProductId"
+                                        class="form-control SubProductId"
+                                        asp-items="@(new SelectList(Model.SubProductList,"Value", "Text"))">
+                                </select>
+                            </td>
+                            <td>
+                                <select asp-for="@Model.PurchaseOrderDetails[i].UnitId"
+                                        class="form-control UnitId"
+                                        asp-items="@(new SelectList(Model.UnitList,"Value", "Text"))">
+                                </select>
+                            </td>                           
+                            <td>
+                                <input asp-for="@Model.PurchaseOrderDetails[i].Quantity" class="form-control Quantity" />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.PurchaseOrderDetails[i].UnitPrice" class="form-control UnitPrice" />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.PurchaseOrderDetails[i].Amount" class="form-control Amount" />
+                            </td>
+                            <td>
+                                <input type="radio" value="1" asp-for="@Model.PurchaseOrderDetails[i].GSTTypeId" />IGST<br />
+                                <input type="radio" value="2" asp-for="@Model.PurchaseOrderDetails[i].GSTTypeId" />CGST & SGST<br />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.PurchaseOrderDetails[i].GSTPercen" class="form-control GSTPercen" />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.PurchaseOrderDetails[i].GSTAmount" class="form-control GSTAmount" />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.PurchaseOrderDetails[i].TotalAmount" class="form-control TotalAmount" />
+                            </td>
+                            
+
+                            <td></td>
+                        </tr>
+                    }
+
+                </table>
+
+                <tr>
+                    <td colspan="2">
+                        @*<input type="submit" value="Add New Data" title="Add New Data" onclick="javascript:return ValidateData();" />*@
+                        <input type="button" value="Add New Data" title="Add New Data" class="classAdd data-save-btn" />
+                    </td>
+                </tr>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="data-save-btn" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@*<div id="container"></div>
+<br>
+<div>
+    <button id="generate">Generate</button>
+</div>*@
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+@*<script type="text/javascript">
+
+    function ValidateData() {
+        if ($(".PurchaseOrderId").attr('value') == "0" || $(".PurchaseOrderId").attr('value') == "") {
+            alert("Enter valide ID ");
+            return false;
+        }
+        else if ($(".ProductId").attr('value') == "") {
+            alert(" Enter name of employee.");
+            return false;
+        }
+        //else if ($(".validateContact").attr('value') == "") {
+        //    alert("Enter Contact number of Employee.");
+        //    return false;
+        //}
+        //else if ($(".validateAddress").attr('value') == "") {
+        //    alert("Enter address of employee.");
+        //    return false;
+        //}
+        return true;
+    }
+
+
+</script>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on("click", ".classAdd", function () { //
+            debugger;
+            var rowCount = $('.data-contact-person').length;
+            var dropDownId = "PurchaseOrderDetails_" + rowCount + "__ProductId";
+            var dropDownName = "PurchaseOrderDetails[" + rowCount + "].ProductId";
+            //var select = $('<select>').prop('id', dropDownId).prop('name', dropDownName);
+            var select = '<select id=' + dropDownId + ' name=' + dropDownName + ' class="form-control ProductId" > ';
+
+            var ddlSubProductId = "PurchaseOrderDetails_" + rowCount + "__SubProductId";
+            var ddlSubProductName = "PurchaseOrderDetails[" + rowCount + "].SubProductId";
+            var ddlSubProduct = '<select id=' + ddlSubProductId + ' name=' + ddlSubProductName + ' class="form-control ProductId"> </select>';
+
+            var ddlUnitId = "PurchaseOrderDetails_" + rowCount + "__UnitId";
+            var ddlUnitName = "PurchaseOrderDetails[" + rowCount + "].UnitId";
+            var ddlUnit = '<select id=' + ddlUnitId + ' name=' + ddlUnitName + ' class="form-control UnitId">';
+
+            var optionValue = '';
+            var optionValue1 = '';
+
+            //- Start DD
+            var valu = "0";
+            var ValueType = "Product";
+            $.ajax(
+                {
+                    url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+                    type: 'GET',
+                    data: "",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+
+                        $.each(data, function (index, row) {
+                            var a = row.value;
+                            // $(select).append("<option value='" + row.value + "'>" + row.text + "</option>")
+                            optionValue = optionValue + "<option value='" + row.value + "'>" + row.text + "</option>";
+
+                        });
+                        select = select + optionValue + '</select>';
+                        //alert(select);
+                        //var ta = BindUnitDDl("11");
+                        //alert(ta);
+
+
+                        var ValueType1 = "Unit";
+                        var ddlUnitValue = "";
+                        $.ajax(
+                            {
+                                url: '/Inventory/GetDropdownListDataById?Id=0&DropdownDataType=' + ValueType1,
+                                type: 'GET',
+                                data: "",
+                                contentType: 'application/json; charset=utf-8',
+                                success: function (data) {
+
+                                    $.each(data, function (index, row) {
+                                        var a = row.value;
+                                        // $(select).append("<option value='" + row.value + "'>" + row.text + "</option>")
+                                        optionValue1 = optionValue1 + "<option value='" + row.value + "'>" + row.text + "</option>";
+
+                                    });
+                                    ddlUnit = ddlUnit + optionValue1 + '</select>';
+                                    //alert("Under-" + ddlValue);
+                                   // return ddlValue;
+
+                                    var contactdiv = '<tr class="data-contact-person">' +
+                                        //'<td><input type="number" name="PurchaseOrderDetails[' + rowCount + '].PurchaseOrderId" id="PurchaseOrderDetails_' + rowCount + '__PurchaseOrderId" class="form-control PurchaseOrderId" /></td>' +
+                                        //'<td><input type="number" name="PurchaseOrderDetails[' + rowCount + '].ProductId" id="PurchaseOrderDetails_' + rowCount + '__ProductId" class="form-control ProductId" /></td>' +
+                                        '<td>' + select + '</td>' +
+                                        '<td>' + ddlSubProduct + '</td>' +
+                                        '<td>' + ddlUnit + '</td>' +
+                                        //'<td><input type="number" name="PurchaseOrderDetails[' + rowCount + '].SubProductId" id="PurchaseOrderDetails_' + rowCount + '__SubProductId" class="form-control SubProductId" /></td>' +
+                                        //'<td><input type="number" name="PurchaseOrderDetails[' + rowCount + '].Thickness" id="PurchaseOrderDetails_' + rowCount + '__Thickness" class="form-control Thickness" /></td>' +
+                                        '<td><input type="number" value="0" name="PurchaseOrderDetails[' + rowCount + '].Quantity" id="PurchaseOrderDetails_' + rowCount + '__Quantity" class="form-control Quantity" /></td>' +
+                                        '<td><input type="number" value="0" name="PurchaseOrderDetails[' + rowCount + '].UnitPrice" id="PurchaseOrderDetails_' + rowCount + '__UnitPrice" class="form-control UnitPrice" /></td>' +
+                                        '<td><input type="number" value="0" name="PurchaseOrderDetails[' + rowCount + '].Amount" id="PurchaseOrderDetails_' + rowCount + '__Amount" class="form-control Amount" /></td>' +
+                                        '<td><input type ="radio" value="1" id = "PurchaseOrderDetails_' + rowCount + '__GSTTypeId" name = "PurchaseOrderDetails[' + rowCount + '].GSTTypeId" > IGST<input type="radio" value = "2" id = "PurchaseOrderDetails_' + rowCount + '__GSTTypeId" name = "PurchaseOrderDetails[' + rowCount + '].GSTTypeId" > CGST & SGST </td>' +
+                                        '<td><input type="number" value="0" name="PurchaseOrderDetails[' + rowCount + '].GSTPercen" id="PurchaseOrderDetails_' + rowCount + '__GSTPercen" class="form-control GSTPercen" /></td>' +
+                                        '<td><input type="number" value="0" name="PurchaseOrderDetails[' + rowCount + '].GSTAmount" id="PurchaseOrderDetails_' + rowCount + '__GSTAmount" class="form-control GSTAmount" /></td>' +
+                                        '<td><input type="number" value="0" name="PurchaseOrderDetails[' + rowCount + '].TotalAmount" id="PurchaseOrderDetails_' + rowCount + '__TotalAmount" class="form-control TotalAmount" /></td>' +
+
+                                        
+                                        //'<td><input type="number" name="PurchaseOrderDetails[' + rowCount + '].UnitId" id="PurchaseOrderDetails_' + rowCount + '__UnitId" class="form-control UnitId" /></td>' +
+                                       
+                                       
+
+                                        //'<td><button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd">Add More</button>' +
+                                        '<td><button type="button" id="btnDelete" class="deleteContact btn btn btn-danger btn-xs">Remove</button></td>' +
+                                        '</tr>';
+                                    $('#maintable').append(contactdiv); // Adding these controls to Main table class
+
+                                }
+                            });                    
+
+
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            
+            //-End DD           
+
+        });
+
+        $(document).on("click", ".deleteContact", function () {
+            $(this).closest("tr").remove(); // closest used to remove the respective 'tr' in which I have my controls
+        });
+
+        
+        $("#VendorId").on("change", function () {
+
+            var valu = $("#VendorId").val();
+
+            $.ajax(
+                {
+                    url: '/Order/GetUserDetailsJsonData?Id=' + valu,
+                    type: 'GET',
+                    data: "",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        var PermanentAddress = data.permanentAddress;
+                        var PresentAddress = data.presentAddress;
+                        var VendorEmail = data.email;
+                        var VendorMobileNo = data.MobileNo;
+                        var VendorCode = data.UserCode;
+                        $("#VendorAddress").val(PermanentAddress);
+                        $("#VendorEmail").val(VendorEmail);
+                        $("#VendorMobileNo").val(VendorMobileNo);
+                        $("#VendorCode").val(VendorCode);
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+
+        });
+
+        $('#maintable').on('keyup', '.Quantity', function () {
+            // alert($(this).attr("id"));
+            var ddlId = $(this).attr("id");                   
+            var currentRow = $(this).closest("tr");
+
+            var Quantity = $(this).val();
+            var UnitPrice = currentRow.find(".UnitPrice").val();
+            var Amount = 0.00;
+            var PerAmount = 0.00;
+            var percent = currentRow.find(".GSTPercen").val();
+            var ProductAmount = UnitPrice * Quantity;          
+            funCalculateAmount(UnitPrice, Quantity, Amount, percent, currentRow);
+             //var vv = currentRow.find("td:eq(1)").html();
+            //var vv = currentRow.find(".pd-name").html();           
+           // var vv = $('#maintable').find("tr:eq(1)").find("td:eq(1)").html();            
+        });
+
+        $('#maintable').on('keyup', '.UnitPrice', function () {
+           
+            var ddlId = $(this).attr("id");
+            var currentRow = $(this).closest("tr");
+
+            var Quantity = currentRow.find(".Quantity").val();
+            var UnitPrice = $(this).val(); 
+            var Amount = 0.00;
+            var PerAmount = 0.00;
+            var percent = currentRow.find(".GSTPercen").val();
+            var ProductAmount = UnitPrice * Quantity;
+            funCalculateAmount(UnitPrice, Quantity, Amount, percent, currentRow);
+            
+        });
+
+        $('#maintable').on('keyup', '.GSTPercen', function () {
+            // alert($(this).attr("id"));
+            var ddlId = $(this).attr("id");
+            var currentRow = $(this).closest("tr");
+            
+            var Quantity = currentRow.find(".Quantity").val();            
+            var Amount = 0.00;
+            var PerAmount = 0.00;
+            var percent = $(this).val(); 
+            var UnitPrice = currentRow.find(".UnitPrice").val();
+            //var ProductAmount = UnitPrice * Quantity;
+            funCalculateAmount(UnitPrice, Quantity, Amount, percent, currentRow);
+
+        });
+
+
+
+        function funCalculateAmount(UnitPrice, Quantity, Amount, percent, currentRow) {
+
+            var percentVal = percent;
+            var ProductAmount = UnitPrice * Quantity;
+            var PercentageAmount = percentage(percentVal, ProductAmount);
+            Amount = (parseFloat(ProductAmount) + parseFloat(PercentageAmount));
+            debugger;
+            var CSGSTAmount = (parseFloat(PercentageAmount) / 2);
+
+            currentRow.find(".Amount").val(ProductAmount);
+            currentRow.find(".GSTAmount").val(PercentageAmount);
+            currentRow.find(".TotalAmount").val(Amount);
+
+            //$("#APAmount").val(Amount);
+            //$("#GSTAmount").val(PercentageAmount);
+            //$("#CGSTAmount").val(CSGSTAmount);
+            //$("#SGSTAmount").val(CSGSTAmount);
+        };
+
+        function percentage(percent, total) {
+            var perAmount = ((percent / 100) * total).toFixed(2);
+
+            return perAmount;
+        };       
+
+        $('body').on('change', '.ProductId', function () {
+           // alert($(this).attr("id"));
+            var currentRow = $(this).closest("tr");            
+            var ddlId = $(this).attr("id");
+            var ddlIdVal = "#" + ddlId;
+            var valu = $(''+ddlIdVal+'').val();           
+            var subDdlId = ddlIdVal.replace("ProductId", "SubProductId");            
+            var ValueType = "SubProduct";
+            
+            $.ajax(
+                {
+                    url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+                    type: 'GET',
+                    data: "",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        PopulateDropDown(subDdlId, data);                       
+
+                        //***************************** */
+                        $.ajax(
+                            {
+                                url: '/Master/GetProductGSTDetails?Id=' + valu,
+                                type: 'GET',
+                                data: "",
+                                contentType: 'application/json; charset=utf-8',
+                                success: function (data) {
+
+                                    debugger;
+                                    var gstPercenVal = data.gstPercen;                                   
+                                    currentRow.find(".GSTPercen").val(gstPercenVal);                                   
+                                },
+                                error: function () {
+                                    alert("error");
+                                }
+                            });
+
+                        //**************************** */
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+
+        });
+       
+
+        function PopulateDropDown(dropDownId, list) {
+
+            $(dropDownId).empty();            
+            $.each(list, function (index, row) {                
+                var a = row.value;
+                $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>")
+            });
+        }
+
+      
+
+
+        //********************** For Test Use*/
+        //$('#generate').click(function () {
+        //    var values = ["dog", "cat", "parrot", "rabbit"];
+
+        //    var select = $('<select>').prop('id', 'pets')
+        //        .prop('name', 'pets');
+
+        //    $(values).each(function () {
+        //        select.append($("<option>")
+        //            .prop('value', this)
+        //            .text(this.charAt(0).toUpperCase() + this.slice(1)));
+        //    });
+
+        //    var valu = "0";
+        //    var ValueType = "Product";
+        //    var select2 = $('<select>').prop('id', 'pets1').prop('name', 'pets1');
+        //    $.ajax(
+        //        {
+        //            url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+        //            type: 'GET',
+        //            data: "",
+        //            contentType: 'application/json; charset=utf-8',
+        //            success: function (data) {
+
+        //                $.each(data, function (index, row) {
+        //                    var a = row.value;
+        //                    $(select2).append("<option value='" + row.value + "'>" + row.text + "</option>")
+
+        //                });
+        //            },
+        //            error: function () {
+        //                alert("error");
+        //            }
+        //        });
+
+
+
+
+        //    var label = $("<label>").prop('for', 'pets')
+        //        .text("Choose your pets: ");
+
+        //    var br = $("<br>");
+
+        //    $('#container').append(label).append(select).append(br);
+        //    $('#container').append(label).append(select2).append(br);
+        //});
+
+
+
+    });
+</script>
+
+
+

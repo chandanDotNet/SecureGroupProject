@@ -62,18 +62,17 @@
 
                     <td>
 
-                        <div class="dropdown td-action-dot">
+                       @* <div class="dropdown td-action-dot">
                             <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                @*<li><a class="dropdown-item" href="">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>*@
+                             
                                 <li>@Html.ActionLink("Edit", "EditProductItem", new { Id=item.Id}, new { @class = "dropdown-item"})</li>
                                 <li>@Html.ActionLink("Delete", "DeleteProductItem", new { Id=item.Id},new { @class = "dropdown-item"})</li>
 
                             </ul>
-                        </div>
+                        </div>*@
                     </td>
                 </tr>
             }

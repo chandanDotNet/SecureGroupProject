@@ -1,8 +1,53 @@
 ﻿@model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style type="text/css">
+   
+
+    .page_404 {
+        padding: 10px 0;
+        background: #fff;
+        font-family: 'Arvo', serif;
+        margin-top: -86px;
+    }
+
+        .page_404 img {
+            width: 80%;
+        }
+
+    .four_zero_four_bg {
+        background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+        height: 350px;
+        background-position: center;
+    }
+
+
+        .four_zero_four_bg h1 {
+            font-size: 80px;
+        }
+
+        .four_zero_four_bg h3 {
+            font-size: 80px;
+        }
+
+    .link_404 {
+        color: #fff !important;
+        padding: 10px 20px;
+        background: #39ac31;
+        margin: 20px 0;
+        display: inline-block;
+    }
+
+    .contant_box_404 {
+        margin-top: -45px;
+    }
+
+</style>
+
+@*
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 
@@ -12,7 +57,8 @@
         <strong>Request ID:</strong> <code>@Model.RequestId</code>
     </p>
 }
-
+*@
+@*
 <h3>Development Mode</h3>
 <p>
     Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
@@ -22,4 +68,41 @@
     It can result in displaying sensitive information from exceptions to end users.
     For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
     and restarting the app.
-</p>
+</p>*@
+<head>
+
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Arvo'>
+
+</head>
+<body>
+
+    <div class="form-inner">
+    <section class="page_404">
+        <div class="">
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <div class="col-sm-10 col-sm-offset-1  text-center">
+                        <div class="four_zero_four_bg">
+                            <h1 class="text-center ">404</h1>
+
+
+                        </div>
+
+                        <div class="contant_box_404">
+                            <h3 class="h2">
+                                Look like you're lost
+                            </h3>
+
+                            <p>the page you are looking for not avaible!</p>
+
+                            <a href="/Home/Dashboard" class="link_404">Go to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+</body>

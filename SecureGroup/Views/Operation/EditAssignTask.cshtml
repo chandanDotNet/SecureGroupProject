@@ -1,0 +1,129 @@
+﻿@model SecureGroup.ViewModel.TaskViewModel
+
+@{
+    ViewData["Title"] = "EditAssignTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<form asp-action="EditAssignTask" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="row">
+
+    <input asp-for="TaskId" type="hidden" />
+    <div class="col-md-12 mb-3">
+        <div class="custom-form-control">
+            <label asp-for="TaskName" class="control-label">Task Name<span>*</span></label>
+            <input asp-for="TaskName" class="form-control" />
+            <span asp-validation-for="TaskName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-12 mb-3">
+        <div class="custom-form-control">
+            <label asp-for="AssignTo" class="control-label">Assign To<span>*</span></label>
+            <select asp-for="AssignTo" id="ddlAssignTo"
+                    class="form-control"
+                    asp-items="@(new SelectList(Model.UserList,"Value", "Text"))">
+            </select>
+            <span asp-validation-for="AssignTo" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-12 mb-3">
+        <div class="custom-form-control">
+            <label asp-for="TaskDueDateTime" class="control-label">Task Due Date and Time<span>*</span></label>
+            <input asp-for="TaskDueDateTime" class="form-control" type="datetime-local" />
+            <span asp-validation-for="TaskDueDateTime" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-12 mb-3">
+        <div class="custom-form-control">
+            <label asp-for="ProjectId" class="control-label">Project</label>
+            <select asp-for="ProjectId" id="ddlProjectId"
+                    class="form-control"
+                    asp-items="@(new SelectList(Model.ProjectList,"Value", "Text"))">
+            </select>
+        </div>
+    </div>
+   @* <div class="col-md-12 mb-3">
+        <div class="custom-form-control">
+            <label asp-for="ProjectHeadId" class="control-label">Project Head</label>
+            <select asp-for="ProjectHeadId" id="ddlProjectHeadId"
+                    class="form-control"
+                    asp-items="@(new SelectList(Model.ProjectHeadList,"Value", "Text"))">
+            </select>
+
+        </div>
+    </div>*@
+    <div class="col-md-12 mb-3">
+        <div class="custom-form-control">
+            <label asp-for="SiteId" class="control-label">Site</label>
+            <select asp-for="SiteId" id="ddlSiteId"
+                    class="form-control"
+                    asp-items="@(new SelectList(Model.SiteList,"Value", "Text"))">
+            </select>
+
+        </div>
+    </div>
+    <div class="col-md-12 mb-6">
+        <div class="">
+            <label asp-for="TaskPriority" class="control-label">Task Priority</label>
+            <input asp-for="TaskPriority" class="form-control" value="Normal" type="hidden" id="idTaskPriority" />
+
+            <input asp-for="TaskPriority" value="Normal" type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked />
+            <label asp-for="TaskPriority" class="btn btn-outline-success clstaskPriority" for="success-outlined">Normal</label>
+
+            <input asp-for="TaskPriority" value="High" type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" />
+            <label asp-for="TaskPriority" class="btn btn-outline-danger clstaskPriority" for="danger-outlined">High</label>
+
+            <input asp-for="TaskPriority" value="Low" type="radio" class="btn-check" name="options-outlined" id="warning-outlined" autocomplete="off" />
+            <label asp-for="TaskPriority" class="btn btn-outline-warning clstaskPriority" for="warning-outlined">Low</label>
+
+            @* <input asp-for="TaskPriority" class="form-control" type="radio" class="btn-check" value="a" />
+            <input asp-for="TaskPriority" class="form-control" type="radio" class="btn-check" value="b" />*@
+
+            @* <input asp-for="TaskPriority" type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked>
+            <label class="btn btn-outline-success" for="success-outlined">Normal</label>*@
+
+            @*<input asp-for="TaskPriority" type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off">
+            <label class="btn btn-outline-danger" for="danger-outlined">High</label>*@
+
+
+            @*  <label asp-for="TaskPriority" class="control-label"></label>
+            <input asp-for="TaskPriority" class="form-control" />*@
+            @* <span asp-validation-for="TaskPriority" class="text-danger"></span>*@
+        </div>
+    </div>
+    <div class="col-md-12 mb-3">
+        <div class="custom-form-control">
+            <label asp-for="TaskDescription" class="control-label">Description</label>
+            @*<input asp-for="TaskDescription" class="form-control" type="text" />*@
+            <textarea asp-for="TaskDescription" class="form-control" id="form4Example3" rows="4"></textarea>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="">
+            <label asp-for="TaskDocument" class="control-label">Document</label>
+            <input asp-for="TaskDocument" class="form-control form-control-lg" id="formFileLg" type="file" />
+
+        </div>
+    </div>
+    <div class="col-md-12 mb-3">
+        <div class="custom-form-control">
+            <label asp-for="TaskStatus" class="control-label">Status<span>*</span></label>
+            <select asp-for="TaskStatus" id="ddlRoleId"
+                    class="form-control"
+                    asp-items="@(new SelectList(Model.TaskStatusList,"Value", "Text"))">
+            </select>
+            <span asp-validation-for="TaskStatus" class="text-danger"></span>
+        </div>
+    </div>
+
+
+    <input type="submit" value="Update" class="data-save-btn" />
+
+</div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -10,7 +10,7 @@ using SecureGroup.Library;
 
 namespace SecureGroup.Controllers
 {
-    public class SettingsController : Controller
+    public class SettingsController : BaseController
     {
 
         private readonly ILogger<SettingsController> _logger;
@@ -29,9 +29,8 @@ namespace SecureGroup.Controllers
 
         public IActionResult UsersList()
         {
-            List<UserViewModel> _userViewModel = new List<UserViewModel>();
-            //_userViewModel = _dataAccessLayerLinq.GetUserList(0, 0);
-            _userViewModel = _dataAccessLayer.GetAllUser(4, 0,0).ToList();
+            List<UserViewModel> _userViewModel = new List<UserViewModel>();            
+            _userViewModel = _dataAccessLayer.GetAllUser(4, 0, 0).ToList(); //Get All type user (ActionId,UserId,RoleId)
 
             return View(_userViewModel);
         }
@@ -39,20 +38,19 @@ namespace SecureGroup.Controllers
         {
             UserViewModel _userViewModel = new UserViewModel();
             try
-            {
-                //**************************
-                string UserCode = GenerateEmployeeID();
-
+            {               
+                string UserCode = GenerateEmployeeID(_userViewModel.Name); //Generate Employee code like- (CompanyName(SIFSL)\FY(2324)\UserName first char-number)
 
                 var RoleList = _dataAccessLayerLinq.GetDropDownListData("UserRole", 0);
                 _userViewModel.UserList = _dataAccessLayerLinq.GetDropDownListData("User", 0);
                 _userViewModel.DepartmentList = _dataAccessLayerLinq.GetDropDownListData("Department", 0);
                 _userViewModel.RoleList = RoleList.Where(x => x.Value == "1" || x.Value == "4").ToList();
-                _userViewModel.UserCode= UserCode;
+                _userViewModel.UserCode = UserCode;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
             return View(_userViewModel);
@@ -66,20 +64,27 @@ namespace SecureGroup.Controllers
 
             try
             {
-                _userViewModel.CreatedBy = 1; //Get this data after login 
-                //_userViewModel.RoleId = 4; //Employee
-                _userViewModel.Password = EncryptionLibrary.EncryptText(_userViewModel.Password);
-
+                             
+                _userViewModel.Password = EncryptionLibrary.EncryptText(_userViewModel.Password); //Encrypt the password
+                _userViewModel.CreatedBy = GetUserSession().UserId;
                 response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 1);
-                return RedirectToAction(nameof(UsersList));
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(UsersList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
             return RedirectToAction("AddEmployee");
-
 
         }
 
@@ -89,7 +94,7 @@ namespace SecureGroup.Controllers
             UserViewModel _userViewModel = new UserViewModel();
             if (Id > 0)
             {
-               // _userViewModel = _dataAccessLayerLinq.GetUserList(Id, 0).FirstOrDefault();
+                // _userViewModel = _dataAccessLayerLinq.GetUserList(Id, 0).FirstOrDefault();
                 _userViewModel = _dataAccessLayer.GetAllUser(4, Id, 0).FirstOrDefault();
                 _userViewModel.RoleList = _dataAccessLayerLinq.GetDropDownListData("UserRole", 0);
                 _userViewModel.UserList = _dataAccessLayerLinq.GetDropDownListData("User", 0);
@@ -107,14 +112,23 @@ namespace SecureGroup.Controllers
 
             try
             {
-                _userViewModel.CreatedBy = 1; //Get this data after login 
-                                              //_userViewModel.RoleId = 4; //Employee
+                _userViewModel.CreatedBy = GetUserSession().UserId;
+                //_userViewModel.RoleId = 4; //Employee
                 _userViewModel.Password = EncryptionLibrary.EncryptText(_userViewModel.Password);
                 response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 2);
-                return RedirectToAction(nameof(UsersList));
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(UsersList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
@@ -127,20 +141,104 @@ namespace SecureGroup.Controllers
         {
             int response = 0;
             UserViewModel _userViewModel = new UserViewModel();
-
-            _userViewModel.UserId = Id;
-            _userViewModel.CreatedBy = 1; //Get this data after login 
-            response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 3);
-
+            try
+            {
+                _userViewModel.UserId = Id;
+                _userViewModel.CreatedBy = GetUserSession().UserId;
+                response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 3);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(UsersList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
             return RedirectToAction("UsersList");
 
         }
+
+        public IActionResult UserKYCVerify(int Id)
+        {
+            UserKYC _userKYC = new UserKYC();
+            if (Id > 0)
+            {
+                _userKYC.UserId = Id;
+                var _user = _dataAccessLayer.GetAllUser(4, Id, 0).FirstOrDefault();
+                if (_user != null)
+                {
+                    _userKYC.AadhaarCardName = _user.AadhaarCardName;
+                    _userKYC.PanCardName = _user.PanCardName;
+                    _userKYC.VoterCardName = _user.VoterCardName;
+                }
+            }
+            return View(_userKYC);
+        }
+
+        
+
+        public IActionResult UpdateKYCVerify(int Id)
+        {
+            int response = 0;
+            UserKYC _userKYC = new UserKYC();            
+            if (Id > 0)
+            {
+                _userKYC.UserId = Id;
+                _userKYC.IsVerifiedKYC = true;
+            }
+
+            response = _dataAccessLayer.UpdateUserKYCData(6, _userKYC);
+            if (response > 0)
+            {
+                TempData["successmessage"] = "Verified successfully";
+                return RedirectToAction("UserKYCVerify",new { Id=Id });
+            }
+            else
+            {
+                TempData["errormessage"] = "Something went wrong!";
+            }
+
+            return RedirectToAction("UserKYCVerify", new { Id = Id });
+        }
+
+        public IActionResult UpdateKYCVerifyReject(int Id)
+        {
+            int response = 0;
+            UserKYC _userKYC = new UserKYC();
+            if (Id > 0)
+            {
+                _userKYC.UserId = Id;
+                _userKYC.IsVerifiedKYC = false;
+            }
+
+            response = _dataAccessLayer.UpdateUserKYCData(6, _userKYC);
+            if (response > 0)
+            {
+                TempData["successmessage"] = "Rejected successfully";
+                return RedirectToAction("UserKYCVerify", new { Id = Id });
+            }
+            else
+            {
+                TempData["errormessage"] = "Something went wrong!";
+            }
+
+            return RedirectToAction("UserKYCVerify", new { Id = Id });
+        }
+
+
 
         [HttpGet]
         public IActionResult AddDepartment()
         {
             DepartmentViewModel _departmentViewModel = new DepartmentViewModel();
-            _departmentViewModel.UserList= _dataAccessLayerLinq.GetDropDownListData("User", 0);
+            _departmentViewModel.UserList = _dataAccessLayerLinq.GetDropDownListData("User", 0);
 
             return View(_departmentViewModel);
         }
@@ -153,10 +251,20 @@ namespace SecureGroup.Controllers
             try
             {
                 response = _dataAccessLayer.AddDepartmentData(_departmentViewModel, 8);
-                return RedirectToAction(nameof(DepartmentList));
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(DepartmentList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
@@ -190,10 +298,19 @@ namespace SecureGroup.Controllers
             try
             {
                 response = _dataAccessLayer.AddDepartmentData(_departmentViewModel, 9);
-                return RedirectToAction(nameof(DepartmentList));
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(DepartmentList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
@@ -208,10 +325,20 @@ namespace SecureGroup.Controllers
             try
             {
                 response = _dataAccessLayer.AddDepartmentData(_departmentViewModel, 10);
-                return RedirectToAction(nameof(DepartmentList));
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(DepartmentList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
@@ -230,7 +357,7 @@ namespace SecureGroup.Controllers
         public IActionResult AddRole()
         {
             UserRoleViewModel _userRoleViewModel = new UserRoleViewModel();
-            
+
             return View(_userRoleViewModel);
         }
 
@@ -243,22 +370,32 @@ namespace SecureGroup.Controllers
             try
             {
                 response = _dataAccessLayerLinq.InsertRole(_userRoleViewModel);
-                return RedirectToAction(nameof(RoleList));
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(RoleList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
             return RedirectToAction("AddRole");
-           
+
         }
 
         [HttpGet]
         public IActionResult EditRole(int Id)
         {
             UserRoleViewModel _userRoleViewModel = new UserRoleViewModel();
-            _userRoleViewModel=_dataAccessLayerLinq.GetRoleList(Id).FirstOrDefault();
+            _userRoleViewModel = _dataAccessLayerLinq.GetRoleList(Id).FirstOrDefault();
 
             return View(_userRoleViewModel);
         }
@@ -270,11 +407,20 @@ namespace SecureGroup.Controllers
 
             try
             {
-                response = _dataAccessLayerLinq.UpdateRole(_userRoleViewModel,true);
-                return RedirectToAction(nameof(RoleList));
+                response = _dataAccessLayerLinq.UpdateRole(_userRoleViewModel, true);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(RoleList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
@@ -292,10 +438,20 @@ namespace SecureGroup.Controllers
                 UserRoleViewModel _userRoleViewModel = new UserRoleViewModel();
                 _userRoleViewModel = _dataAccessLayerLinq.GetRoleList(Id).FirstOrDefault();
                 response = _dataAccessLayerLinq.UpdateRole(_userRoleViewModel, false);
-                return RedirectToAction(nameof(RoleList));
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(RoleList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
@@ -303,29 +459,74 @@ namespace SecureGroup.Controllers
 
         }
 
+        
 
-        public string GenerateEmployeeID()
+
+        [HttpGet]
+        public JsonResult CreateUserCodeOnKey(string? Name)
         {
-            string day, month, year, ID;
+            string UserCode = string.Empty;
+
+            UserCode = GenerateEmployeeID(Name);
+
+            return Json(UserCode);
+        }
+
+        public string GenerateEmployeeID(string? Name)
+        {
+            string day, month, year, nextyear, ID;
             string hr, min, sec;
-            string userId="0", EmployeeID;
+            string userId = "0", EmployeeID;
             day = DateTime.Now.Date.Day.ToString();
             month = DateTime.Now.Month.ToString();
-            year = DateTime.Now.Year.ToString();
+            year = DateTime.Now.Year.ToString().Substring(2);
+            nextyear = DateTime.Now.AddYears(1).ToString("yy");
+            if (Name == null)
+            {
+                Name = "000";
+            }
+            else
+            {
+                Name = GetEmpNameForEmpCode(Name);
+            }
 
             hr = DateTime.Now.Hour.ToString();
             min = DateTime.Now.Minute.ToString();
             sec = DateTime.Now.Second.ToString();
 
             var User = _dataAccessLayerLinq.GetLastUserDetails(0);
-            if(User != null)
+            if (User != null)
             {
-                userId = User.UserId.ToString();
+                userId = User.UserId.ToString() + 1;
             }
 
-            EmployeeID = "SG-" + day + month + year + hr + min + sec+"-"+ userId;
+            //EmployeeID = "SIFSL-" + day + month + year + hr + min + sec+"-"+ userId;
+            EmployeeID = "SIFSL\\" + year + nextyear + "\\" + Name + "-" + userId;
 
             return EmployeeID;
+        }
+
+        public string GetEmpNameForEmpCode(String name)
+        {
+            var names = name.Split(' ');
+            String _name = "";
+
+            for (int i = 0; i != names.Length; i++)
+            {
+
+                //if (i != names.Length - 1)
+                //{
+                if (i == 0)
+                {
+                    _name = names[i].Substring(0, 1);
+                }
+                else
+                {
+                    _name = _name + "0";
+                }
+                //}
+            }
+            return _name; // Tony Stark is
         }
     }
 }

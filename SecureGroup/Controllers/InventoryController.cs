@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,15 +15,16 @@ using System.Reflection;
 
 namespace SecureGroup.Controllers
 {
-    public class InventoryController : Controller
+    public class InventoryController : BaseController
     {
         private readonly ILogger<InventoryController> _logger;
         private MsDBContext myDbContext;
         DataAccessLayer _dataAccessLayer = null;
         DataAccessLayerLinq _dataAccessLayerLinq = null;
-        
-        public InventoryController(ILogger<InventoryController> logger, MsDBContext context) { 
-        
+
+        public InventoryController(ILogger<InventoryController> logger, MsDBContext context)
+        {
+
             _logger = logger;
             myDbContext = context;
             _dataAccessLayer = new DataAccessLayer();
@@ -49,8 +51,8 @@ namespace SecureGroup.Controllers
             warehouseRapViewModel.CityList = LinCiL;
 
             var LinUser = _dataAccessLayerLinq.GetDropDownListData("User", 0);
-            warehouseRapViewModel.UserList = LinUser;           
-            
+            warehouseRapViewModel.UserList = LinUser;
+
 
             return View(warehouseRapViewModel);
         }
@@ -63,14 +65,14 @@ namespace SecureGroup.Controllers
             //var data = DataAccessLayerLinq.GetWarehouseList(1);
             //warehouseViewModel = (from Warehouse in myDbContext.Warehouse.Cast<WarehouseViewModel>()
             //      select Warehouse).ToList();
-            if(Id>0)
+            if (Id > 0)
             {
-                warehouseViewModel= _dataAccessLayerLinq.GetWarehouseList(Id).FirstOrDefault();
+                warehouseViewModel = _dataAccessLayerLinq.GetWarehouseList(Id).FirstOrDefault();
             }
 
-            var LinCL = _dataAccessLayerLinq.GetDropDownListData("Country",0);           
-            warehouseViewModel.CountryList= LinCL;
-            
+            var LinCL = _dataAccessLayerLinq.GetDropDownListData("Country", 0);
+            warehouseViewModel.CountryList = LinCL;
+
 
             var LinSL = _dataAccessLayerLinq.GetDropDownListData("State", 101);
             warehouseViewModel.StateList = LinSL;
@@ -93,62 +95,80 @@ namespace SecureGroup.Controllers
             //});
 
             // warehouseViewModel.CountryList = (IList<SelectListItem>)CL.ToList();
-           // return PartialView("_CreateWarehouse", warehouseViewModel);
+            // return PartialView("_CreateWarehouse", warehouseViewModel);
             return View(warehouseViewModel);
         }
 
         [HttpGet]
         public IActionResult EditWarehouse(int Id)
         {
-            
-            WarehouseViewModel warehouseViewModel = new WarehouseViewModel();           
-            if (Id > 0)
+
+            WarehouseViewModel warehouseViewModel = new WarehouseViewModel();
+            try
             {
-                warehouseViewModel = _dataAccessLayerLinq.GetWarehouseList(Id).FirstOrDefault();
+                if (Id > 0)
+                {
+                    warehouseViewModel = _dataAccessLayerLinq.GetWarehouseList(Id).FirstOrDefault();
+                }
+
+                var LinCL = _dataAccessLayerLinq.GetDropDownListData("Country", 0);
+                warehouseViewModel.CountryList = LinCL;
+
+                var LinSL = _dataAccessLayerLinq.GetDropDownListData("State", 101);
+                warehouseViewModel.StateList = LinSL;
+
+                var LinCiL = _dataAccessLayerLinq.GetDropDownListData("City", warehouseViewModel.StateId);
+                warehouseViewModel.CityList = LinCiL;
+
+                var LinUser = _dataAccessLayerLinq.GetDropDownListData("User", 0);
+                warehouseViewModel.UserList = LinUser;
             }
-
-            var LinCL = _dataAccessLayerLinq.GetDropDownListData("Country", 0);
-            warehouseViewModel.CountryList = LinCL;
-
-            var LinSL = _dataAccessLayerLinq.GetDropDownListData("State", 101);
-            warehouseViewModel.StateList = LinSL;
-
-            var LinCiL = _dataAccessLayerLinq.GetDropDownListData("City", warehouseViewModel.StateId);
-            warehouseViewModel.CityList = LinCiL;
-
-            var LinUser = _dataAccessLayerLinq.GetDropDownListData("User", 0);
-            warehouseViewModel.UserList = LinUser;
-
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
             //return PartialView("_CreateWarehouse", warehouseViewModel);
             return View(warehouseViewModel);
-           
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditWarehouse(WarehouseViewModel warehouseViewModel)
         {
+            int response = 0;
             //if (ModelState.IsValid)
             //{
-                try
+            try
+            {
+               
+                response = _dataAccessLayer.AddWarehouse(warehouseViewModel, 7);               
+                if (response > 0)
                 {
-                    // TODO: Add insert logic here
-                    _dataAccessLayer.AddWarehouse(warehouseViewModel,7);
+                    TempData["successmessage"] = "Your data has been saved successfully";
                     return RedirectToAction(nameof(WarehouseList));
                 }
-                catch (Exception ex)
+                else
                 {
-                    return View();
+                    TempData["errormessage"] = "Something went wrong!";
                 }
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+
+            }
             //}
             return RedirectToAction(nameof(WarehouseList));
             //return PartialView("_CreateWarehouse");
-            //return View(warehouseViewModel);
+            
         }
 
         //[HttpPost, ActionName("GetStateByCountryId")]
         [HttpGet]
-        public JsonResult GetDropdownListDataById(string Id,string DropdownDataType)
+        public JsonResult GetDropdownListDataById(string Id, string DropdownDataType)
         {
             int catId;
             List<SelectListItem> DdlMasterLists = new List<SelectListItem>();
@@ -179,22 +199,33 @@ namespace SecureGroup.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateWarehouse(WarehouseViewModel warehouseViewModel)
         {
+            int response = 0;
             //if (ModelState.IsValid)
             //{
-                try
+            try
+            {
+                // TODO: Add insert logic here
+                response= _dataAccessLayer.AddWarehouse(warehouseViewModel, 1);
+                if (response > 0)
                 {
-                    // TODO: Add insert logic here
-                    _dataAccessLayer.AddWarehouse(warehouseViewModel,1);
+                    TempData["successmessage"] = "Your data has been saved successfully";
                     return RedirectToAction(nameof(WarehouseList));
                 }
-                catch (Exception ex)
+                else
                 {
-                    return View();
+                    TempData["errormessage"] = "Something went wrong!";
                 }
-           // }
+               
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
+            // }
             return RedirectToAction(nameof(WarehouseList));
             //return PartialView("_CreateWarehouse", warehouseViewModel);
-            //return View(warehouseViewModel);
+            
         }
 
 
@@ -212,12 +243,67 @@ namespace SecureGroup.Controllers
             List<WHStockProductDetailsViewModel> _whProductList = new List<WHStockProductDetailsViewModel>();
             //_whProductList = _dataAccessLayerLinq.GetWarehouseProductStockList(0);
             _whProductList = _dataAccessLayer.GetWarehouseStockDetails(WareHouseId).ToList();
-            if(_whProductList.Count>0)
+            if (_whProductList.Count > 0)
             {
                 TempData["WareHouseName"] = _whProductList[0].WareHouseName;
-            }           
+            }
 
             return View(_whProductList);
+        }
+
+        public IActionResult WHProductPurchaseDetails(int WareHouseId,int ProductId,int SubProductId)
+        {
+            List<WHProductPurchaseInOutDetailsViewModel> _wHPurchaseInOutDetailsList = new List<WHProductPurchaseInOutDetailsViewModel>();
+            _wHPurchaseInOutDetailsList= _dataAccessLayer.GetWarehouseStockPurchaseInOutDetails(3,WareHouseId,ProductId,SubProductId).ToList();
+
+            //List<WHStockProductDetailsViewModel> _whProductList = new List<WHStockProductDetailsViewModel>();
+            ////_whProductList = _dataAccessLayerLinq.GetWarehouseProductStockList(0);
+            //_whProductList = _dataAccessLayer.GetWarehouseStockDetails(WareHouseId).ToList();
+            //if (_whProductList.Count > 0)
+            //{
+            //    TempData["WareHouseName"] = _whProductList[0].WareHouseName;
+            //}
+
+            return View(_wHPurchaseInOutDetailsList);
+        }
+        public IActionResult WHProductStockInDetails(int WareHouseId, int ProductId, int SubProductId)
+        {
+            List<WHProductPurchaseInOutDetailsViewModel> _wHPurchaseInOutDetailsList = new List<WHProductPurchaseInOutDetailsViewModel>();
+            _wHPurchaseInOutDetailsList = _dataAccessLayer.GetWarehouseStockPurchaseInOutDetails(4, WareHouseId, ProductId, SubProductId).ToList();          
+
+            return View(_wHPurchaseInOutDetailsList);
+        }
+        public IActionResult WHProductStockOutDetails(int WareHouseId, int ProductId, int SubProductId)
+        {
+            List<WHProductPurchaseInOutDetailsViewModel> _wHPurchaseInOutDetailsList = new List<WHProductPurchaseInOutDetailsViewModel>();
+            _wHPurchaseInOutDetailsList = _dataAccessLayer.GetWarehouseStockPurchaseInOutDetails(5, WareHouseId, ProductId, SubProductId).ToList();
+
+            return View(_wHPurchaseInOutDetailsList);
+        }
+
+        public IActionResult DeleteWHProductStockPurchaseDetails(int Id, int WareHouseId, int ProductId, int SubProductId)
+        {
+            int Response = 0;
+            Response = _dataAccessLayer.DeleteWarehouseStockPurchaseInOutData(6, Id);
+
+            //return RedirectToAction("WHProductPurchaseDetails", new { WareHouseId = WareHouseId, ProductId= ProductId, SubProductId= SubProductId });
+            return RedirectToAction("WarehouseStockDetails", new { WareHouseId = WareHouseId, ProductId= ProductId, SubProductId= SubProductId });
+        }
+        public IActionResult DeleteWHProductStockInDetails(int Id, int WareHouseId, int ProductId, int SubProductId)
+        {
+            int Response = 0;
+            Response = _dataAccessLayer.DeleteWarehouseStockPurchaseInOutData(7, Id);
+
+            //return RedirectToAction("WHProductStockInDetails", new { WareHouseId = WareHouseId, ProductId = ProductId, SubProductId = SubProductId });
+            return RedirectToAction("WarehouseStockDetails", new { WareHouseId = WareHouseId, ProductId = ProductId, SubProductId = SubProductId });
+        }
+        public IActionResult DeleteWHProductStockOutDetails(int Id, int WareHouseId, int ProductId, int SubProductId)
+        {
+            int Response = 0;
+            Response = _dataAccessLayer.DeleteWarehouseStockPurchaseInOutData(7, Id);
+
+            //return RedirectToAction("WHProductStockOutDetails", new { WareHouseId = WareHouseId, ProductId = ProductId, SubProductId = SubProductId });
+            return RedirectToAction("WarehouseStockDetails", new { WareHouseId = WareHouseId, ProductId = ProductId, SubProductId = SubProductId });
         }
 
         [HttpGet]
@@ -232,7 +318,7 @@ namespace SecureGroup.Controllers
         public IActionResult Transferproduct()
         {
 
-            WHStockTransferManageViewModel  wHStockTransferManageViewModel = new WHStockTransferManageViewModel();
+            WHStockTransferManageViewModel wHStockTransferManageViewModel = new WHStockTransferManageViewModel();
             wHStockTransferManageViewModel.WareHouseList = _dataAccessLayerLinq.GetDropDownListData("WareHouse", 0);
             wHStockTransferManageViewModel.ProductList = _dataAccessLayerLinq.GetDropDownListData("Product", 0);
             wHStockTransferManageViewModel.SubProductList = _dataAccessLayerLinq.GetDropDownListData("SubProduct", 0);
@@ -257,20 +343,24 @@ namespace SecureGroup.Controllers
         }
 
         [HttpGet]
-        public JsonResult CheckProductAvailable(int TransferType,int Source,int Destination,int ProductId,int SubProduct,decimal Quantity)
+        public JsonResult CheckProductAvailable(int TransferType, int Source, int Destination, int ProductId, int SubProduct, decimal Quantity)
         {
             int _Id;
             WHStockTransferManageViewModel WHStockTransfer = new WHStockTransferManageViewModel
             {
-                TransferType = TransferType, SourceId = Source, DestinationId = Destination,
-                ProductId = ProductId, SubProductId = SubProduct, TransferQuantity = Quantity
+                TransferType = TransferType,
+                SourceId = Source,
+                DestinationId = Destination,
+                ProductId = ProductId,
+                SubProductId = SubProduct,
+                TransferQuantity = Quantity
 
             };
 
             decimal Response = _dataAccessLayer.TransferProductQuantityVerify(WHStockTransfer);
             if (Response > 0)
             {
-                
+
             }
 
 
@@ -280,32 +370,38 @@ namespace SecureGroup.Controllers
         [HttpPost]
         public IActionResult Transferproduct(WHStockTransferManageViewModel wHStockTransferManageViewModel)
         {
+            int response = 0;
             try
             {
-                wHStockTransferManageViewModel.TransferBy = 1; //for tem
-              int Response= _dataAccessLayer.TransferProductItem(wHStockTransferManageViewModel);
-                if(Response>0)
+                wHStockTransferManageViewModel.TransferBy = GetUserSession().UserId;
+                 response = _dataAccessLayer.TransferProductItem(wHStockTransferManageViewModel);
+                if (response > 0)
                 {
-                   return RedirectToAction("Transferproduct");
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(Transferproduct));
                 }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }                
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
 
 
-            return View(wHStockTransferManageViewModel); 
-        
+            return View(wHStockTransferManageViewModel);
+
         }
 
         [HttpGet]
         public IActionResult AddProductItem()
         {
-            WHStockProductViewModel wHStockProduct = new WHStockProductViewModel();            
+            WHStockProductViewModel wHStockProduct = new WHStockProductViewModel();
             wHStockProduct.WareHouseList = _dataAccessLayerLinq.GetDropDownListData("WareHouse", 0);
             wHStockProduct.ProductList = _dataAccessLayerLinq.GetDropDownListData("Product", 0);
             wHStockProduct.SubProductList = _dataAccessLayerLinq.GetDropDownListData("SubProduct", 0);
@@ -316,27 +412,38 @@ namespace SecureGroup.Controllers
             //return PartialView("_AddProductWH", wHStockProduct);
         }
 
-       
+
 
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
+
         public IActionResult AddProductItem(WHStockProductViewModel wHStockProduct)
         {
+            int response = 0;
             //if (ModelState.IsValid)
             //{
-                try
+            try
+            {
+                // TODO: Add insert logic here
+                response= _dataAccessLayer.AddProductItem(wHStockProduct, 2);
+                if (response > 0)
                 {
-                    // TODO: Add insert logic here
-                    _dataAccessLayer.AddProductItem(wHStockProduct, 2);
+                    TempData["successmessage"] = "Your data has been saved successfully";
                     return RedirectToAction(nameof(WarehouseStock));
                 }
-                catch (Exception ex)
+                else
                 {
-                    return View(wHStockProduct);
+                    TempData["errormessage"] = "Something went wrong!";
                 }
+               
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
 
             //}
             //else
@@ -357,7 +464,7 @@ namespace SecureGroup.Controllers
         public IActionResult EditProductItem(int Id)
         {
             WHStockProductViewModel wHStockProduct = new WHStockProductViewModel();
-            
+
 
             if (Id != null || Id != 0)
             {
@@ -377,29 +484,50 @@ namespace SecureGroup.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditProductItem(WHStockProductViewModel wHStockProduct)
         {
+            int response = 0;
             //if (ModelState.IsValid)
             //{
             try
             {
                 // TODO: Add insert logic here
-                _dataAccessLayer.AddProductItem(wHStockProduct,5);
-                return RedirectToAction(nameof(WarehouseStock));
+                response= _dataAccessLayer.AddProductItem(wHStockProduct, 5);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(WarehouseStock));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+               
             }
             catch (Exception ex)
             {
-                return View(wHStockProduct);
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
             }
-          
-            return RedirectToAction("WarehouseStock");
+
+            return RedirectToAction(nameof(WarehouseStock));
         }
 
         [HttpGet]
         public IActionResult DeleteProductItem(int Id)
         {
+            int response = 0;
             WHStockProductViewModel wHStockProduct = new WHStockProductViewModel();
 
-            wHStockProduct.Id= Id;
-            _dataAccessLayer.AddProductItem(wHStockProduct,6);
+            wHStockProduct.Id = Id;
+            response= _dataAccessLayer.AddProductItem(wHStockProduct, 6);
+            if (response > 0)
+            {
+                TempData["successmessage"] = "Your data has been deleted successfully";
+                return RedirectToAction(nameof(WarehouseStock));
+            }
+            else
+            {
+                TempData["errormessage"] = "Something went wrong!";
+            }
 
             return RedirectToAction("WarehouseStock");
             //return PartialView("_AddProductWH", wHStockProduct);

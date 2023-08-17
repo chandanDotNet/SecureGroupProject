@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace SecureGroup.Controllers
 {
-    public class VendorController : Controller
+    public class VendorController : BaseController
     {
 
         private readonly ILogger<VendorController> _logger;
@@ -31,7 +31,7 @@ namespace SecureGroup.Controllers
         public IActionResult VendorList()
         {
             List<UserViewModel> _userViewModel = new List<UserViewModel>();
-            _userViewModel = _dataAccessLayerLinq.GetUserList(0, 0);
+            _userViewModel = _dataAccessLayer.GetAllUser(4, 0, 0).ToList();
 
             return View(_userViewModel);
         }
@@ -56,7 +56,7 @@ namespace SecureGroup.Controllers
 
             try
             {                
-                _userViewModel.CreatedBy = 1; //Get this data after login 
+                _userViewModel.CreatedBy = GetUserSession().UserId;
                 _userViewModel.Password = EncryptionLibrary.EncryptText(_userViewModel.Password);
                 if (_userViewModel.IsSupplier == true)
                 {
@@ -67,35 +67,48 @@ namespace SecureGroup.Controllers
                     _userViewModel.RoleId = 2;
                 }
                 response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 1);
-                return RedirectToAction(nameof(VendorList));
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(VendorList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+               
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
-            return RedirectToAction("AddVendor");
-
-           
+            return RedirectToAction(nameof(AddVendor));           
         }
 
         public IActionResult EditVendor(int Id)
         {
-            UserViewModel _userViewModel = new UserViewModel();           
-            if (Id > 0)
+            UserViewModel _userViewModel = new UserViewModel();
+            try
             {
-                _userViewModel = _dataAccessLayer.GetAllUser(4,Id, 0).FirstOrDefault();
-                _userViewModel.Password = EncryptionLibrary.DecryptText(_userViewModel.Password);
-                if (_userViewModel.RoleId == 5)
+                if (Id > 0)
                 {
-                    _userViewModel.IsSupplier = true;
+                    _userViewModel = _dataAccessLayer.GetAllUser(4, Id, 0).FirstOrDefault();
+                    _userViewModel.Password = EncryptionLibrary.DecryptText(_userViewModel.Password);
+                    if (_userViewModel.RoleId == 5)
+                    {
+                        _userViewModel.IsSupplier = true;
+                    }
+                    else
+                    {
+                        _userViewModel.IsSupplier = false;
+                    }
                 }
-                else
-                {
-                    _userViewModel.IsSupplier = false;
-                }
+            }catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
             }
-
             return View(_userViewModel);
         }
 
@@ -106,7 +119,7 @@ namespace SecureGroup.Controllers
 
             try
             {
-                _userViewModel.CreatedBy = 1; //Get this data after login 
+                _userViewModel.CreatedBy = GetUserSession().UserId;
                 _userViewModel.Password = EncryptionLibrary.EncryptText(_userViewModel.Password);
                 if (_userViewModel.IsSupplier == true)
                 {
@@ -117,10 +130,20 @@ namespace SecureGroup.Controllers
                     _userViewModel.RoleId = 2;
                 }
                 response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 2);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been updated successfully";
+                    return RedirectToAction(nameof(VendorList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
                 return RedirectToAction(nameof(VendorList));
             }
             catch (Exception ex)
             {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
 
@@ -135,10 +158,25 @@ namespace SecureGroup.Controllers
             int response = 0;
             UserViewModel _userViewModel = new UserViewModel();
 
-            _userViewModel.UserId = Id;
-            _userViewModel.CreatedBy = 1; //Get this data after login 
-            response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 3);
-
+            try
+            {
+                _userViewModel.UserId = Id;
+                _userViewModel.CreatedBy = GetUserSession().UserId;
+                response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 3);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(VendorList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+            }catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
             return RedirectToAction("VendorList");
             
         }

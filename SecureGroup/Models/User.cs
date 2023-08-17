@@ -11,7 +11,10 @@ namespace SecureGroup.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string ContactNo { get; set; } 
+        public string ContactNo { get; set; }
+        public string MobileNo { get; set; }       
+        public string LandlineNo { get; set; }        
+        public string AlternativeNo { get; set; }
         public int RoleId { get; set; }
         public string JobTitle { get; set; }
         public string UserCode { get; set; }

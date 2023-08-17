@@ -1,0 +1,125 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.ProjectViewModel>
+
+@{
+    ViewData["Title"] = "AssignedProjectsList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="common-title-headeer">
+    <h1>Assigned Projects List</h1>
+    
+</div>
+
+
+<div class="form-inner">
+    <div class="warehouse-data table-responsive">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                    <th>Time</th>
+                    <th>No Of Task</th>
+                    <th>Status</th>
+                    <th>Project Head</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.ProjectId</td>
+                        <td>
+                            <div class="table-inner-card">
+                                <div class="icon">
+                                    <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                                </div>
+                                <div class="content">
+                                    <h3>@item.ProjectName</h3>
+                                    <p>@item.Description</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-card on-track">
+                                <h3>@item.SpentTime</h3>
+                            </div>
+                        </td>
+                        <td>  <button data-widget="control-sidebar" class="btn btn-secondary approve-reject-btn lblNoOfTask" data-bs-toggle="modal" data-bs-target="#comment-modal1" value="@item.ProjectId">@item.NoOfTask</button>  </td>
+
+
+                        <td>
+                            <div class="status-card on-track">
+                                <h3>@item.Status</h3>
+                                <p>Status Update - @item.LastStatusUpdate</p>
+                            </div>
+                        </td>
+                        <td><p>@item.ProjectHeadName</p></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+
+
+    </div>
+</div>
+
+
+<div class="modal fade add-remark-modal" id="comment-modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Task Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div id="partial-taskDetailsList-load"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+
+<script type="text/javascript">
+
+    $(".lblNoOfTask").click(function () {
+        debugger;
+        var Id = $(this).val();
+        //alert("Test");
+
+        $('#partial-taskDetailsList-load').load('/Operation/_assignedProjectsTaskUpdatePartial?Id=' + Id);
+
+
+
+        //var label = $('.lblNoOfTask');
+        //var label1 = $('.abc');
+        //var month = label.val('month');
+        //var year = label.val('year');
+        //var text = label.text();
+        //console.log(month, year);
+        //console.log(v2);
+        //console.log(year.val());
+       // alert(v2);
+
+
+    });
+
+</script>

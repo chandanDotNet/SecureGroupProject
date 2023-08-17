@@ -1,14 +1,38 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<SecureGroup.ViewModel.TaskViewModel>
 @{
     ViewData["Title"] = "TaskAllocation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<ul class="addbtns">
+@{
+    string Filename = null;
+}
+@{
+    string UserRoleId = @Context.Session.GetString("RoleID");
+    string UserRoleName = @Context.Session.GetString("RoleName");
+}
+
+@*<ul class="addbtns">
     <li>
         <button class="header-add-btn" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i class="fa fa-plus" aria-hidden="true"></i>assign task</button>
     </li>
-</ul>
+</ul>*@
+<div class="common-title-headeer">
+    <h1>Assign Task</h1>
+
+    <ul class="addbtns">
+        <li>
+            @if (TempData["userRole"] == "1")
+            {
+                <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Operation" asp-action="AssignTask">Assign Task</a></button>
+            }
+        </li>
+    </ul>
+</div>
+
+
+<input type="hidden" class="hidTaskId" value="@TempData["TaskId"]" />
 
 <div class="row">
     <div class="col-lg-7">
@@ -16,13 +40,13 @@
 
             <div class="warehouse-data table-responsive">
 
-                <table>
+                <table id="mytable">
                     <thead>
                         <tr>
-                            <th>Task Name</th>
-                            <th></th>
-                            <th>Task Date</th>
-                            <th></th>
+                            <th>Task</th>
+                            <th>Priority</th>
+                            <th>Due Date</th>
+                            @*<th></th>*@
                             <th></th>
 
                         </tr>
@@ -30,257 +54,81 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>
 
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="rows">
+                                <td>
 
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
+                                    <div class="task-name">
+                                        #<span>@Html.DisplayFor(modelItem => item.TaskId)</span>
+                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                        <span>
+                                            @Html.DisplayFor(modelItem => item.TaskName)
+                                        </span>
 
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
+                                       @* <a href="@Url.Action("DownloadFile", "Operation", new { filename = item.TaskDocumentName })">
+                                            <img src="~/images/attach-icon.svg" />
+                                            <a />*@
 
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                                    </div>
+                                    <input type="hidden" class="TaskId" value="@item.TaskId">
+                                    <input type="hidden" class="TaskName" value="@item.TaskName">
+                                    <input type="hidden" class="TaskPriority" value="@item.TaskPriority">
+                                    <input type="hidden" class="TaskDueDateTime" value="@item.TaskDueDateTime">
+                                    <input type="hidden" class="AssignToName" value="@item.AssignToName">
+                                    <input type="hidden" class="ProjectName" value="@item.ProjectName">
+                                    <input type="hidden" class="SiteName" value="@item.SiteName">
+                                    <input type="hidden" class="ProjectHeadName" value="@item.ProjectHeadName">
+                                    <input type="hidden" class="TaskDescription" value="@item.TaskDescription">
+                                    <input type="hidden" class="TaskDocumentName" value="@item.TaskDocumentName">
+                                    <input type="hidden" class="TaskDueDate" value="@item.TaskDueDate">
+                                    <input type="hidden" class="TaskDueTime" value="@item.TaskDueTime">
+                                    @*@{
+                                DateTime myDT = Convert.ToDateTime(@item.TaskDueDateTime);
+                                String myDate = myDT.ToLongDateString();
+                                String myTime = myDT.ToString("hh:mm tt");
+                                <input type="hidden" class="TaskDueDate" value="@myDate">
+                                <input type="hidden" class="TaskDueTime" value="@myTime">
+                                }*@
 
+                                </td>
+                                <td>
+                                    @if (item.TaskPriority == "High")
+                                    {
+                                        <span class="priority-badge badge-danger">High</span>
+                                    }
+                                    @if (item.TaskPriority == "Low")
+                                    {
+                                        <span class="priority-badge low-badge">Low</span>
+                                    }
+                                    @if (item.TaskPriority == "Normal")
+                                    {
+                                        <span class="priority-badge badge-success">Normal</span>
+                                    }
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.TaskDueDate)-@Html.DisplayFor(modelItem => item.TaskDueTime)</td>
 
-                        <tr>
-                            <td>
+                                @*<td><span class="task-badge">ts</span></td>*@
+                                <td>
+                                    @if (UserRoleId == "1")
+                                    {
+                                        <div class="dropdown td-action-dot">
+                                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li>@Html.ActionLink("Edit", "EditAssignTask", new { Id=item.TaskId}, new { @class = "dropdown-item"})</li>
+                                                <li>@Html.ActionLink("Delete", "DeleteAssignTask", new { Id=item.TaskId},new { @class = "dropdown-item"})</li>
 
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
-
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
-
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-
-                        <tr>
-                            <td>
-
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
-
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
-
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                                            </ul>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
 
 
-                        <tr>
-                            <td>
-
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
-
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
-
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
-
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
-
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                                    </ul>
-                                </div>
-                            </td>
-                        <tr>
-                            <td>
-
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
-
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
-
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                                    </ul>
-                                </div>
-                            </td>
-
-                        <tr>
-                            <td>
-
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
-
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
-
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
-
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
-
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-
-                                <div class="task-name">
-                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    New Construction Project Work
-                                    <img src="~/images/attach-icon.svg" />
-                                </div>
-                            </td>
-                            <td><span class="priority-badge high-badge">High</span></td>
-                            <td>12 May, 2023</td>
-
-                            <td><span class="task-badge">ts</span></td>
-                            <td>
-
-                                <div class="dropdown td-action-dot">
-                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -289,61 +137,75 @@
         </div>
 
     </div>
-    <div class="col-lg-5">
+    <div class="col-lg-5 taskDetailsDiv" style="display:none;">
 
-        <div class="task-assign-right">
-            <h2>New Construction Project Work</h2>
-
-
-            <table>
-                <tr>
-                    <td>Assignee</td>
-                    <td>
-
-                        <div class="custom-author">
-                            <div class="img"><img src="~/images\avatar.png" /></div>
-                            <p>Tapas Sahoo</p>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date & Time</td>
-                    <td>
-                        <ul class="date-time-list">
-                            <li><i class="fa fa-calendar-o" aria-hidden="true"></i> 12 May, 2023</li>
-                            <li><i class="fa fa-clock-o" aria-hidden="true"></i>11:34:56 AM</li>
-                        </ul>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Project</td>
-                    <td><p>ABC Construction</p></td>
-                </tr>
-
-                <tr>
-                    <td> Site</td>
-                    <td><p>ERC Site</p></td>
-                </tr>
-
-                <tr>
-                    <td> Priority</td>
-                    <td><span class="priority-badge high-badge">High</span></td>
-                </tr>
-
-                <tr>
-                    <td>Description</td>
-                    <td><p>Lorem ipsum dolor sit amet</p></td>
-                </tr>
-                <tr>
-                    <td>Document</td>
-                    <td><button class="doc-download"><img src="~/images/carbon_document-pdf.svg" />Document 1</button></td>
-                </tr>
-            </table>
-
+        <div class="">
+        <div id="partial-taskDetails-load"></div>
+       
+      
         </div>
+
+
     </div>
 </div>
+
+
+<div class="tasklist-assing-update divHS" style="display:none;">
+
+
+
+    <div id="partial-taskDetailsList-load"></div>
+
+</div>
+
+<button class="edit_tsk_upd divHS"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button>
+
+
+<div class="tasklist-assing-update divHSA" style="display:none;">
+
+  
+
+    <div id="div-updateForm">
+        <form asp-action="UserUpdateAssignTask" id="myForm" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="@Model.FirstOrDefault().TaskUpdate.TaskStatus" class="control-label">Task Status <span>*</span></label>
+                    <select asp-for="@Model.FirstOrDefault().TaskUpdate.TaskStatus" id="ddlTaskUpdateStatus"
+                            class="form-control"
+                            asp-items="@(new SelectList(@Model.FirstOrDefault().TaskStatusList,"Value", "Text"))">
+                    </select>
+                    @*<span asp-validation-for="@Model.FirstOrDefault().TaskUpdate.TaskStatus" class="text-danger"></span>*@
+                    <input asp-for="@Model.FirstOrDefault().TaskUpdate.TaskId" type="hidden" id="inpTaskUpdateTaskId" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="@Model.FirstOrDefault().TaskUpdate.SpentTime" class="control-label">Spent Time<span>*</span></label>
+                    <input asp-for="@Model.FirstOrDefault().TaskUpdate.SpentTime" class="form-control" type="time" id="inpSpentTime" />
+                    <span asp-validation-for="@Model.FirstOrDefault().TaskUpdate.SpentTime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="@Model.FirstOrDefault().TaskUpdate.Comment" class="control-label">Task Comment<span>*</span></label>
+                    <textarea asp-for="@Model.FirstOrDefault().TaskUpdate.Comment" class="form-control" id="form4Example3_Comment" rows="4"></textarea>
+                    <span asp-validation-for="@Model.FirstOrDefault().TaskUpdate.Comment" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="">
+                    <label asp-for="@Model.FirstOrDefault().TaskUpdate.TaskDocument" class="control-label">Document</label>
+                    <input asp-for="@Model.FirstOrDefault().TaskUpdate.TaskDocument" class="form-control form-control-lg" id="formFileLg" type="file" />
+
+                </div>
+            </div>
+            <input type="submit" value="Update" class="data-save-btn" id="SaveBtn" />
+        </form>
+    </div>
+</div>
+
 
 
 
@@ -467,3 +329,110 @@
 </aside>
 
 
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        var tId = $(".hidTaskId").val();
+        if (tId > 0) {             
+           
+            $('#partial-taskDetailsList-load').load('/Operation/_taskUpdateListPartial?Id=' + tId);
+            $('#partial-taskDetails-load').load('/Operation/_taskDetailsPartial?Id=' + tId);
+            $(".taskDetailsDiv").show();
+            $(".divHS").show();
+            $("#inpTaskUpdateTaskId").val(tId);
+        }
+        
+
+    $(
+        function () {
+            $(".rows").click(
+                function (e) {
+                    //alert("Clicked on row");
+                    debugger;                   
+
+                    var TaskId = $(this).find(".TaskId").val();
+                    $(".lblTaskName").text($(this).find(".TaskName").val());
+                    $(".lblAssignToName").text($(this).find(".AssignToName").val());
+                    $(".lblTaskDueDate").text($(this).find(".TaskDueDate").val());
+                    $(".lblTaskTime").text($(this).find(".TaskDueTime").val());
+                    $(".lblProjectName").text($(this).find(".ProjectName").val());
+                    $(".lblSiteName").text($(this).find(".SiteName").val());
+                    $(".lblDescription").text($(this).find(".TaskDescription").val());
+                    $(".lblPriority").text($(this).find(".TaskPriority").val());
+                    var fileName = $(this).find(".TaskDocumentName").val();
+                    $("#btnDownload").attr("href", "/Operation/DownloadFile?filename=" + fileName);
+                        $('#partial-taskDetailsList-load').load('/Operation/_taskUpdateListPartial?Id=' + TaskId);
+                        $('#partial-taskDetails-load').load('/Operation/_taskDetailsPartial?Id=' + TaskId);
+                        $("#inpTaskUpdateTaskId").val(TaskId);
+                    //alert(e.target.innerHTML)
+                  
+                    
+                    $(".taskDetailsDiv").show();
+                        $(".divHS").show();
+                }
+            )
+        }
+    );
+
+    });
+
+
+    $(".edit_tsk_upd").click(function (e) {
+       
+        $(".divHSA").show();
+        
+    });
+
+    $("#SaveBtn").click(function (e) {
+
+        var Comment = $("#form4Example3_Comment").val();
+        var SpentTime = $("#inpSpentTime").val();
+        var Status = $("#ddlTaskUpdateStatus").val();
+
+        if (Status == 0) {
+            alert("Please select Status ");
+            return false;
+        }
+        if (SpentTime == null || SpentTime == "") {
+            alert("Please enter Spent Time ");
+            return false;
+        }
+        if (Comment==null || Comment=="")
+        {
+            alert("Please enter Comment ");
+            return false;
+        }
+       
+        
+
+    });
+
+   @* $("#SaveBtn").click(function (e) {
+       
+        var dataToPost = $("#myForm").serialize();
+      
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+                url: '/Operation/UserUpdateAssignTask',
+                data: dataToPost,
+            success: function (Data) {
+                alert(data.id);
+                alert(data.name);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+            }
+        });
+    });
+*@
+
+                //$('#mytable tr').each(function () {
+                //    var customerId = $(this).find(".TaskId").html();
+                //    alert(customerId);
+                //});
+
+</script>

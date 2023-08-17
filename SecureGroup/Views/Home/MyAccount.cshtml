@@ -1,8 +1,147 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http;
+@model SecureGroup.ViewModel.UserViewModel
+
+
+
 @{
     ViewData["Title"] = "MyAccount";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>MyAccount</h1>
+@{
+    string UserRoleId = @Context.Session.GetString("RoleID");
+    string UserRoleName = @Context.Session.GetString("RoleName");
+}
+
+<div class="common-title-headeer">
+    <h1>My Account</h1>
+    <ul class="addbtns">
+        <li>
+            @if (Model.IsVerifiedKYC == true)
+            {
+                <button class="header-add-btn verfied"> <span><i class="fa fa-check" aria-hidden="true"></i></span> Verified</button>
+            }
+            else
+            {
+                <button class="header-add-btn"><i class="fa fa-upload" aria-hidden="true"></i><a asp-controller="Home" asp-action="UserKYCUpload"> Upload KYC</a></button>
+            }
+
+        </li>
+    </ul>
+</div>
+
+
+<div class="form-inner">
+    <div class="row">
+
+
+        @if (UserRoleId == "4")
+        {
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input type="text" asp-for="Name" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="UserCode" class="control-label">Emp. Code</label>
+                    <input type="text" asp-for="UserCode" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input type="text" asp-for="Email" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ContactNo" class="control-label">Contact No</label>
+                    <input type="text" asp-for="ContactNo" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="MobileNo" class="control-label">Mobile No</label>
+                    <input type="text" asp-for="MobileNo" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="JobTitle" class="control-label">Job Title</label>
+                    <input type="text" asp-for="JobTitle" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="DepartmentName" class="control-label">Department </label>
+                    <input type="text" asp-for="DepartmentName" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+          @*  <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ReportingTo" class="control-label">Reporting To</label>
+                    <input type="text" asp-for="ReportingTo" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>*@
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="JoiningDate" class="control-label">Joining Date</label>
+                    <input type="text" asp-for="JoiningDate" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="PermanentAddress" class="control-label">Permanent Address</label>
+                    <textarea rows="3" asp-for="PermanentAddress" class="col-form-label-lg" disabled="disabled"></textarea>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="PresentAddress" class="control-label">Present Address</label>
+                    <textarea rows="3" asp-for="PresentAddress" class="col-form-label-lg" disabled="disabled"></textarea>
+                </div>
+            </div>
+
+
+        }
+        else
+        {
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input type="text" asp-for="Name" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="BusinessName" class="control-label"></label>
+                    <input type="text" asp-for="BusinessName" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input type="text" asp-for="Email" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ContactNo" class="control-label"></label>
+                    <input type="text" asp-for="ContactNo" class="col-form-label-lg" disabled="disabled" />
+                </div>
+            </div>
+          
+        }
+
+
+
+    </div>
+</div>
+
 

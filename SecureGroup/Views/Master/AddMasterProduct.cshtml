@@ -56,6 +56,25 @@
             </div>
             </div>
 
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="GSTTypeId" class="control-label">GST Type<span>*</span></label>
+                    <select asp-for="GSTTypeId" id="ddlGSTTypeList"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.GSTTypeList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="GSTTypeId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="GSTPercen" class="control-label">GST Percentage(%)<span>*</span></label>
+                    <input asp-for="GSTPercen" class="form-control" type="number" />
+                    <span asp-validation-for="GSTPercen" class="text-danger"></span>
+                </div>
+            </div>
+
           @*  <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)

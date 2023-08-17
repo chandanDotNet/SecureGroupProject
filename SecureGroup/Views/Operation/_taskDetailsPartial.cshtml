@@ -1,0 +1,84 @@
+﻿@model SecureGroup.ViewModel.TaskViewModel
+
+
+  <div class="task-assign-right">
+    <h2>@Html.DisplayFor(model => model.TaskName) pop</h2>
+
+
+        <table>
+            <tr>
+                <td>Assignee</td>
+                <td>
+
+                    <div class="custom-author">
+                        <div class="img"><img src="~/images\avatar.png" /></div>
+                        <p> @Html.DisplayFor(model => model.AssignToName)</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Date & Time</td>
+                <td>
+                    <ul class="date-time-list">
+                        <li><i class="fa fa-calendar-o" aria-hidden="true"></i> @Html.DisplayFor(model => model.TaskDueDate)</li>
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i>@Html.DisplayFor(model => model.TaskDueTime)</li>
+                    </ul>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Project</td>
+                <td><p>@Html.DisplayFor(model => model.ProjectName)</p></td>
+            </tr>
+
+            <tr>
+                <td> Site</td>
+                <td><p>@Html.DisplayFor(model => model.SiteName)</p></td>
+            </tr>
+
+            <tr>
+                <td> Priority</td>
+                <td>
+                    @if (Model.TaskPriority == "High")
+                    {
+                        <span class="priority-badge badge-danger">High</span>
+                    }
+                    @if (Model.TaskPriority == "Low")
+                    {
+                        <span class="priority-badge low-badge">Low</span>
+                    }
+                    @if (Model.TaskPriority == "Normal")
+                    {
+                        <span class="priority-badge badge-success">Normal</span>
+                    }
+                                       
+               </td>
+            </tr>
+
+            <tr>
+                <td>Description</td>
+                <td><p>@Html.DisplayFor(model => model.TaskDescription)</p></td>
+            </tr>
+            <tr>
+                <td>Document</td>
+            @if (Model.TaskDocumentName == null || Model.TaskDocumentName=="")
+            {
+               
+            }
+            else
+            {
+                <td>@Html.ActionLink("Download", "DownloadFile", new { filename=Model.TaskDocumentName}, new { @class = "btn btn-info fa fa-download",@id="btnDownload"})</td>
+            }
+            
+               
+                @*<td><button class="doc-download" asp-action="DownloadFile" asp-controller="Operation"  ><img src="~/images/carbon_document-pdf.svg" />Document 1</button></td>*@
+
+            </tr>
+          
+            <div id="partial-load"></div>
+            
+
+        </table>
+
+    </div>
+

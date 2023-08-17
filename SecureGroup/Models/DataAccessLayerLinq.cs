@@ -196,6 +196,32 @@ namespace SecureGroup.Models
             return warehouseViewModel;
         }
 
+        public List<SelectListItem> GetDropDownListData(string DDName, int? Id,string DDType)
+        {
+            var list = new List<SelectListItem>();
+
+            if (DDName == "SysVal")
+            {
+                list = (from sysVal in myDbContext.SysVal
+                        where sysVal.IsActive == true && sysVal.Type== DDType
+                        orderby sysVal.Value ascending
+                        select new SelectListItem()
+                        {
+                            Text = sysVal.Value,
+                            Value = sysVal.Id.ToString(),
+                        }).ToList();
+            }
+
+            list.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = "0"
+            });
+
+            return list;
+
+        }
+
         public List<SelectListItem> GetDropDownListData(string DDName,int? Id)
         {
 
@@ -251,6 +277,17 @@ namespace SecureGroup.Models
                             Value = user.UserId.ToString(),
                         }).ToList();
             }
+            if (DDName == "UserByRole")
+            {
+                list = (from user in myDbContext.User
+                        where user.IsActive == true
+                        where user.RoleId == Id
+                        select new SelectListItem()
+                        {
+                            Text = user.Name,
+                            Value = user.UserId.ToString(),
+                        }).ToList();
+            }
 
             if (DDName == "Product")
             {
@@ -268,6 +305,17 @@ namespace SecureGroup.Models
             {
                 list = (from subproduct in myDbContext.SubProductMaster
                             where subproduct.ProductId == Id && subproduct.IsActive== true
+                        orderby subproduct.SubProductName ascending
+                        select new SelectListItem()
+                        {
+                            Text = subproduct.SubProductName,
+                            Value = subproduct.SubProductId.ToString(),
+                        }).ToList();
+            }
+            if (DDName == "AllSubProduct")
+            {
+                list = (from subproduct in myDbContext.SubProductMaster
+                        where  subproduct.IsActive == true
                         orderby subproduct.SubProductName ascending
                         select new SelectListItem()
                         {
@@ -301,15 +349,45 @@ namespace SecureGroup.Models
             }
 
             if (DDName == "Supplier")
-            {
-                list = (from supplier in myDbContext.SupplierDetails
-                         where supplier.IsActive== true
+            {             
+
+                list = (from user in myDbContext.User
+                        where user.IsActive == true
+                        where user.RoleId == 5
                         select new SelectListItem()
                         {
-                            Text = supplier.SupplierName,
-                            Value = supplier.SupplierId.ToString(),
+                            Text = user.BusinessName,
+                            Value = user.UserId.ToString(),
                         }).ToList();
             }
+            if (DDName == "Vendor")
+            {
+
+                list = (from user in myDbContext.User
+                        where user.IsActive == true
+                        where user.RoleId == 2
+                        select new SelectListItem()
+                        {
+                            Text = user.BusinessName,
+                            Value = user.UserId.ToString(),
+                        }).ToList();
+            }
+            if (DDName == "Vendor&Supplier")
+            {
+                var roleId = new int[] { 2, 5 };
+                list = (from user in myDbContext.User
+                        where user.IsActive == true
+                        where roleId.Contains(user.RoleId)
+                        //where user.RoleId in( 2)
+                        select new SelectListItem()
+                        {
+                            Text = user.BusinessName,
+                            Value = user.UserId.ToString(),
+                        }).ToList();
+
+
+            }
+
             if (DDName == "TransferType")
             {
                 list = (from transferType in myDbContext.TransferTypeMaster
@@ -354,6 +432,68 @@ namespace SecureGroup.Models
                             Text = role.DepartmentName,
                             Value = role.DepartmentId.ToString(),
                         }).ToList();
+            }
+            if (DDName == "TaskStatus")
+            {
+                list = (from sysVal in myDbContext.SysVal
+                        where sysVal.IsActive == true && sysVal.Type== "TaskStatus"
+                        orderby sysVal.Value ascending
+                        select new SelectListItem()
+                        {
+                            Text = sysVal.Value,
+                            Value = sysVal.Id.ToString(),
+                        }).ToList();
+            }
+
+            if (DDName == "Project")
+            {
+                list = (from project in myDbContext.Project
+                        where project.IsActive == true
+                        orderby project.ProjectName ascending
+                        select new SelectListItem()
+                        {
+                            Text = project.ProjectName,
+                            Value = project.ProjectId.ToString(),
+                        }).ToList();
+            }
+            if (DDName == "Scheme")
+            {
+                list = (from scheme in myDbContext.Scheme
+                        where scheme.IsActive == true
+                        orderby scheme.SchemeName ascending
+                        select new SelectListItem()
+                        {
+                            Text = scheme.SchemeName,
+                            Value = scheme.SchemeId.ToString(),
+                        }).ToList();
+            }
+            if (DDName == "Year")
+            {
+                list.Insert(0, new SelectListItem()
+                {
+                    Text = "2022",
+                    Value = "1"
+                });
+                list.Insert(0, new SelectListItem()
+                {
+                    Text = "2023",
+                    Value = "2"
+                });
+
+            }
+            if (DDName == "Month")
+            {
+                list.Insert(0, new SelectListItem()
+                {
+                    Text = "Jun",
+                    Value = "1"
+                });
+                list.Insert(0, new SelectListItem()
+                {
+                    Text = "July",
+                    Value = "2"
+                });
+
             }
 
             list.Insert(0, new SelectListItem()
@@ -508,6 +648,7 @@ namespace SecureGroup.Models
             {
                 _listProductMaster = (from wh in myDbContext.ProductMaster.Cast<ProductMaster>()
                                       join ad in myDbContext.UnitMaster on wh.UnitId equals ad.UnitId
+                                      join sv in myDbContext.SysVal on wh.GSTTypeId equals sv.Id
                                       where wh.ProductId == Id && wh.IsActive == true
                                       select new ProductMasterViewModel
                                       {
@@ -515,7 +656,10 @@ namespace SecureGroup.Models
                                           ProductName = wh.ProductName,
                                           Specifications = wh.Specifications,
                                           UnitId = wh.UnitId,
-                                          UnitName=ad.UnitName
+                                          UnitName=ad.UnitName,
+                                          GSTTypeId = wh.GSTTypeId,
+                                          GSTPercen = wh.GSTPercen,
+                                          GSTTypeName = sv.Value
 
                                       }).ToList();
             }
@@ -523,6 +667,7 @@ namespace SecureGroup.Models
             {
                 _listProductMaster = (from wh in myDbContext.ProductMaster.Cast<ProductMaster>()
                                       join ad in myDbContext.UnitMaster on wh.UnitId equals ad.UnitId
+                                      join sv in myDbContext.SysVal on wh.GSTTypeId equals sv.Id
                                       where wh.IsActive == true
                                       select new ProductMasterViewModel
                                       {
@@ -530,7 +675,10 @@ namespace SecureGroup.Models
                                           ProductName = wh.ProductName,
                                           Specifications = wh.Specifications,
                                           UnitId = wh.UnitId,
-                                          UnitName = ad.UnitName
+                                          UnitName = ad.UnitName,
+                                          GSTTypeId = wh.GSTTypeId,
+                                          GSTPercen=wh.GSTPercen,
+                                          GSTTypeName=sv.Value
 
                                       }).ToList();
             }
@@ -707,6 +855,7 @@ namespace SecureGroup.Models
             try
             {
                 _userViewModel = (from user in myDbContext.User.Cast<User>()
+                                  join role in myDbContext.UserRole on user.RoleId equals role.UserRoleId 
                                   where user.IsActive == true && user.Email == userName && user.Password == passWord && user.RoleId== RoleId
                                   select new UserViewModel
                                   {
@@ -715,7 +864,7 @@ namespace SecureGroup.Models
                                       Email = user.Email,
                                       ContactNo = user.ContactNo,
                                       BusinessName = user.BusinessName,
-                                      RoleName = user.BusinessName,
+                                      RoleName = role.RoleName,
                                       RoleId = user.RoleId,
                                       Password = user.Password,
                                       CreatedBy = user.CreatedBy,
@@ -730,5 +879,34 @@ namespace SecureGroup.Models
                 throw;
             }
         }
+
+        public int InsertLogManagement(LogManagement _LogManagement)
+        {
+            int _response = 0;
+
+
+            if (_LogManagement != null)
+            {
+
+               // UserRole userRole = new UserRole() { UserRoleId = _userRoleViewModel.UserRoleId, RoleName = _userRoleViewModel.RoleName, IsActive = true };
+                // Add the new object to the Orders collection.
+
+
+                // Submit the change to the database.
+                try
+                {
+                    myDbContext.LogManagement.Add(_LogManagement);
+                    myDbContext.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+
+                }
+            }
+
+            return _response;
+        }
+
     }
 }

@@ -65,7 +65,9 @@
                                     </div>
                                 </td>
                                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.ContactNo)</td>
+                                <td>ContactNo: @Html.DisplayFor(modelItem => item.ContactNo)
+                                    <br />Mobile:<span class="bi bi-phone"></span> @Html.DisplayFor(modelItem => item.MobileNo)
+                                    <br />Landline: @Html.DisplayFor(modelItem => item.LandlineNo)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
 
                                 <td>

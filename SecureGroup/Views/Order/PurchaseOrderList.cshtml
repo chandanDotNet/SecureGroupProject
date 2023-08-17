@@ -1,0 +1,137 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.PurchaseOrderViewModel>
+
+@{
+    ViewData["Title"] = "PurchaseOrderList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="common-title-headeer">
+    <h1>Purchase Order List</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Order" asp-action="CreatePurchaseOrder">Create Purchase Order</a></button>
+        </li>
+    </ul>
+</div>  
+
+<div class="warehouse-data table-responsive">
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseOrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorGSTNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorMobileNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipToAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BillTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BillToAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BillToGSTNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TermsConditions)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseOrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorGSTNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorMobileNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipToAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BillTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BillToAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BillToGSTNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TermsConditions)
+            </td>
+          
+            <td>
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>@Html.ActionLink("Edit", "EditPurchaseOrder", new { Id=item.PurchaseOrderId}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                <li>@Html.ActionLink("Delete", "DeletePurchaseOrder", new { PurchaseOrderId=item.PurchaseOrderId},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                            </ul>
+                        </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+</div>

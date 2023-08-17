@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿
+@using Microsoft.AspNetCore.Http;
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,11 +15,44 @@
     <!-- font awesome css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+    <link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+@*    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />*@
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
+
+   
 </head>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
+        @if (TempData["errormessage"] != null)
+        {
+            <script type="text/javascript">
+                window.onload = function () {
+                    swal("Error!", '@TempData["errormessage"]', "error");
+                };
+            </script>
+        }
+
+        @if (TempData["successmessage"] != null)
+        {
+            <script type="text/javascript">
+                window.onload = function () {
+                    swal("success!", '@TempData["successmessage"]', "success");
+                };
+            </script>
+        }
+
+        @{
+            string UserRoleId = @Context.Session.GetString("RoleID");
+            string UserRoleName = @Context.Session.GetString("RoleName");
+        }
+        
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -46,7 +83,8 @@
                 <li>
                     <div class="user-profile">
                         <div class="p-img"><img src="~/images/avatar.png" /></div>
-                        <p>Ravi Sharma</p>
+                       @* <p>Ravi Sharma</p>*@
+                        <p>@Context.Session.GetString("Name") - (@UserRoleName)</p>
                     </div>
                 </li>
             </ul>
@@ -67,217 +105,423 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a asp-controller="Home" asp-action="Dashboard" class="nav-link">
-                                <i class="fa fa-tachometer" aria-hidden="true"></i>
-                                <p>
-                                    Dashboard
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-cogs" aria-hidden="true"></i>
-                                <p>
-                                    Operation
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a asp-controller="Operation" asp-action="ProjectsList"  class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Projects</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item active-sub-menu">
-                                    <a asp-controller="Operation" asp-action="SitesList" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Sites</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-controller="Operation" asp-action="TaskAllocation" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Task Allocation</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-controller="Operation" asp-action="DocumentList" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Docs Upload</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Vendor" asp-action="VendorList" class="nav-link">
-                                <i class="fa fa-user-o" aria-hidden="true"></i>
-                                <p>
-                                    Vendor
-
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Client" asp-action="ClientList" class="nav-link">
-                                <i class="fa fa-male" aria-hidden="true"></i>
-                                <p>
-                                    client
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                <p>
-                                    Inventory
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a  asp-controller="Inventory" asp-action="WarehouseList" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>WareHouse</p>
-
-                                    </a>
-                                </li>
-                                <li class="nav-item active-sub-menu">
-                                    <a asp-controller="Inventory" asp-action="WarehouseStock" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Stock</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a asp-controller="Inventory" asp-action="Transferproduct" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Stock Transfer</p>
-                                    </a>
-                                </li>                               
-
-                            </ul>
-                        </li>
+                        @if (UserRoleId == "1")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="Dashboard" class="nav-link">
+                                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                                    <p>
+                                        Operation
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-controller="Operation" asp-action="ProjectsList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Projects</p>
+                                        </a>
+                                    </li>
+                                  @*  <li class="nav-item">
+                                        <a  class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Projects</p>
+                                        </a>
+                                    </li>*@
+                                    <li class="nav-item active-sub-menu">
+                                        <a asp-controller="Operation" asp-action="SitesList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Sites</p>
+                                        </a>
+                                    </li>
 
 
+                                    <li class="nav-item">
+                                        <a asp-controller="Operation" asp-action="TaskAllocation" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Task Allocation</p>
+                                        </a>
+                                    </li>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-user-md" aria-hidden="true"></i>
-                                <p>
-                                    HR
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a asp-controller="Home" asp-action="Dashboard" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Attendance</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="Home" asp-action="Dashboard" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Leave Apply</p>
-                                    </a>
-                                </li>
+                                   @* <li class="nav-item">
+                                        <a asp-controller="Operation" asp-action="DocumentList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Docs Upload</p>
+                                        </a>
+                                    </li>*@
 
-                                <li class="nav-item">
-                                    <a asp-controller="Home" asp-action="Dashboard" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Task Allocation</p>
-                                    </a>
-                                </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Vendor" asp-action="VendorList" class="nav-link">
+                                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                                    <p>
+                                        Vendor
 
-                                <li class="nav-item">
-                                    <a asp-controller="HR" asp-action="WorkingHour" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Docs Upload</p>
-                                    </a>
-                                </li>
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Client" asp-action="ClientList" class="nav-link">
+                                    <i class="fa fa-male" aria-hidden="true"></i>
+                                    <p>
+                                        client
+                                    </p>
+                                </a>
+                            </li>
 
-                            </ul>
-                        </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                    <p>
+                                        Inventory
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a  asp-controller="Inventory" asp-action="WarehouseList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>WareHouse</p>
 
-                        <li class="nav-item">
-                            <a asp-controller="Home" asp-action="MyAccount" class="nav-link">
-                                <i class="fa fa-user-o" aria-hidden="true"></i>
-                                <p>
-                                    My Account
-                                </p>
-                            </a>
-                        </li>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item active-sub-menu">
+                                        <a asp-controller="Inventory" asp-action="WarehouseStock" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Stock</p>
+                                        </a>
+                                    </li>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-bell-o" aria-hidden="true"></i>
-                                <p>
-                                    Notification
+                                    <li class="nav-item">
+                                        <a asp-controller="Inventory" asp-action="Transferproduct" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Stock Transfer</p>
+                                        </a>
+                                    </li>                               
 
-                                </p>
-                            </a>
-                        </li>
+                                </ul>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-cog" aria-hidden="true"></i>
-                                <p>
-                                    Settings
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
 
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                               
-                                <li class="nav-item">
-                                    <a asp-controller="Master" asp-action="MasterProductList" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Master Product</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="Master" asp-action="SubMasterProductList" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Master Sub Product</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="Settings" asp-action="UsersList" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Manage User</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="Settings" asp-action="DepartmentList" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Department Manage</p>
-                                    </a>
-                                </li>
 
-                                <li class="nav-item">
-                                    <a asp-controller="Settings" asp-action="RoleList" class="nav-link">
-                                        <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                        <p>Create Role</p>
-                                    </a>
-                                </li>
-                                
-                            </ul>
-                        </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-user-md" aria-hidden="true"></i>
+                                    <p>
+                                        HR
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="Attendance" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Attendance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="Attendance" asp-route-IsMyAttendance="true" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>My Attendance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="LeaveApply" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Leave Apply</p>
+                                        </a>
+                                    </li>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                <p>
-                                    Logout
-                                </p>
-                            </a>
-                        </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="LeaveApproval" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Leave Approval</p>
+                                        </a>
+                                    </li>
+                                  @*  <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="Attendance" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Attendance Approval</p>
+                                        </a>
+                                    </li>*@
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="Reimbursement" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Reimbursement</p>
+                                        </a>
+                                    </li>
+
+                                    @*<li class="nav-item">
+                                        <a asp-controller="HR" asp-action="WorkingHour" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Docs Upload</p>
+                                        </a>
+                                    </li>*@
+
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="MyAccount" class="nav-link">
+                                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                                    <p>
+                                        My Account
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                    <p>
+                                        Notification
+
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                    <p>
+                                        Settings
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+
+                                    <li class="nav-item">
+                                        <a asp-controller="Master" asp-action="MasterProductList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Master Product</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="Master" asp-action="SubMasterProductList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Master Sub Product</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="Settings" asp-action="UsersList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Manage User</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="Settings" asp-action="DepartmentList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Department Manage</p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a asp-controller="Settings" asp-action="RoleList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Create Role</p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="Logout" class="nav-link">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                    <p>
+                                        Logout
+                                    </p>
+                                </a>
+                            </li>
+                        }
+                        @if (UserRoleId == "4")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="Dashboard" class="nav-link">
+                                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                                    <p>
+                                        Operation
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                   @* <li class="nav-item">
+                                        <a asp-controller="Operation" asp-action="ProjectsList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Assigned Projects</p>
+                                        </a>
+                                    </li>*@
+                                    <li class="nav-item">
+                                        <a asp-controller="Operation" asp-action="AssignedProjectsList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Assigned Projects</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="Operation" asp-action="TaskAllocation" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Assigned Task</p>
+                                        </a>
+                                    </li>
+
+                                    @*<li class="nav-item">
+                                        <a asp-controller="Operation" asp-action="DocumentList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Docs Upload</p>
+                                        </a>
+                                    </li>*@
+
+                                </ul>
+                            </li>                       
+
+
+
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-user-md" aria-hidden="true"></i>
+                                    <p>
+                                        HR
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">                                   
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="Attendance" asp-route-IsMyAttendance="true" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>My Attendance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="LeaveApply" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Leave Apply</p>
+                                        </a>
+                                    </li>                                   
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="Reimbursement" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Reimbursement</p>
+                                        </a>
+                                    </li>
+                                   @* <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="WorkingHour" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Docs Upload</p>
+                                        </a>
+                                    </li>*@
+
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="MyAccount" class="nav-link">
+                                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                                    <p>
+                                        My Account
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                    <p>
+                                        Notification
+
+                                    </p>
+                                </a>
+                            </li>                          
+
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="Logout" class="nav-link">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                    <p>
+                                        Logout
+                                    </p>
+                                </a>
+                            </li>
+                        }
+                        @if (UserRoleId == "2" || UserRoleId == "5")
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="Dashboard" class="nav-link">
+                                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                                    <p>
+                                        Order
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">                                   
+                                    <li class="nav-item">
+                                        <a asp-controller="Order" asp-action="PurchaseOrderList" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Purchase Order</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a  class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Purchase Order Pdf</p>
+                                        </a>
+                                    </li>                             
+
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="MyAccount" class="nav-link">
+                                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                                    <p>
+                                        My Account
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                    <p>
+                                        Notification
+
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-controller="Home" asp-action="Logout" class="nav-link">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                    <p>
+                                        Logout
+                                    </p>
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -304,10 +548,82 @@
 
     </div>
 
+
+    @*<form id="form1" runat="server">
+    <div>
+        <table style="width:100%;">
+            <tr>
+                <td><h2>Welcome to my webiste</h2></td>
+                <td style="text-align:right;"><span id="spanTimeLeft"></span> seconds left</td>
+            </tr>
+        </table>
+        <hr />
+        Content goes here. Content goes here. Content goes here. Content goes here. 
+        Content goes here. Content goes here. Content goes here. Content goes here. 
+        Content goes here. Content goes here. 
+    </div>
+    </form>*@
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/adminlte.min.js"></script>
     @RenderSection("Scripts", required: false)
+
+   
+
+    <script>
+        $(function () {
+            $("body").on('click keypress', function () {
+                ResetThisSession();
+            });
+        });
+
+        var timeInSecondsAfterSessionOut = 30; // change this to change session time out (in seconds).
+        var secondTick = 0;
+
+        function ResetThisSession() {
+            secondTick = 0;
+        }
+
+        function StartThisSessionTimer() {
+            secondTick++;
+            var timeLeft = ((timeInSecondsAfterSessionOut - secondTick) / 60).toFixed(0); // in minutes
+            timeLeft = timeInSecondsAfterSessionOut - secondTick; // override, we have 30 secs only
+
+            if(timeLeft==15)
+            {
+                debugger;
+               //swal("success!", timeLeft, "success");
+                swal({
+                    title: 'Are you sure?',
+                    text: "Your Session will be expir soon! are you wont to login again? " + timeLeft,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1ab394',
+                    cancelButtonColor: '#d9534f',
+                    confirmButtonText: 'Yes!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        swal(
+                            'Deleted!',
+                            'Your Session.',
+                            'success'
+                        )
+                    }
+                });
+                      
+            }          
+
+            if (secondTick > timeInSecondsAfterSessionOut) {
+                clearTimeout(tick);
+                window.location = "/Home/Logout";
+                return;
+            }
+            tick = setTimeout("StartThisSessionTimer()", 1000);
+        }
+
+        //StartThisSessionTimer();
+    </script>
 </body>
 </html>

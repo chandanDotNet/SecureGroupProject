@@ -1,9 +1,35 @@
-﻿
+﻿@model SecureGroup.ViewModel.DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+@*@if (TempData["errormessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("Error!", '@TempData["errormessage"]', "error");
+        };
+    </script>
+}
+
+@if (TempData["successmessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("success!", '@TempData["successmessage"]', "success");
+        };
+    </script>
+}*@
+
+@*@if(Model.RoleId==1)
+{
+    
+}*@
+<div class="common-title-headeer">
+    <h1>@Model.RoleName Dashboard</h1>
+</div>
 
 
 <div class="row mb-5">

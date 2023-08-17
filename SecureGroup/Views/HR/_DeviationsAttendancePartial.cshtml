@@ -1,0 +1,42 @@
+﻿@model SecureGroup.ViewModel.AttendanceViewModel
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="_DeviationsAttendancePartial">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="AttendanceId" class="form-control" type="hidden" />            
+            
+            <div class="form-group">
+                <label asp-for="DeviationsLoginTime" class="control-label"></label>
+                <input asp-for="DeviationsLoginTime" class="form-control" />
+                <span asp-validation-for="DeviationsLoginTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeviationsLogoutTime" class="control-label"></label>
+                <input asp-for="DeviationsLogoutTime" class="form-control" />
+                <span asp-validation-for="DeviationsLogoutTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeviationsDurationTime" class="control-label"></label>
+                <input asp-for="DeviationsDurationTime" class="form-control" />
+                <span asp-validation-for="DeviationsDurationTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeviationsApprovalStatusId" class="control-label"></label>
+                <input asp-for="DeviationsApprovalStatusId" class="form-control" />
+                <span asp-validation-for="DeviationsApprovalStatusId" class="text-danger"></span>
+            </div>
+          
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,189 @@
+﻿@model SecureGroup.ViewModel.ProjectViewModel
+
+@{
+    ViewData["Title"] = "AddProjects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>Add Projects</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Operation" asp-action="ProjectsList"> Project List</a></button>
+        </li>
+    </ul>
+</div>
+
+
+
+<div class="form-inner">
+
+
+    <form asp-action="AddProjects">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ProjectName" class="control-label">Project Name<span>*</span></label>
+                    <input asp-for="ProjectName" class="form-control" />
+                    <span asp-validation-for="ProjectName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Description" class="control-label">Description<span>*</span></label>
+                    <textarea asp-for="Description" rows="4" class="form-control"> </textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ProjectStartDate" class="control-label">Project Start Date<span>*</span></label>
+                    <input asp-for="ProjectStartDate" class="form-control" type="date" />
+                    <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ProjectDueDate" class="control-label">Project Due Date<span>*</span></label>
+                    <input asp-for="ProjectDueDate" class="form-control" type="date" />
+                    <span asp-validation-for="ProjectDueDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ProjectBudget" class="control-label">Project Budget<span>*</span></label>
+                    <input asp-for="ProjectBudget" class="form-control" type="number" />
+                    <span asp-validation-for="ProjectBudget" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ProjectHeadId" class="control-label">Project Head<span>*</span></label>
+                    <select asp-for="ProjectHeadId" id="ddlProjectHeadId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.UserList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="ProjectHeadId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Address" class="control-label">Address</label>
+                    <textarea asp-for="Address" class="form-control" rows="4"></textarea>
+                   
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="StateId" class="control-label">State</label>
+                    <select asp-for="StateId" id="ddlStateId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.StateList,"Value", "Text"))">
+                    </select>
+                    
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="CityId" class="control-label">City</label>
+                    <select asp-for="CityId" id="ddlCityId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.CityList,"Value", "Text"))">
+                    </select>
+                    
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Block" class="control-label">Block</label>
+                    <input asp-for="Block" class="form-control" />                   
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="ZipCode" class="control-label">Zip Code</label>
+                    <input asp-for="ZipCode" class="form-control" />
+                   
+                </div>
+            </div>
+           @* <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="SchemeId" class="control-label">Scheme<span>*</span></label>
+                    <select asp-for="SchemeId" id="ddlSchemeId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.SchemeList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="SchemeId" class="text-danger"></span>
+                </div>
+            </div>*@
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="StatusId" class="control-label">Status<span>*</span></label>
+                    <select asp-for="StatusId" id="ddlStatusId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.StatusList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="StatusId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="CountryId" class="form-control" />
+            <input type="hidden" asp-for="ProjectId" class="form-control" />
+            <input type="submit" value="Create" class="data-save-btn" />
+
+        </div>
+    </form>
+
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script type="text/javascript">
+
+    $("#ddlStateId").on("change", function () {
+
+        var valu = $("#ddlStateId").val();
+        var ValueType = "City";
+        //debugger;
+        // alert(ValueType);
+        $.ajax(
+            {
+                url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+                type: 'GET',
+                data: "",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    PopulateDropDown("#ddlCityId", data);
+                    //$("#ddlStateId").html(data);
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+    });
+
+    function PopulateDropDown(dropDownId, list, selectedId) {
+
+        $(dropDownId).empty();
+        //$(dropDownId).append("<option>--Please Select--</option>")
+        $.each(list, function (index, row) {
+            //debugger;
+            var a = row.value;
+            $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>")
+        });
+    }
+
+</script>

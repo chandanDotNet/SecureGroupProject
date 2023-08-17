@@ -1,0 +1,94 @@
+﻿@model SecureGroup.ViewModel.UserKYC
+
+@{
+    ViewData["Title"] = "UserKYCVerify";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>KYC Upload</h1>
+
+   @* <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-check-circle" aria-hidden="true"></i> Verified</button>
+        </li>
+    </ul>*@
+</div>
+
+<div class="form-inner">
+
+  
+        
+        <div class="row">
+
+            
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control d-flex align-items-center gs-3 w-30">
+                <label asp-for="AadhaarCard" class="control-label m-0">Aadhaar Card</label>
+                    @if (Model.AadhaarCardName == null || Model.AadhaarCardName == "")
+                    {
+                        <label></label>
+                    <i class="fa fa-times no-data-badge" aria-hidden="true"></i>
+
+                }
+                    else
+                    {
+                        <label></label>
+                        @Html.ActionLink(" Download", "DownloadFile", new { filename=Model.AadhaarCardName}, new { @class = "btn btn-info fa fa-download",@id="btnAadhaarCardName"})
+                    }
+                </div>
+            </div>
+            
+            <div class="col-md-12 mb-3">
+            <div class="custom-form-control  d-flex align-items-center gs-3 w-30">
+                <label asp-for="PanCard" class="control-label m-0">Pan Card</label>
+                    @if (Model.PanCardName == null || Model.PanCardName == "")
+                    {
+                        <label></label>
+                    <i class="fa fa-times no-data-badge" aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        <label></label>
+                        @Html.ActionLink(" Download", "DownloadFile", new { filename=Model.PanCardName}, new { @class = "btn btn-info fa fa-download",@id="btnPanCardName"})
+                    }
+                </div>
+            </div>
+            
+            <div class="col-md-12 mb-3">
+            <div class="custom-form-control  d-flex align-items-center gs-3 w-30">
+                <label asp-for="VoterCard" class="control-label m-0">Voter Card</label>
+                    @if (Model.VoterCardName == null || Model.VoterCardName == "")
+                    {
+                    <i class="fa fa-times no-data-badge"aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        @Html.ActionLink(" Download", "DownloadFile", new { filename=Model.VoterCardName}, new { @class = "btn btn-info fa fa-download",@id="btnVoterCardName"})
+                    }
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="UserId" class="form-control" />
+          @*  <input type="submit" value="Verify" class="data-save-btn" />*@
+       @* <button type="submit" class="header-add-btn"><i class="fa fa-check" aria-hidden="true"></i><a asp-controller="Settings" asp-action="UpdateKYCVerify" asp-route-Id="@Model.UserId"> Verify</a></button>*@
+       
+
+        </div>
+    @*@Html.ActionLink("Veryfy", "UpdateKYCVerify", new { Id=Model.UserId}, new { @class = "header-add-btn fa fa-check",@id="btnPanCardName"})*@
+
+    <ul class="bootom-action-btn">
+        <li><button class="header-add-btn mt-3"><i class="fa fa-check-circle" aria-hidden="true"></i> <a asp-controller="Settings" asp-action="UpdateKYCVerify" asp-route-Id="@Model.UserId"> Verify</a></button></li>
+        <li><button class="header-add-btn mt-3"><i class="fa fa-times" aria-hidden="true"></i> <a asp-controller="Settings" asp-action="UpdateKYCVerifyReject" asp-route-Id="@Model.UserId"> Reject</a></button></li>
+    </ul>
+   
+    
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

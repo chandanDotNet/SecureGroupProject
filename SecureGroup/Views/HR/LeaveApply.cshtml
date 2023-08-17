@@ -1,0 +1,680 @@
+﻿@model SecureGroup.ViewModel.LeaveApplyViewModel
+
+@{
+    ViewData["Title"] = "LeaveApply";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="common-title-headeer">
+    <h1>Leave Apply</h1>
+
+</div>
+
+
+
+
+<div class="warehouse-data table-responsive">
+
+
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="LeaveApply" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="StartDate" class="control-label">Start Date</label>
+                        <input asp-for="StartDate" class="form-control" type="date" id="startdate" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="EndDate" class="control-label">End Date</label>
+                        <input asp-for="EndDate" class="form-control" type="date" id="enddate" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div style="display:none;">
+                    <div class="form-check">
+                        <input id="LeaveTypeValue"
+                               name="LeaveTypeValue"
+                               type="radio"
+                               value="8" />
+                        <label class="form-check-label" for="exampleRadios1">
+                            All Leave (From Leave Balance)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input checked="checked"
+                               id="LeaveTypeValue"
+                               name="LeaveTypeValue"
+                               type="radio"
+                               value="9" />
+
+                        <label class="form-check-label" for="exampleRadios2">
+                            Absent (Leave Without Pay)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="NumberOfleaveCount" class="control-label">Number Of leave Days</label>
+                        <input asp-for="NumberOfleaveCount" class="form-control" type="number" id="noofdays" />
+
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="LeaveReason" class="control-label">Leave Reason</label>
+                        <textarea asp-for="LeaveReason" class="form-control"> </textarea>
+
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="Document" class="control-label">Upload File</label>
+                        <input type="file" asp-for="Document" class="form-control" />
+                    </div>
+                </div>
+
+                <input type="submit" value="Apply Lease" class="btn data-save-btn" />
+
+            </form>
+        </div>
+        <div class="col-md-8">
+
+            <div class="warehouse-data table-responsive">
+
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Numbers Of Days
+                            </th>
+                            <th>
+                                Apply By
+                            </th>
+                            <th>
+                                Leave Reason
+                            </th>
+                           @* <th>
+                                Leave Type
+                            </th>*@
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Reason
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @* @foreach (var item in Model.LeaveApplyHistory.Where(x => x.LeaveType == 7 || x.LeaveType == 8))*@
+                        @foreach (var item in Model.LeaveApplyHistory)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate) - @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumberOfleaveCount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LeaveReason)
+                                </td>
+                              @*  <td>
+                                    @Html.DisplayFor(modelItem => item.LeaveTypeValue)
+                                </td>*@
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LeaveStatusValue) - by -  @Html.DisplayFor(modelItem => item.LeaveApproveRejectByName)
+                                </td>
+                                <td>
+
+                                    @Html.DisplayFor(modelItem => item.LeaveRejectedReason)
+                                </td>
+
+                                <td>
+                                    @if (item.LeaveStatus != 12)
+                                    {
+                                        <div class="dropdown td-action-dot">
+                                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                @*<li>@Html.ActionLink("Edit", "LeaveApply", new { LeaveId=item.LeaveId}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>*@
+                                                <li>@Html.ActionLink("Delete", "DeleteLeave", new { LeaveId=item.LeaveId},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                                            </ul>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+@*<div>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="noramlleave-tab" data-bs-toggle="tab" data-bs-target="#normalleave" type="button" role="tab" aria-controls="normalleave" aria-selected="true">  Apply Advance Leave</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="specialleave-tab" data-bs-toggle="tab" data-bs-target="#specialleave" type="button" role="tab" aria-controls="specialleave" aria-selected="false">  Apply Special Leave</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="normalleave" role="tabpanel" aria-labelledby="noramlleave-tab">
+
+
+            <div class="vandor-inner-list">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="LeaveApply" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label asp-for="StartDate" class="control-label">Start Date</label>
+                                    <input asp-for="StartDate" class="form-control" type="date" />
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label asp-for="EndDate" class="control-label">End Date</label>
+                                    <input asp-for="EndDate" class="form-control" type="date" />
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div style="display:none;">
+                            <div class="form-check">
+                                <input id="LeaveTypeValue"
+                                       name="LeaveTypeValue"
+                                       type="radio"
+                                       value="8" />
+                                <label class="form-check-label" for="exampleRadios1">
+                                    All Leave (From Leave Balance)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input checked="checked"
+                                       id="LeaveTypeValue"
+                                       name="LeaveTypeValue"
+                                       type="radio"
+                                       value="9" />
+
+                                <label class="form-check-label" for="exampleRadios2">
+                                    Absent (Leave Without Pay)
+                                </label>
+                            </div>
+                            </div>
+
+
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label asp-for="LeaveReason" class="control-label">Leave Reason</label>
+                                    <textarea asp-for="LeaveReason" class="form-control"> </textarea>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label asp-for="Document" class="control-label">Upload File</label>
+                                    <input type="file" asp-for="Document" class="form-control" />
+                                </div>
+                            </div>
+
+                            <input type="submit" value="Apply Lease" class="btn data-save-btn" />
+
+                        </form>
+                    </div>
+                    <div class="col-md-8">
+
+                        <div class="warehouse-data table-responsive">
+
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Date
+                                        </th>
+                                        <th>
+                                            Numbers Of Days
+                                        </th>
+                                        <th>
+                                            Leave Reason
+                                        </th>
+                                        <th>
+                                            Leave Type
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Reason
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.LeaveApplyHistory.Where(x => x.LeaveType == 7 || x.LeaveType == 8))
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StartDate) - @Html.DisplayFor(modelItem => item.EndDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NumberOfleaveCount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.LeaveReason)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.LeaveTypeValue)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.LeaveStatusValue) - by -  @Html.DisplayFor(modelItem => item.LeaveApproveRejectByName)
+                                            </td>
+                                            <td>
+
+                                                @Html.DisplayFor(modelItem => item.LeaveRejectedReason)
+                                            </td>
+
+                                            <td>
+                                                <div class="dropdown td-action-dot">
+                                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li>@Html.ActionLink("Edit", "EditMasterProduct", new { Id=item.LeaveId}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                                        <li>@Html.ActionLink("Delete", "DeleteMasterProduct", new { Id=item.LeaveId},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="specialleave" role="tabpanel" aria-labelledby="specialleave-tab">
+
+            <div class="vandor-inner-list">
+
+                <div class="col-md-4">
+                    <form asp-action="LeaveApply" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label asp-for="StartDate" class="control-label">Start Date</label>
+                                <input asp-for="StartDate" class="form-control" type="date" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label asp-for="EndDate" class="control-label">End Date</label>
+                                <input asp-for="EndDate" class="form-control" type="date" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input id="LeaveTypeValue"
+                                   name="LeaveTypeValue"
+                                   type="radio"
+                                   value="9" />
+
+                            <label class="form-check-label" for="exampleRadios1">
+                                Maternity
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input checked="checked"
+                                   id="LeaveTypeValue"
+                                   name="LeaveTypeValue"
+                                   type="radio"
+                                   value="10" />
+
+                            <label class="form-check-label" for="exampleRadios2">
+                                Bereavement
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input checked="checked"
+                                   id="LeaveTypeValue"
+                                   name="LeaveTypeValue"
+                                   type="radio"
+                                   value="11" />
+
+                            <label class="form-check-label" for="exampleRadios2">
+                                Covid
+                            </label>
+                        </div>
+
+
+
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label asp-for="LeaveReason" class="control-label">Leave Reason</label>
+                                <textarea asp-for="LeaveReason" class="form-control"> </textarea>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="custom-form-control">
+                                <label asp-for="Document" class="control-label">Upload File</label>
+                                <input type="file" asp-for="Document" class="form-control" />
+                            </div>
+                        </div>
+
+                        <input type="submit" value="Apply Lease" class="btn data-save-btn" />
+
+                    </form>
+                </div>
+                <div class="col-md-8">
+
+                    <div class="warehouse-data table-responsive">
+
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>
+                                        Numbers Of Days
+                                    </th>
+                                    <th>
+                                        Leave Reason
+                                    </th>
+                                    <th>
+                                        Leave Type
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Reason
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.LeaveApplyHistory.Where(x => x.LeaveType == 9 || x.LeaveType == 10 || x.LeaveType == 11))
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDate) - @Html.DisplayFor(modelItem => item.EndDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NumberOfleaveCount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeaveReason)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeaveTypeValue)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeaveStatusValue) - by -  @Html.DisplayFor(modelItem => item.LeaveApproveRejectByName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeaveRejectedReason)
+                                        </td>
+
+                                        <td>
+                                            <div class="dropdown td-action-dot">
+                                                <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <li>@Html.ActionLink("Edit", "EditMasterProduct", new { Id=item.LeaveId}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                                    <li>@Html.ActionLink("Delete", "DeleteMasterProduct", new { Id=item.LeaveId},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    </div>*@
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+    }
+
+<script type="text/javascript">
+
+        function calcBusinessDays(dDate1, dDate2) { // input given as Date objects
+      var iWeeks, iDateDiff, iAdjust = 0;
+      if (dDate2 < dDate1) return -1; // error code if dates transposed
+      var iWeekday1 = dDate1.getDay(); // day of week
+      var iWeekday2 = dDate2.getDay();
+      iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1; // change Sunday from 0 to 7
+      iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
+      if ((iWeekday1 > 5) && (iWeekday2 > 5)) iAdjust = 1; // adjustment if both days on weekend
+      iWeekday1 = (iWeekday1 > 5) ? 5 : iWeekday1; // only count weekdays
+      iWeekday2 = (iWeekday2 > 5) ? 5 : iWeekday2;
+
+      // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
+      iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000)
+
+      if (iWeekday1 < iWeekday2) { //Equal to makes it reduce 5 days
+        iDateDiff = (iWeeks * 5) + (iWeekday2 - iWeekday1)
+      } else {
+        iDateDiff = ((iWeeks + 1) * 5) - (iWeekday1 - iWeekday2)
+      }
+
+      iDateDiff -= iAdjust // take into account both days on weekend
+
+      return (iDateDiff + 1); // add 1 because dates are inclusive
+    }
+
+    //    function getBusinessDatesCount(startDate, endDate) {
+    //        var count = 0;
+    //        var curDate = startDate;
+    //        while (curDate <= endDate) {
+    //            var dayOfWeek = curDate.getDay();
+    //            var isWeekend = (dayOfWeek == 6) || (dayOfWeek == 0);
+    //            if (!isWeekend)
+    //                count++;
+    //            curDate = curDate.addDays(1);
+    //        }
+    //        return count;
+    //    }
+
+    //    Date.prototype.addDays = function (days) {
+    //        var date = new Date(this.valueOf())
+    //        date.setDate(date.getDate() + days);
+    //        return date;
+    //    }
+
+    //$("#startdate, #enddate").change(function() {
+
+    //  var d1 = $("#startdate").val();
+    //  var d2 = $("#enddate").val();
+    //  debugger;
+    //  alert("dd");
+    //  var minutes = 1000 * 60;
+    //  var hours = minutes * 60;
+    //  var day = hours * 24;
+
+    //  var startdate1 = new Date(d1);
+    //  var enddate1 = new Date(d2);
+
+
+    //  var newstartdate = new Date();
+    //  newstartdate.setFullYear(startdate1.getYear(), startdate1.getMonth(), startdate1.getDay());
+    //  var newenddate = new Date();
+    //  newenddate.setFullYear(enddate1.getYear(), enddate1.getMonth(), enddate1.getDay());
+    //  var days = calcBusinessDays(newstartdate, newenddate);
+    //        alert(days);
+
+    //       // var numOfDays = getBusinessDatesCount(d1, d2);
+    //       // alert(numOfDays);
+
+    //  if (days > 0) {
+    //    $("#noofdays").val(days);
+    //  } else {
+    //    $("#noofdays").val(0);
+    //  }
+    //});
+
+
+
+    //$('#enddate').on('change', function () {
+    //    //var start = $('#startdate').datepicker('getDate');
+    //    //var end = $('#enddate').datepicker('getDate');
+
+    //    var start = $("#startdate").val();
+    //    var end = $("#enddate").val();
+
+    //    alert(start + "-" + end);
+    //    if (start < end) {
+    //        var days = (end - start) / 1000 / 60 / 60 / 24;
+    //        alert(days);
+    //        var Weeks = Math.round(days) / 7;
+
+    //        var totalWeekends = Math.round(Weeks) * 2;
+    //        alert(totalWeekends);
+    //        var puredays = Math.round(days) - totalWeekends;
+
+    //        $('#noofdays').text(Math.round(puredays) + "Working Days");
+
+    //        alert(totalWeekends);
+
+    //    }
+    //    else {
+    //        alert("");
+    //    }
+    //    });
+
+
+    $("#startdate, #enddate").change(function () {
+
+        //var d1 = $("#startdate").val();
+        //var d2 = $("#enddate").val();
+
+        //var minutes = 1000 * 60;
+        //var hours = minutes * 60;
+        //var day = hours * 24;
+
+        //var startdate1 = getDateFromFormat(d1, "d-m-y");
+        //var enddate1 = getDateFromFormat(d2, "d-m-y");
+
+        //var days = calcBusinessDays(new Date(startdate1), new Date(enddate1));
+
+        //if (days > 0) { $("#noofdays").val(days); }
+        //else { $("#noofdays").val(0); }
+
+        //calcbusinessdays();
+        getDays();
+    });
+
+    function calcbusinessdays() {
+        for (var c = 0, e = 0, d = new Date($("#startdate").val()), a = (new Date($("#enddate").val()) - d) / 864E5; 0 <= a; a--) {
+            var b = new Date(d);
+            b.setDate(b.getDate() + a);
+            1 == Math.ceil(b.getDay() % 6 / 6) ? c++ : e++
+        }
+       alert(c);
+       alert(a);
+       alert(e);
+       alert(d);
+        //$("#noofdays").html(c)
+        if (c > 0) { $("#noofdays").val(c); }
+        else { $("#noofdays").val(0); }
+    };
+
+    function getDays() {
+        var from_date = new Date(document.getElementById('startdate').value);
+        var to_date = new Date(document.getElementById('enddate').value);
+        var start = new Date(from_date);
+        //alert(start);
+        var finish = new Date(to_date);
+        var dayMilliseconds = 1000 * 60 * 60 * 24;
+        var weekendDays = 0;
+        while (start.getTime() <= finish.getTime()) {
+            var day = start.getDay();
+            if (day == 0) {
+                weekendDays++;
+            }
+            start = new Date(+start + dayMilliseconds);
+        }
+        //var days = finish.getTime() - start.getTime();
+        var days = (to_date - from_date) / 1000 / 60 / 60 / 24;
+        var noofdays=0;
+        if (days>0)
+        {
+            days = days+1;
+
+            noofdays = days - weekendDays;
+        }        
+        document.getElementById('noofdays').value = noofdays;
+        //document.getElementById('sundays').value = weekendDays;
+        //document.getElementById('noofdays').value = (days / (1000 * 3600 * 24)) + 1 - (weekendDays);
+
+    }
+
+</script>

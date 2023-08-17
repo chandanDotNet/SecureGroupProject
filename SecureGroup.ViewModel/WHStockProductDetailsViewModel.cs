@@ -22,4 +22,21 @@ namespace SecureGroup.ViewModel
         public string TransferType { get; set; }
         
     }
+
+    public class WHProductPurchaseInOutDetailsViewModel
+    {
+        public int Id { get; set; }
+        public int WareHouseId { get; set; }
+        public string WareHouseName { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public int SubProductId { get; set; }
+        public string SubProductName { get; set; }
+        public decimal ProductQty { get; set; }       
+        public string TransferType { get; set; }
+        public string TransferDetails { get; set; }
+        public string PurchaseFrom { get; set; }
+        public string Date { get; set; }
+
+    }
 }

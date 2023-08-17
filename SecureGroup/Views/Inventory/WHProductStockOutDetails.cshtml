@@ -1,0 +1,69 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.WHProductPurchaseInOutDetailsViewModel>
+@{
+    ViewData["Title"] = "WHProductStockOutDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="warehouse-data table-responsive">
+    <table>
+        <thead>
+            <tr>
+
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    SubProduct Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Transfer Type
+                </th>
+                <th>
+                    Transfer Details
+                </th>
+                <th>
+                    Transfer Date
+                </th>
+                <th>
+                    
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransferType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransferDetails)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "DeleteWHProductStockOutDetails", new {Id=item.Id, WareHouseId=item.WareHouseId,ProductId=item.ProductId,SubProductId=item.SubProductId},new { @class = "view-td-details fa fa-delete"})
+                    </td>
+
+                </tr>
+            }
+            <tr><td></td><td></td><td>Total- @Model.Sum(i => i.ProductQty)</td><td></td></tr>
+        </tbody>
+    </table>
+
+</div>
+

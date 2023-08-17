@@ -1,0 +1,299 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.LeaveApplyHistory>
+
+@{
+    ViewData["Title"] = "LeaveApproval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="common-title-headeer">
+    <h1>Leave Approval</h1>
+    
+</div>
+
+
+<div class="warehouse-data table-responsive">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="warehouse-data table-responsive">
+
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Numbers Of Days
+                            </th>
+                            <th>
+                                Apply By
+                            </th>
+                            <th>
+                                Leave Reason
+                            </th>
+                           @* <th>
+                                Leave Type
+                            </th>*@
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Reason
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate) - @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumberOfleaveCount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LeaveReason)
+                                </td>
+                               @* <td>
+                                    @Html.DisplayFor(modelItem => item.LeaveTypeValue)
+                                </td>
+*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LeaveStatusValue)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LeaveRejectedReason)
+                                </td>
+
+                                <td>
+                                    <div class="dropdown td-action-dot">
+                                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li>@Html.ActionLink("Approve", "ApproveRejectLeave", new { Id=item.LeaveId,StatusId=12}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                            <li>@Html.ActionLink("Reject", "ApproveRejectLeave", new { Id=item.LeaveId,StatusId=13},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+    @*<ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="noramlleave-tab" data-bs-toggle="tab" data-bs-target="#normalleave" type="button" role="tab" aria-controls="normalleave" aria-selected="true">Normal Leave</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="specialleave-tab" data-bs-toggle="tab" data-bs-target="#specialleave" type="button" role="tab" aria-controls="specialleave" aria-selected="false">Special Leave</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="normalleave" role="tabpanel" aria-labelledby="noramlleave-tab">
+
+
+            <div class="vandor-inner-list">
+
+                <div class="row">                   
+                    <div class="col-md-12">
+
+                        <div class="warehouse-data table-responsive">
+
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Date
+                                        </th>
+                                        <th>
+                                            Numbers Of Days
+                                        </th>
+                                        <th>
+                                            Leave Reason
+                                        </th>
+                                        <th>
+                                            Leave Type
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Reason
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Where(x => x.LeaveType == 7 || x.LeaveType == 8))
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.StartDate) - @Html.DisplayFor(modelItem => item.EndDate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NumberOfleaveCount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.LeaveReason)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.LeaveTypeValue)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.LeaveStatusValue) 
+                                            </td>
+                                            <td>
+
+                                                @Html.DisplayFor(modelItem => item.LeaveRejectedReason)
+                                            </td>
+
+                                            <td>
+                                                <div class="dropdown td-action-dot">
+                                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li>@Html.ActionLink("Approve", "ApproveRejectLeave", new { Id=item.LeaveId,StatusId=12}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                                        <li>@Html.ActionLink("Reject", "ApproveRejectLeave", new { Id=item.LeaveId,StatusId=13},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="specialleave" role="tabpanel" aria-labelledby="specialleave-tab">
+
+            <div class="vandor-inner-list">
+
+               
+                <div class="col-md-12">
+
+                    <div class="warehouse-data table-responsive">
+
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>
+                                        Numbers Of Days
+                                    </th>
+                                    <th>
+                                        Leave Reason
+                                    </th>
+                                    <th>
+                                        Leave Type
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Reason
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Where(x => x.LeaveType == 9 || x.LeaveType == 10 || x.LeaveType == 11))
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartDate) - @Html.DisplayFor(modelItem => item.EndDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NumberOfleaveCount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeaveReason)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeaveTypeValue)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeaveStatusValue) 
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LeaveRejectedReason)
+                                        </td>
+
+                                        <td>
+                                            <div class="dropdown td-action-dot">
+                                                <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <li>@Html.ActionLink("Approve", "ApproveRejectLeave", new { Id=item.LeaveId,StatusId=12}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                                    <li>@Html.ActionLink("Reject", "ApproveRejectLeave", new { Id=item.LeaveId,StatusId=13},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+  
+*@
+
+
+
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+//Register services here
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(       
+builder.Configuration.GetConnectionString("DefaultConnection")       
+));
+
+
+
+
+event-db details
+NewLogin
+
+
+Admin -
+* Operation > Task Allocation
+
+* Vendor > Vendor/Supplier
+
+* Inventory > WareHouse 
+           > Stock
+           > Stock Transfer
+
+* Settings > Master Product
+          > Master Sub Product
+	  > Manage User (Admin,Emp)
+	  > Department Manage
+	  > Create Role
+
+* Login > Loging for all role.
+* Logout 
+
+Employee -
+* Login
+* Operation > Task Allocation Employee wise 
+            > Update from Employee -in progress
+
+Next Work--
+
+* HR > Attendance
+     > Leave Apply
+     > Task Allocation
+     > Docs Upload
+

@@ -28,6 +28,13 @@ namespace SecureGroup.DBContexts
         public DbSet<Site> Site { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
         public DbSet<Department> Department { get; set; }
+        public DbSet<SysVal> SysVal { get; set; }
+        public DbSet<Task> Task { get; set; }
+        public DbSet<TaskUpdate> TaskUpdate { get; set; }
+        public DbSet<Attendance> Attendance { get; set; }
+        public DbSet<LogManagement> LogManagement { get; set; }
+        public DbSet<Project> Project { get; set; }
+        public DbSet<Scheme> Scheme { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,6 +57,13 @@ namespace SecureGroup.DBContexts
             modelBuilder.Entity<Site>().ToTable("Site");
             modelBuilder.Entity<UserRole>().ToTable("UserRole");
             modelBuilder.Entity<Department>().ToTable("Department");
+            modelBuilder.Entity<SysVal>().ToTable("SysVal");
+            modelBuilder.Entity<Task>().ToTable("Task");
+            modelBuilder.Entity<TaskUpdate>().ToTable("TaskUpdate");
+            modelBuilder.Entity<Attendance>().ToTable("Attendance");
+            modelBuilder.Entity<LogManagement>().ToTable("LogManagement");
+            modelBuilder.Entity<Project>().ToTable("Project");
+            modelBuilder.Entity<Scheme>().ToTable("Scheme");
         }
 
         
