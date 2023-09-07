@@ -24,7 +24,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />*@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
 
-   
+
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -169,14 +170,14 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                          @*  <li class="nav-item">
                                 <a asp-controller="Client" asp-action="ClientList" class="nav-link">
                                     <i class="fa fa-male" aria-hidden="true"></i>
                                     <p>
                                         client
                                     </p>
                                 </a>
-                            </li>
+                            </li>*@
 
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
@@ -288,6 +289,22 @@
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a asp-controller="Order" asp-action="QuatationToPayment" class="nav-link">
+                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                    <p>
+                                        Quotation
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Order" asp-action="VendorQuotationReport" class="nav-link">
+                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                    <p>
+                                        Payment Report
+                                    </p>
+                                </a>
+                            </li>
 
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
@@ -295,7 +312,6 @@
                                     <p>
                                         Settings
                                         <i class="fa fa-angle-down" aria-hidden="true"></i>
-
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
@@ -415,7 +431,13 @@
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
                                             <p>Leave Apply</p>
                                         </a>
-                                    </li>                                   
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="HR" asp-action="LeaveApproval" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Leave Approval</p>
+                                        </a>
+                                    </li>
                                     <li class="nav-item">
                                         <a asp-controller="HR" asp-action="Reimbursement" class="nav-link">
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
@@ -485,12 +507,12 @@
                                             <p>Purchase Order</p>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                   @* <li class="nav-item">
                                         <a  class="nav-link">
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
                                             <p>Purchase Order Pdf</p>
                                         </a>
-                                    </li>                             
+                                    </li>        *@                     
 
                                 </ul>
                             </li>

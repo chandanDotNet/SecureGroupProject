@@ -254,10 +254,10 @@ namespace SecureGroup.Controllers
 
         }
 
-        public IActionResult UserKYCUpload()
+        public IActionResult UserKYCUpload(int UserId)
         {
             UserKYC _userKYC = new UserKYC();           
-            int UserId = GetUserSession().UserId;
+            //int UserId = GetUserSession().UserId;
             if (UserId > 0)
             {
                 _userKYC.UserId = UserId;
@@ -278,7 +278,8 @@ namespace SecureGroup.Controllers
             try
             {
                 int response = 0;
-                int UserId = GetUserSession().UserId;
+                //int UserId = GetUserSession().UserId;
+                int UserId = _userKYC.UserId;
                 if (UserId > 0)
                 {
                     _userKYC.UserId = UserId;
@@ -321,11 +322,14 @@ namespace SecureGroup.Controllers
                     }
                 }        
 
-                response = DataAccessLayer.UpdateUserKYCData(5,_userKYC);
+                response = DataAccessLayer.UpdateUserKYCData(5,_userKYC);              
                 if (response > 0)
                 {
+                    _userKYC.IsVerifiedKYC = true;
+                    response = DataAccessLayer.UpdateUserKYCData(6, _userKYC);
                     TempData["successmessage"] = "Your file has been uploaded successfully";
-                    return RedirectToAction(nameof(MyAccount));
+                    //return RedirectToAction(nameof(MyAccount));
+                    return RedirectToAction("UsersList", "Settings");
                 }
                 else
                 {
@@ -403,7 +407,9 @@ namespace SecureGroup.Controllers
 
         public IActionResult CreateRole()
         {
-            return View();
+            string subject="Test", emailBody="This is test email", fromEmail= "crmsifsl@gmail.com", toEmail="mr.cmandal@gmail.com", ccEmail=null, bccEmail=null;
+           bool a= sendEmail(subject, emailBody, fromEmail, toEmail, ccEmail, bccEmail);
+            return View(a);
         }
     }
 }

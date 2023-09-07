@@ -173,13 +173,14 @@ namespace SecureGroup.Controllers
                 if (_userViewModel.RoleId == 1)
                 {
                     UserId = 0;
+                    _leaveApproval = _dataAccessLayer.GetUserLeaveList(2, 0, UserId, 0).ToList();
                 }
                 else
                 {
                     UserId = _userViewModel.UserId;
+                    _leaveApproval = _dataAccessLayer.GetUserLeaveList(6, 0, UserId, 0).ToList();
                 }
-
-                _leaveApproval = _dataAccessLayer.GetUserLeaveList(2, 0, UserId, 0).ToList();
+                
             }
             catch (Exception ex)
             {
@@ -204,6 +205,38 @@ namespace SecureGroup.Controllers
 
 
                 response = _dataAccessLayer.AddUpdateUserLeaveData(_leaveApplyViewModel, 3);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(LeaveApproval));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
+            return RedirectToAction("LeaveApproval");
+
+        }
+
+        [HttpGet]
+        public IActionResult ApproveRejectLeaveByReportingUser(int Id, int StatusId)
+        {
+            int response = 0;
+            try
+            {
+                LeaveApplyViewModel _leaveApplyViewModel = new LeaveApplyViewModel();
+                _leaveApplyViewModel.LeaveApproveRejectBy = GetUserSession().UserId;
+                _leaveApplyViewModel.LeaveId = Id;
+                _leaveApplyViewModel.LeaveStatus = StatusId;
+
+
+                response = _dataAccessLayer.AddUpdateUserLeaveData(_leaveApplyViewModel, 5);
                 if (response > 0)
                 {
                     TempData["successmessage"] = "Your data has been saved successfully";

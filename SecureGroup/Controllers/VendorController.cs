@@ -181,5 +181,26 @@ namespace SecureGroup.Controllers
             
         }
 
+
+        [HttpGet]
+        public IActionResult Quatation()
+        {
+            QuatationViewModel quatationViewModel = new QuatationViewModel();
+
+
+            return View(quatationViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult AddQuatation()
+        {
+            QuatationViewModel quatationViewModel = new QuatationViewModel();
+
+
+            return View(quatationViewModel);
+        }
+
+
+
     }
 }

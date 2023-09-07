@@ -35,6 +35,7 @@ namespace SecureGroup.DBContexts
         public DbSet<LogManagement> LogManagement { get; set; }
         public DbSet<Project> Project { get; set; }
         public DbSet<Scheme> Scheme { get; set; }
+        public DbSet<QuatationToPaymentDetails> QuatationToPaymentDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +65,7 @@ namespace SecureGroup.DBContexts
             modelBuilder.Entity<LogManagement>().ToTable("LogManagement");
             modelBuilder.Entity<Project>().ToTable("Project");
             modelBuilder.Entity<Scheme>().ToTable("Scheme");
+            modelBuilder.Entity<QuatationToPaymentDetails>().ToTable("QuatationToPaymentDetails");
         }
 
         

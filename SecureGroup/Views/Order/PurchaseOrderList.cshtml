@@ -126,6 +126,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li>@Html.ActionLink("Edit", "EditPurchaseOrder", new { Id=item.PurchaseOrderId}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
                                 <li>@Html.ActionLink("Delete", "DeletePurchaseOrder", new { PurchaseOrderId=item.PurchaseOrderId},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                                <li>@Html.ActionLink("Generate PDF", "GeneratePurchaseOrderPdf", new { PurchaseOrderId=item.PurchaseOrderId},new { @class = "dropdown-item fa fa-trash-o"})</li>
                             </ul>
                         </div>
             </td>

@@ -112,7 +112,10 @@
                             </th>*@
 
                             <th>
-                                Status
+                                Reporting Boss Status
+                            </th>
+                            <th>
+                                Admin Status
                             </th>
 
                             <th>
@@ -142,7 +145,9 @@
                               @*  <td>
                                     @Html.DisplayFor(modelItem => item.LeaveTypeValue)
                                 </td>*@
-
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReportingUserLeaveStatusValue) - by -  @Html.DisplayFor(modelItem => item.ReportingUserName)
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.LeaveStatusValue) - by -  @Html.DisplayFor(modelItem => item.LeaveApproveRejectByName)
                                 </td>

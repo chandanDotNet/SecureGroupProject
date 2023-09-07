@@ -11,7 +11,23 @@
     string UserRoleName = @Context.Session.GetString("RoleName");
 }
 
-<script type="text/javascript" src="d:\projects-2023\dot net\securegroupproject\securegroup\wwwroot\js\devjs\js_createwarehouse.js"></script>
+<!-- DataTable -->
+
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+
+<!-- End DataTable -->
+@*<script type="text/javascript" src="d:\projects-2023\dot net\securegroupproject\securegroup\wwwroot\js\devjs\js_createwarehouse.js"></script>*@
+<script src="~/js/devjs/js_createwarehouse.js"></script>
 <div class="common-title-headeer">
 
     <h1>Reimbursement List</h1>
@@ -26,10 +42,10 @@
 
 <div class="warehouse-data table-responsive">
 
-    <table>
+    <table id="example">
         <thead>
             <tr>
-               @* <th>ID</th>*@
+                <th>ID</th>
                 <th>Claim By</th>
                 <th>Expense For</th>
                 <th>Total Expense Amount</th>
@@ -49,10 +65,10 @@
             @foreach (var item in Model.ReimbursementList)
             {
                 <tr>
-                    @*<td>
+                    <td>
                         <label asp-for="Id" class="control-label"></label>
                         @Html.DisplayFor(modelItem => item.Id)
-                    </td>*@
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ClaimByName)
                     </td>
@@ -199,8 +215,6 @@
 
 
                     </div>
-
-
                 </div>
             </div>
 
@@ -238,6 +252,7 @@
         $(".btnrowvalueFile").click(function () {
             var tr = $(this).closest('tr');
             var id = tr.find('input[name="NameReimId"]').val();
+            //alert(id);
             $('#partial-documentList-load').load('/HR/_documentListPartial?Id=' + id);
 
         });
@@ -266,4 +281,21 @@
         //    alert('Type2 : ' + FirstCol + ' ' + SecondCol + ' ' + ThirdCol);
         //});
     });
+</script>
+
+<script>
+    $('#example').DataTable({
+        dom: 'Bfrtip',
+        paging: false,
+        ordering: true,
+        
+        order: [[1, 'desc']],
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
 </script>

@@ -11,6 +11,7 @@ namespace SecureGroup.ViewModel
     public class PurchaseOrderViewModel
     {
         public int PurchaseOrderId { get; set; }
+        public int QuatationToPaymentId { get; set; }
         public string PurchaseNo { get; set; }
         public DateTime PurchaseDate { get; set; }
         [Required, Range(1, int.MaxValue, ErrorMessage = "Must Choose a Vendor")]
@@ -39,8 +40,10 @@ namespace SecureGroup.ViewModel
 
     public class PurchaseOrderDetailsViewModel
     {
+        public int RowId { get; set; }
         public int PurchaseOrderDetailsId { get; set; }
         public int PurchaseOrderId { get; set; }
+        public int QuatationToPaymentId { get; set; }
         public int ProductId { get; set; }
         public int SubProductId { get; set; }
         public decimal Thickness { get; set; }

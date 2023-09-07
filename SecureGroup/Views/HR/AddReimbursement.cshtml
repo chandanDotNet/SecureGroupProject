@@ -15,6 +15,9 @@
 
     <ul class="addbtns">
         <li>
+            @Html.ActionLink("Download Format", "DownloadFile", new { filename="ReimbursementFormatSIFSL.xlsx"}, new { @class = "btn btn-info fa fa-download",@id="btnDownload"})
+        </li>
+        <li>
             <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="HR" asp-action="Reimbursement"> REIMBURSEMENT</a></button>
         </li>
     </ul>

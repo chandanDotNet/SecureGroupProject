@@ -44,6 +44,11 @@ namespace SecureGroup.ViewModel
         public int LeaveApproveRejectBy { get; set; }
         public string LeaveApproveRejectByName { get; set; }
         public string? LeaveRejectedReason { get; set; }
+        public int ReportingUserId { get; set; }
+        public string ReportingUserName { get; set; }
+        public int ReportingUserLeaveStatus { get; set; }
+        public string ReportingUserLeaveStatusValue { get; set; }
+        
 
     }
 }

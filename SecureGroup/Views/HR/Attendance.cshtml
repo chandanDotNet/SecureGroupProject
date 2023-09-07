@@ -5,28 +5,36 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<!-- DataTable -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+
+<!-- End DataTable -->
 
 <div class="common-title-headeer">
 
     <h1>Attendance List</h1>
     @*<div>
-        <select asp-for="YearId" id="ddlYearId"
-                class="form-control"
-                asp-items="@(new SelectList(Model.YearList,"Value", "Text"))">
-        </select>
+    <select asp-for="YearId" id="ddlYearId"
+    class="form-control"
+    asp-items="@(new SelectList(Model.YearList,"Value", "Text"))">
+    </select>
     </div>
     <div>
-        <select asp-for="MonthId" id="ddlMonthId"
-                class="form-control"
-                asp-items="@(new SelectList(Model.MonthList,"Value", "Text"))">
-        </select>
+    <select asp-for="MonthId" id="ddlMonthId"
+    class="form-control"
+    asp-items="@(new SelectList(Model.MonthList,"Value", "Text"))">
+    </select>
     </div>*@
 
 </div>
@@ -54,22 +62,22 @@
                         Duration
                     </th>
 
-                   @* <th>
-                        Deviation
-                    </th>
-                    <th>
-                        Deviation Login-Logout
-                    </th>
-                    <th>
-                        Deviation Duration
-                    </th>
-                    <th>
-                        Reason
-                    </th>*@
+                    @* <th>
+                Deviation
+                </th>
+                <th>
+                Deviation Login-Logout
+                </th>
+                <th>
+                Deviation Duration
+                </th>
+                <th>
+                Reason
+                </th>*@
                     <th>
                         Day Remarks
                     </th>
-                   
+
                 </tr>
             </thead>
             <tbody>
@@ -90,25 +98,25 @@
                             @Html.DisplayFor(modelItem => item.DurationTime)
                         </td>
 
-                       @* <td>
-                            <button type="button" id="btnDeviationid" value="@item.AttendanceId" class="btn btn-outline-danger btnDeviation" data-toggle="modal" data-target="#exampleModal">
-                                +Add
-                            </button>
-                        </td>
-                        <td>
+                        @* <td>
+                <button type="button" id="btnDeviationid" value="@item.AttendanceId" class="btn btn-outline-danger btnDeviation" data-toggle="modal" data-target="#exampleModal">
+                +Add
+                </button>
+                </td>
+                <td>
 
-                            @Html.DisplayFor(modelItem => item.DeviationsLoginTime) -@Html.DisplayFor(modelItem => item.DeviationsLogoutTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DeviationsDurationTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Reason)
-                        </td>*@
+                @Html.DisplayFor(modelItem => item.DeviationsLoginTime) -@Html.DisplayFor(modelItem => item.DeviationsLogoutTime)
+                </td>
+                <td>
+                @Html.DisplayFor(modelItem => item.DeviationsDurationTime)
+                </td>
+                <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+                </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.AttendanceStatus)
                         </td>
-                       
+
                     </tr>
                 }
             </tbody>
@@ -117,13 +125,15 @@
 
     @if (Model.RoleId == 1)
     {
+
+
         @using (Html.BeginForm("AllApproveAttendance", "HR", FormMethod.Post))
         {
             <table id="example" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>
-                           Name
+                            Name
                         </th>
                         <th>
                             Date
@@ -137,18 +147,18 @@
                         <th>
                             Duration
                         </th>
-                       @* <th>
-                            Deviation Login-Logout
-                        </th>
-                        <th>
-                            Duration
-                        </th>
-                        <th>
-                            Reason
-                        </th>
-                        <th>
-                            Approval Status
-                        </th>*@
+                        @* <th>
+                Deviation Login-Logout
+                </th>
+                <th>
+                Duration
+                </th>
+                <th>
+                Reason
+                </th>
+                <th>
+                Approval Status
+                </th>*@
                         <th>
                             Attendance Status
                         </th>
@@ -163,8 +173,8 @@
                                 @Html.DisplayFor(modelItem => item.UserName)
                             </td>
                             @*<td>
-                                <input type="checkbox" name="ids" value="@item.AttendanceId" />
-                            </td>*@
+                <input type="checkbox" name="ids" value="@item.AttendanceId" />
+                </td>*@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Date)
                             </td>
@@ -177,33 +187,34 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.DurationTime)
                             </td>
-                           @* <td>
-                                @Html.DisplayFor(modelItem => item.DeviationsLoginTime) -@Html.DisplayFor(modelItem => item.DeviationsLogoutTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DeviationsDurationTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Reason)
-                            </td>
-                            <td>
-                               
-                                @if (item.DeviationsApprovalStatus == "Approve")
-                                {
-                                    <span class="approve-tag">Approved</span>
-                                }
-                                else if (item.DeviationsApprovalStatus == "Rejecet")
-                                {
-                                    <span class="pending-tag">Rejecet</span>
-                                }
-                                else if (item.DeviationsApprovalStatus == "Hold")
-                                {
-                                    <span class="pending-tag">Hold</span>
-                                }else{
-                                    @Html.DisplayFor(modelItem => item.DeviationsApprovalStatus)
-                                }
+                            @* <td>
+                @Html.DisplayFor(modelItem => item.DeviationsLoginTime) -@Html.DisplayFor(modelItem => item.DeviationsLogoutTime)
+                </td>
+                <td>
+                @Html.DisplayFor(modelItem => item.DeviationsDurationTime)
+                </td>
+                <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+                </td>
+                <td>
+
+                @if (item.DeviationsApprovalStatus == "Approve")
+                {
+                <span class="approve-tag">Approved</span>
+                }
+                else if (item.DeviationsApprovalStatus == "Rejecet")
+                {
+                <span class="pending-tag">Rejecet</span>
+                }
+                else if (item.DeviationsApprovalStatus == "Hold")
+                {
+                <span class="pending-tag">Hold</span>
+                }else{
+                @Html.DisplayFor(modelItem => item.DeviationsApprovalStatus)
+                }
                 </td>*@
                             <td>
+                                
 
                                 @if (item.AttendanceStatus == "Present")
                                 {
@@ -216,7 +227,13 @@
                                 else if (item.AttendanceStatus == "Half Day")
                                 {
                                     <span class="pending-tag">Half Day</span>
-                                }else{
+                                }
+                                else if (item.AttendanceStatus == "WFH")
+                                {
+                                    <span class="pending-tag">WFH</span>
+                                }
+                                else
+                                {
                                     @Html.DisplayFor(modelItem => item.AttendanceStatus)
 
                                 }
@@ -228,8 +245,9 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li>@Html.ActionLink("Present", "ApproveRejectAttendance", new { Id=item.AttendanceId,StatusId=4}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
-                                        <li>@Html.ActionLink("Absent", "ApproveRejectAttendance", new { Id=item.AttendanceId,StatusId=5},new { @class = "dropdown-item fa fa-trash-o"})</li>
-                                        <li>@Html.ActionLink("Half Day", "ApproveRejectAttendance", new { Id=item.AttendanceId,StatusId=6},new { @class = "dropdown-item fa fa-trash-o"})</li>
+                                        <li>@Html.ActionLink("Absent", "ApproveRejectAttendance", new { Id=item.AttendanceId,StatusId=5},new { @class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                        <li>@Html.ActionLink("Half Day", "ApproveRejectAttendance", new { Id=item.AttendanceId,StatusId=6},new { @class = "dropdown-item fa fa-pencil-square-o"})</li>
+                                        <li>@Html.ActionLink("WFH", "ApproveRejectAttendance", new { Id=item.AttendanceId,StatusId=22},new { @class = "dropdown-item fa fa-pencil-square-o"})</li>
                                     </ul>
                                 </div>
                             </td>
@@ -237,7 +255,7 @@
                     }
                 </tbody>
             </table>
-           @* <input type="submit" class="data-save-btn" value="All Approve" />*@
+            @* <input type="submit" class="data-save-btn" value="All Approve" />*@
         }
     }
 
@@ -288,10 +306,80 @@
 </div>
 
 <script type="text/javascript">
-    new DataTable('#example');
+    //new DataTable('#example');
+    $('#example').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
     $(".btnDeviation").click(function (e) {
         alert($(this).val());
         $(".attendanceId").val($(this).val());
     });
+
+    //$('#example thead tr')
+    //    .clone(true)
+    //    .addClass('filters')
+    //    .appendTo('#example thead');
+
+    //var table = $('#example').DataTable({
+    //    orderCellsTop: true,
+    //    fixedHeader: true,
+    //    initComplete: function () {
+    //        var api = this.api();
+
+    //        // For each column
+    //        api
+    //            .columns()
+    //            .eq(0)
+    //            .each(function (colIdx) {
+    //                // Set the header cell to contain the input element
+    //                var cell = $('.filters th').eq(
+    //                    $(api.column(colIdx).header()).index()
+    //                );
+    //                var title = $(cell).text();
+    //                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+    //                // On every keypress in this input
+    //                $(
+    //                    'input',
+    //                    $('.filters th').eq($(api.column(colIdx).header()).index())
+    //                )
+    //                    .off('keyup change')
+    //                    .on('change', function (e) {
+    //                        // Get the search value
+    //                        $(this).attr('title', $(this).val());
+    //                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+    //                        var cursorPosition = this.selectionStart;
+    //                        // Search the column for that value
+    //                        api
+    //                            .column(colIdx)
+    //                            .search(
+    //                                this.value != ''
+    //                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+    //                                    : '',
+    //                                this.value != '',
+    //                                this.value == ''
+    //                            )
+    //                            .draw();
+    //                    })
+    //                    .on('keyup', function (e) {
+    //                        e.stopPropagation();
+
+    //                        $(this).trigger('change');
+    //                        $(this)
+    //                            .focus()[0]
+    //                            .setSelectionRange(cursorPosition, cursorPosition);
+    //                    });
+    //            });
+    //    },
+    //});
+
 </script>
 

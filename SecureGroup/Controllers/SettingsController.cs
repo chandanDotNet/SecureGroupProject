@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using SecureGroup.Library;
+using System.IO;
 
 namespace SecureGroup.Controllers
 {
@@ -528,5 +529,33 @@ namespace SecureGroup.Controllers
             }
             return _name; // Tony Stark is
         }
+
+
+        public IActionResult DownloadFile(string filename)
+        {
+
+            if (filename == null)
+            {
+                TempData["errormessage"] = "Something went wrong!- File Not Exists!";
+                return RedirectToAction("UserKYCUpload");
+            }
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload/UserKYC", filename);
+            if (!System.IO.File.Exists(path))
+            {
+                TempData["errormessage"] = "Something went wrong!- File Not Exists!";
+                return RedirectToAction("UserKYCUpload");
+            }
+            //var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload/UserKYC", filename);
+            //var path = Path.Combine(_hostingEnvironment.WebRootPath, "Sample.xlsx");
+            var fs = new FileStream(path, FileMode.Open);
+
+            // Return the file. A byte array can also be used instead of a stream
+            return File(fs, "application/octet-stream", filename);
+            // call GetFile Method in service and return
+
+            // var dd= FileDownload(filename, "Upload");
+
+        }
+
     }
 }

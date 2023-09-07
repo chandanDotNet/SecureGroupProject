@@ -22,6 +22,7 @@ namespace SecureGroup.Models
         public int ReportingTo { get; set; }
         public string LoginTime { get; set; }
         public string LogoutTime { get; set; }
+        public string BloodGroup { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int UpdatedBy { get; set; }

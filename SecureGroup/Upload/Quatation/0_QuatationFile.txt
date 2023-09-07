@@ -1,0 +1,83 @@
+//Register services here
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(       
+builder.Configuration.GetConnectionString("DefaultConnection")       
+));
+
+
+
+
+event-db details
+NewLogin
+
+
+Admin -
+* Operation > Task Allocation
+
+* Vendor > Vendor/Supplier
+
+* Inventory > WareHouse 
+           > Stock
+           > Stock Transfer
+
+* Settings > Master Product
+          > Master Sub Product
+	  > Manage User (Admin,Emp)
+	  > Department Manage
+	  > Create Role
+
+* Login > Loging for all role.
+* Logout 
+
+Employee -
+* Login
+* Operation > Task Allocation Employee wise 
+            > Update from Employee -in progress
+
+Next Work--
+
+* HR > Attendance
+     > Leave Apply
+     > Task Allocation
+     > Docs Upload
+
+
+
+ 
+SUPPLIER CONSIGNEE (SHIP TO)
+M/S DADU PIPES PVT LTD
+II, C-101, DADU DAYAL HOUSE, RDC
+RAJ NAGAR, Ghaziabad
+Uttar Pradesh, 201002
+E-mail:- jyoti@dadupipes.com
+GST NO.09AACCD3700F1Z4
+MOB-9811489782
+VENDOR CODE
+SIFSLUP/23-24/S/D000170
+VSAIPPL-SMCJV
+A/C OF Secure Infratech Finserv And Securities Limited
+GHAZIPUR UP
+BILL TO
+Secure Infratech Finserv And Securities Limited
+4TH FLOOR, 410C & 411B/D, LEVANA CYBER HEIGHTS,
+VIBHUTI KHAND,GOMTI NAGAR,
+LUCKNOW, U.P.:- 226010
+GSTIN: - 09AARCS6968H1ZE
+
+<input class="form-control PurchaseOrderDetailsId" type="hidden"  id="PurchaseOrderDetails_1__PurchaseOrderDetailsId" name="PurchaseOrderDetails[1].PurchaseOrderDetailsId" value="5">
+
+
+Vendor-
+
+PO- Create,Edit,Delete -Done
+PO- Genarate PDF -InProgress -3 
+Document and Agreements - 
+My Account-  (Add,Edit) -
+ *Business Details 
+ *Contact Details
+ *Bank Details
+Notification for all user
+Email Notification for all
+Report 
+
+
+   

@@ -57,6 +57,8 @@ namespace SecureGroup.ViewModel
         public string AadhaarCardName { get; set; }
         public string PanCardName { get; set; }
         public string VoterCardName { get; set; }
+        public string GSTNo { get; set; }
+        public string BloodGroup { get; set; }
 
         public IList<SelectListItem> RoleList { get; set; }
         public IList<SelectListItem> DepartmentList { get; set; }

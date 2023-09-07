@@ -1,0 +1,215 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.QuatationToPaymentDetailsViewModel>
+
+@{
+    ViewData["Title"] = "QuatationToPayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<div class="common-title-headeer">
+    <h1>Quotation To Payment</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Order" asp-action="AddQuatationToPayment">Create New Quotation</a></button>
+        </li>
+    </ul>
+</div>
+
+<div class="warehouse-data table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    #Id
+                </th>
+
+                <th>
+                    Vendor Name
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Is Quotation Complete
+                </th>
+                <th>
+                    Is PO Complete
+                </th>
+                <th>
+                    Is PI Complete
+                </th>
+                <th>
+                    Is Payment Complete
+                </th>
+                <th>
+                    Is Final Bill Uploaded
+                </th>
+
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuatationToPaymentId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td width="100px">
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+
+                        @if (item.IsQuatationComplete == true)
+                        {
+                            <img src="~/images/check.png" height="20" width="20" />
+                        }
+                        else
+                        {
+                            <img src="~/images/remove.png" height="20" width="20" />
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsPOComplete == true)
+                        {
+                            <img src="~/images/check.png" height="20" width="20" />
+                        }
+                        else
+                        {
+                            <img src="~/images/remove.png" height="20" width="20" />
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsPIComplete == true)
+                        {
+                            <img src="~/images/check.png" height="20" width="20" />
+                        }
+                        else
+                        {
+                            <img src="~/images/remove.png" height="20" width="20" />
+
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsPaymentComplete == true)
+                        {
+                            <img src="~/images/check.png" height="20" width="20" />
+                        }
+                        else
+                        {
+                            <img src="~/images/remove.png" height="20" width="20" />
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsVFinelBillComplete == true)
+                        {
+                            <img src="~/images/check.png" height="20" width="20" />
+                        }
+                        else
+                        {
+                            <img src="~/images/remove.png" height="20" width="20" />
+                        }
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Details", "QuatationToPaymentDetails", new { QuatationToPaymentId=item.QuatationToPaymentId },new{@class="btn btn-primary btn-sm fa fa-eye"})
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "DeleteQuatationToPaymentDetails", new { QuatationToPaymentId=item.QuatationToPaymentId },new{@class="btn btn-danger btn-sm fa fa-remove"})
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+@*<div class="warehouse-data table-responsive">
+    <div class="panel-group" id="accordion">
+
+        @foreach (var item in Model.quatationToPaymentDetailsViewModels)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href='#@item.QuatationToPaymentId'>
+                    <div class="row"> <div class="col-sm-4">#@item.QuatationToPaymentId </div><div class="col-sm-4">Client Name- @item.UserName </div> <div class="col-sm-4"> Date- @item.Date</div> </div>
+                </div>
+                <div id='@item.QuatationToPaymentId' class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form asp-action="AddQuatationToPayment1" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                Quatation - @if(item.IsQuatationComplete==true)
+                                {
+                                    <img src="~/images/check.png" height="20" width="20" />
+                                }
+                                else
+                                {
+                                    <input type="file" asp-for="@item.QuatationFile" class="form-control-file" />
+                                    <img src="~/images/remove.png" height="20" width="20" />
+                                }
+                            </div>
+                            <div class="col-sm-3">
+                                PO - @if (item.IsPOComplete == true)
+                                {
+                                    <img src="~/images/check.png" height="20" width="20" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/remove.png" height="20" width="20" />
+                                }
+                            </div>
+                            <div class="col-sm-3">
+                                PI- @if (item.IsPIComplete == true)
+                                {
+                                    <img src="~/images/check.png" height="20" width="20" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/remove.png" height="20" width="20" />
+
+                                }
+                            </div>
+                            <div class="col-sm-3">
+                                Payment- @if (item.IsPaymentComplete == true)
+                                {
+                                    <img src="~/images/check.png" height="20" width="20" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/remove.png" height="20" width="20" />
+                                }
+                            </div>
+                        </div>
+                            <input id="btnSave" type="submit" value="Create" class="data-save-btn" />
+                    </form>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+     <form asp-action="AddQuatation" enctype="multipart/form-data">
+
+        <input type="file" asp-for="QuatationFile" class="form-control-file" />
+
+        <input id="btnSave" type="submit" value="Create" class="data-save-btn" />
+     </form>
+
+    <form asp-action="AddPI" enctype="multipart/form-data">
+
+        <input type="file" asp-for="PIFile" class="form-control-file" />
+
+        <input id="btnSave" type="submit" value="Create" class="data-save-btn" />
+    </form>
+
+</div>*@

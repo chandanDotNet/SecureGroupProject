@@ -563,7 +563,8 @@
 
             //var currentRow = $(this).closest("tr");
             var PurchaseOrderDetailsId ="0";
-            var PurchaseOrderId = $(".PurchaseOrderId").val();
+            var PurchaseOrderId = $("#PurchaseOrderId").val();
+           // alert(PurchaseOrderId);
             $('#partial-purchaseItem-load').load('/Order/_PurchaseItemPartial?PurchaseOrderDetailsId=' + PurchaseOrderDetailsId + '&PurchaseOrderId='+PurchaseOrderId);
 
         });

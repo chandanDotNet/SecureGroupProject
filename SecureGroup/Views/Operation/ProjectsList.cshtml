@@ -4,6 +4,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!-- DataTable -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+
+<!-- End DataTable -->
+
 <div class="common-title-headeer">
     <h1>Projects List</h1>
 
@@ -16,276 +32,289 @@
 
 
 <div class="form-inner">
-<div class="warehouse-data table-responsive">
+    <div class="warehouse-data table-responsive">
 
-    <table>
-        <thead>
-            <tr>
-                <th>Project ID</th>
-                <th>Project Name</th>
-                <th>Status</th>
-                <th>Dates</th>
-                <th>Project Head</th>
-                <th>Budget</th>
-               @* <th>No of Assignee</th>*@
-                <th></th>
-            </tr>
+        <table id="example">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                    <th>Status</th>
+                    <th>Dates</th>
+                    <th>Project Head</th>
+                    <th>Budget</th>
+                    @* <th>No of Assignee</th>*@
+                    <th></th>
+                </tr>
 
-        </thead>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-            @foreach (var item in Model)
-            {
-            <tr>
-                <td>#@item.ProjectId</td>
-                <td>
-                    <div class="table-inner-card">
-                        <div class="icon">
-                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
-                        </div>
-                        <div class="content">
-                            <h3>@item.ProjectName</h3>
-                            <p>@item.Description</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="status-card on-track">
-                        <h3>@item.Status</h3>
-                        @*<p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>*@
-                    </div>
-                </td>
-                <td>
-                    <div class="custom-progress-bar">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>#@item.ProjectId</td>
+                        <td>
+                            <div class="table-inner-card">
+                                <div class="icon">
+                                    <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                                </div>
+                                <div class="content">
+                                    <h3>@item.ProjectName</h3>
+                                    <p>@item.Description</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-card on-track">
+                                <h3>@item.Status</h3>
+                                @*<p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>*@
+                            </div>
+                        </td>
+                        <td>
+                            <div class="custom-progress-bar">
 
-                        @*<div class="progress">
+                                @*<div class="progress">
                             <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 
-                        </div>
-                        <p>72%</p>*@
-                            <p>@item.Dates</p>
-                    </div>
-                </td>
-                <td><p>@item.ProjectHeadName</p></td>
-                <td><p>@item.ProjectBudget</p></td>
-               @* <td><p class="n-assignee">11</p></td>*@
-                <td>
-                    <div class="dropdown td-action-dot">
-                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">                          
+                            </div>
+                            <p>72%</p>*@
+                                <p>@item.Dates</p>
+                            </div>
+                        </td>
+                        <td><p>@item.ProjectHeadName</p></td>
+                        <td><p>@item.ProjectBudget</p></td>
+                        @* <td><p class="n-assignee">11</p></td>*@
+                        <td>
+                            <div class="dropdown td-action-dot">
+                                <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li>@Html.ActionLink("Edit", "EditProjects", new { Id=item.ProjectId}, new { @class = "dropdown-item"})</li>
                                     <li>@Html.ActionLink("Delete", "DeleteProjects", new { Id=item.ProjectId},new { @class = "dropdown-item"})</li>
 
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            }
-           @* <tr>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @* <tr>
                 <td>#02</td>
                 <td>
-                    <div class="table-inner-card">
-                        <div class="icon">
-                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
-                        </div>
-                        <div class="content">
-                            <h3>Construction Project</h3>
-                            <p>Site Work</p>
-                        </div>
-                    </div>
+                <div class="table-inner-card">
+                <div class="icon">
+                <img src="~/images/registgericon.svg" class="login-logo" alt="">
+                </div>
+                <div class="content">
+                <h3>Construction Project</h3>
+                <p>Site Work</p>
+                </div>
+                </div>
                 </td>
                 <td>
-                    <div class="status-card on-risk">
-                        <h3>On Risk</h3>
-                        <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
-                    </div>
+                <div class="status-card on-risk">
+                <h3>On Risk</h3>
+                <p>Status Update - Apr 29 . We are largely on track as we completed Q1...</p>
+                </div>
                 </td>
                 <td>
-                    <div class="custom-progress-bar">
-                        <div class="progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="custom-progress-bar">
+                <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 
-                        </div>
-                        <p>72%</p>
-                    </div>
+                </div>
+                <p>72%</p>
+                </div>
                 </td>
                 <td><p>Jan 05 - Mar 31</p></td>
                 <td><span class="priority-badge high-badge">high</span></td>
                 <td><p class="n-assignee">11</p></td>
                 <td>
 
-                    <div class="dropdown td-action-dot">
-                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                <div class="dropdown td-action-dot">
+                <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Edit</a></li>
+                <li><a class="dropdown-item" href="#">Delete</a></li>
 
-                        </ul>
-                    </div>
+                </ul>
+                </div>
                 </td>
-            </tr>*@
-
-
-          
+                </tr>*@
 
 
 
-        </tbody>
-    </table>
-
-    <!-- addwarehouse -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-        <div class="side-slide-form">
-            <div class="side-slide-header">
-                <h2>ADD NEW PROJECT</h2>
-                <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
-            </div>
 
 
 
-            <form>
-                <div class="form-inner">
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Project ID</label>
-                                <input type="text" placeholder="Project ID" />
-                            </div>
-                        </div>
+            </tbody>
+        </table>
 
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Project Name</label>
-                                <input type="text" placeholder="Project ID" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Project Description</label>
-                                <textarea placeholder="Project Description">
-                                </textarea>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-6 mb-3">
-                            <div class="custom-form-control">
-                                <label>Project Start Date</label>
-                                <input type="date" placeholder="Project Start Date" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <div class="custom-form-control">
-                                <label>Project Due Date</label>
-                                <input type="date" placeholder="Project Due Date" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Project Budget</label>
-                                <input type="text" placeholder="Project Budget" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Project Head</label>
-                                <select name="" id="">
-                                    <option value="" disabled selected hidden>Project Head</option>
-                                    <option value="a">Project Head</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>State</label>
-                                <select name="" id="">
-                                    <option value="" disabled selected hidden>State</option>
-                                    <option value="a">state</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>City</label>
-                                <select name="" id="">
-                                    <option value="" disabled selected hidden>City</option>
-                                    <option value="a">City</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Block</label>
-                                <select name="" id="">
-                                    <option value="" disabled selected hidden>Block</option>
-                                    <option value="a">City</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Scheme</label>
-                                <input type="text" placeholder="Scheme" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Zone</label>
-                                <input type="text" placeholder="Zone" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>GP</label>
-                                <input type="text" placeholder="GP" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>RV</label>
-                                <input type="text" placeholder="RV" />
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Habitations</label>
-                                <input type="text" placeholder="Habitations" />
-                            </div>
-                        </div>
-
-
-                    </div>
-
+        <!-- addwarehouse -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+            <div class="side-slide-form">
+                <div class="side-slide-header">
+                    <h2>ADD NEW PROJECT</h2>
+                    <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div>
 
-                <button class="data-save-btn">Save</button>
-            </form>
+
+
+                <form>
+                    <div class="form-inner">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Project ID</label>
+                                    <input type="text" placeholder="Project ID" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Project Name</label>
+                                    <input type="text" placeholder="Project ID" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Project Description</label>
+                                    <textarea placeholder="Project Description">
+                                </textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Project Start Date</label>
+                                    <input type="date" placeholder="Project Start Date" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Project Due Date</label>
+                                    <input type="date" placeholder="Project Due Date" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Project Budget</label>
+                                    <input type="text" placeholder="Project Budget" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Project Head</label>
+                                    <select name="" id="">
+                                        <option value="" disabled selected hidden>Project Head</option>
+                                        <option value="a">Project Head</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>State</label>
+                                    <select name="" id="">
+                                        <option value="" disabled selected hidden>State</option>
+                                        <option value="a">state</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>City</label>
+                                    <select name="" id="">
+                                        <option value="" disabled selected hidden>City</option>
+                                        <option value="a">City</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Block</label>
+                                    <select name="" id="">
+                                        <option value="" disabled selected hidden>Block</option>
+                                        <option value="a">City</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Scheme</label>
+                                    <input type="text" placeholder="Scheme" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Zone</label>
+                                    <input type="text" placeholder="Zone" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>GP</label>
+                                    <input type="text" placeholder="GP" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>RV</label>
+                                    <input type="text" placeholder="RV" />
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12 mb-3">
+                                <div class="custom-form-control">
+                                    <label>Habitations</label>
+                                    <input type="text" placeholder="Habitations" />
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <button class="data-save-btn">Save</button>
+                </form>
 
 
 
-        </div>
-    </aside>
+            </div>
+        </aside>
 
 
 
+    </div>
 </div>
-</div>
+
+
+<script>
+    $('#example').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+</script>

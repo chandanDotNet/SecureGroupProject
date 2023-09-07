@@ -4,7 +4,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!-- DataTable -->
 
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+
+<!-- End DataTable -->
 
 <div class="common-title-headeer">
     <h1>User List</h1>
@@ -19,7 +33,7 @@
 
 <div class="warehouse-data table-responsive">
 
-    <table>
+    <table id="example">
         <thead>
             <tr>
                 <th>SL No.</th>
@@ -30,6 +44,16 @@
                 <th>Role</th>
                 <th>Department</th>
                 <th>Is KYC Verified</th>
+                <th hidden="hidden">Present Address</th>
+                <th hidden="hidden">Permanent Address</th>
+                <th hidden="hidden">Contact Number</th>
+                <th hidden="hidden">Mobile Number</th>
+                <th hidden="hidden">Job Title</th>
+                <th hidden="hidden">Emp.Code</th>
+                <th hidden="hidden">Blood Group</th>
+                <th hidden="hidden">Reporting To</th>
+                <th hidden="hidden">Joining Date</th>
+               
                 <th>Action</th>
             </tr>
 
@@ -62,7 +86,16 @@
                         }
 
                     </td>
-
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.PresentAddress)</td>
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.PermanentAddress)</td>
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.ContactNo)</td>
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.MobileNo)</td>
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.JobTitle)</td>
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.UserCode)</td>
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.BloodGroup)</td>
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.ReportingTo)</td>
+                    <td hidden="hidden">@Html.DisplayFor(modelItem => item.JoiningDate)</td>
+                   
                     <td>
 
                         <div class="dropdown td-action-dot">
@@ -72,6 +105,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li>@Html.ActionLink("Edit", "EditUser", new { Id=item.UserId}, new { @class = "dropdown-item"})</li>
                                 <li>@Html.ActionLink("Delete", "DeleteUser", new { Id=item.UserId},new { @class = "dropdown-item"})</li>
+                                <li>@Html.ActionLink("KYC Upload","UserKYCUpload", "Home", new { UserId=item.UserId},new { @class = "dropdown-item"})</li>
                                 <li>@Html.ActionLink("KYC Verify", "UserKYCVerify", new { Id=item.UserId},new { @class = "dropdown-item"})</li>
                             </ul>
                         </div>
@@ -87,4 +121,15 @@
 
 </div>
 
+<script>
+    $('#example').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
 
+</script>

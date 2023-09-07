@@ -13,6 +13,8 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Xml.Linq;
 using System.Data;
 using System.Reflection;
+using System.Net.Mail;
+using System.Net;
 
 namespace SecureGroup.Controllers
 {
@@ -51,6 +53,45 @@ namespace SecureGroup.Controllers
                 if (file.Length > 0)
                 {
                     filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                    path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), fileLocation));
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    using (var filestream = new FileStream(Path.Combine(path, filename), FileMode.Create))
+                    {
+                        file.CopyToAsync(filestream);
+                    }
+                    iscopied = true;
+                }
+                else
+                {
+                    iscopied = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _uploadFileResponse.ErrorMessage = ex.Message;
+            }
+
+            _uploadFileResponse.UploadSuccess = iscopied;
+            _uploadFileResponse.FileName = filename;
+            _uploadFileResponse.FilePath = path;
+
+            return _uploadFileResponse;
+        }
+
+        public UploadFileResponseViewModel UploadFileWithName(IFormFile file, string fileLocation, string filename)
+        {
+            UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();
+            string path = "";
+            bool iscopied = false;
+            try
+            {
+                if (file.Length > 0)
+                {
+                    filename = filename + Path.GetExtension(file.FileName);
                     path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), fileLocation));
                     if (!Directory.Exists(path))
                     {
@@ -148,7 +189,56 @@ namespace SecureGroup.Controllers
         }
 
 
-
+        public bool sendEmail(string subject, string emailBody, string fromEmail, string toEmail, string ccEmail, string bccEmail)
+        {
+            try
+            {
+                MailMessage mailMsg = new MailMessage();
+                mailMsg.From = new MailAddress(fromEmail, "Secure Group");
+                if (!string.IsNullOrEmpty(toEmail))
+                {
+                    var emails = toEmail.Split(',');
+                    foreach (var email in emails)
+                    {
+                        mailMsg.To.Add(new MailAddress(email));
+                    }
+                }
+                if (!string.IsNullOrEmpty(ccEmail))
+                {
+                    var emails = ccEmail.Split(',');
+                    foreach (var email in emails)
+                    {
+                        mailMsg.CC.Add(new MailAddress(email));
+                    }
+                }
+                if (!string.IsNullOrEmpty(bccEmail))
+                {
+                    var emails = bccEmail.Split(',');
+                    foreach (var email in emails)
+                    {
+                        mailMsg.Bcc.Add(new MailAddress(email));
+                    }
+                }
+                mailMsg.Subject = subject;
+                mailMsg.Body = emailBody;
+                mailMsg.IsBodyHtml = true;
+                SmtpClient smtpClient = new SmtpClient();
+                smtpClient.Host = "smtp.gmail.com";
+                smtpClient.EnableSsl = true;
+                NetworkCredential networkCredential = new NetworkCredential();
+                networkCredential.UserName = "crmsifsl@gmail.com";
+                networkCredential.Password = "Sifsl@12345";
+                smtpClient.UseDefaultCredentials = true;
+                smtpClient.Credentials = networkCredential;
+                smtpClient.Port = 587;
+                smtpClient.Send(mailMsg);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
 

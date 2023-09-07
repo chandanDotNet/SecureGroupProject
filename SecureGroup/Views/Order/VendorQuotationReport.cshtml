@@ -1,0 +1,103 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.QuatationToPaymentDetailsViewModel>
+
+@{
+    ViewData["Title"] = "VendorQuotationReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- DataTable -->
+
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+
+<!-- End DataTable -->
+
+<div class="common-title-headeer">
+    <h1>Quotation To Payment Report</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Order" asp-action="AddQuatationToPayment">Create New Quotation</a></button>
+        </li>
+    </ul>
+</div>
+
+<div class="warehouse-data table-responsive">
+    <table id="example">
+        <thead>
+            <tr>
+               @* <th>
+                    #Id
+                </th>*@
+                <th>
+                    Vendor Name
+                </th>
+                <th>
+                    Quatation Amount
+                </th>
+                <th>
+                    PI Amount
+                </th>
+                <th>
+                    Advance Amount
+                </th>
+                <th>
+                    Final Amount
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                   @* <td>
+                       #1
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuatationAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PIAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AdvanceAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinalAmount)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" Details", "VendorQuotationReportDetails", new { UserId=item.UserId },new{@class="btn btn-primary btn-sm fa fa-eye"})
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    $('#example').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
+</script>

@@ -1,0 +1,225 @@
+﻿@model SecureGroup.ViewModel.InvoiceItemDetailsViewModel
+
+
+<div class="form-inner">
+    <form asp-action="_AddEditInvoiceItemPartial">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="InvoiceId" class="form-control" type="hidden" />
+                <input asp-for="InvoiceItemDetailsId" class="form-control" type="hidden" />
+                <input asp-for="QuatationToPaymentId" class="form-control" type="hidden" />
+
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="ProductId" class="control-label">Product</label>
+                        <select asp-for="ProductId" id="EdtProductId"
+                                class="form-control ProductId"
+                                asp-items="@(new SelectList(Model.ProductList,"Value", "Text"))">
+                        </select>
+                        <span asp-validation-for="ProductId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="SubProductId" class="control-label">SubProduct</label>
+                        <select asp-for="SubProductId" id="EdtSubProductId"
+                                class="form-control SubProductId"
+                                asp-items="@(new SelectList(Model.SubProductList,"Value", "Text"))">
+                        </select>
+                        <span asp-validation-for="SubProductId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="UnitId" class="control-label">UOM</label>
+                        <select asp-for="UnitId" id="EdtUnitId"
+                                class="form-control UnitId"
+                                asp-items="@(new SelectList(Model.UnitList,"Value", "Text"))">
+                        </select>
+                        <span asp-validation-for="UnitId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="Quantity" class="control-label"></label>
+                        <input asp-for="Quantity" id="EdtQuantity" class="form-control Quantity" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="UnitPrice" class="control-label"></label>
+                        <input asp-for="UnitPrice" id="EdtUnitPrice" class="form-control UnitPrice" />
+                        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="Amount" class="control-label"></label>
+                        <input asp-for="Amount" id="EdtAmount" class="form-control Amount" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="GSTTypeId" class="control-label">GST Type</label>
+                        <input class="custom-radio-btn" type="radio" value="1" asp-for="GSTTypeId" />IGST<br />
+                        <input class="custom-radio-btn" type="radio" value="2" asp-for="GSTTypeId" />CGST & SGST<br />
+                        <span asp-validation-for="GSTTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="GSTAmount" class="control-label"></label>
+                        <input asp-for="GSTAmount" id="EdtGSTAmount" class="form-control GSTAmount" />
+                        <span asp-validation-for="GSTAmount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="GSTPercen" class="control-label"></label>
+                        <input asp-for="GSTPercen" id="EdtGSTPercen" class="form-control GSTPercen" />
+                        <span asp-validation-for="GSTPercen" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="custom-form-control">
+                        <label asp-for="TotalAmount" class="control-label"></label>
+                        <input asp-for="TotalAmount" id="EdtTotalAmount" class="form-control TotalAmount" />
+                        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <input type="submit" value="Submit" class="data-save-btn" />
+
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script type="text/javascript">
+
+    $('#EdtQuantity').keyup(function () {
+
+        var Quantity = $(this).val();
+        var UnitPrice = $("#EdtUnitPrice").val();
+        var Amount = 0.00;
+        var PerAmount = 0.00;
+        var percent = $("#EdtGSTPercen").val();
+        var ProductAmount = UnitPrice * Quantity;
+        //alert(UnitPrice + '-'+Quantity);
+        funCalculateAmount(UnitPrice, Quantity, Amount, percent);
+    });
+
+    $('#EdtUnitPrice').keyup(function () {
+
+        //alert("test");
+        var Quantity = $("#EdtQuantity").val();
+        var UnitPrice = $(this).val();
+        var Amount = 0.00;
+        var PerAmount = 0.00;
+        var percent = $("#EdtGSTPercen").val();
+        var ProductAmount = UnitPrice * Quantity;
+        funCalculateAmount(UnitPrice, Quantity, Amount, percent);
+    });
+
+    $('#EdtGSTPercen').keyup(function () {
+
+        var Quantity = $("#EdtQuantity").val();
+        var UnitPrice = $("#EdtUnitPrice").val();
+        var Amount = 0.00;
+        var PerAmount = 0.00;
+        var percent = $(this).val();
+        var ProductAmount = UnitPrice * Quantity;
+        funCalculateAmount(UnitPrice, Quantity, Amount, percent);
+    });
+
+    function funCalculateAmount(UnitPrice, Quantity, Amount, percent) {
+
+        var percentVal = percent;
+        var ProductAmount = UnitPrice * Quantity;
+        var PercentageAmount = percentage(percentVal, ProductAmount);
+        Amount = (parseFloat(ProductAmount) + parseFloat(PercentageAmount));
+        debugger;
+        var CSGSTAmount = (parseFloat(PercentageAmount) / 2);
+
+        $("#EdtAmount").val(ProductAmount);
+        $("#EdtGSTAmount").val(PercentageAmount);
+        $("#EdtTotalAmount").val(Amount);
+
+        //$("#APAmount").val(Amount);
+        //$("#GSTAmount").val(PercentageAmount);
+        //$("#CGSTAmount").val(CSGSTAmount);
+        //$("#SGSTAmount").val(CSGSTAmount);
+    };
+
+    function percentage(percent, total) {
+        var perAmount = ((percent / 100) * total).toFixed(2);
+
+        return perAmount;
+    };
+
+    $('#EdtProductId').on("change", function () {
+        // alert($(this).attr("id"));
+
+        var valu = $('#EdtProductId').val();
+
+        var ValueType = "SubProduct";
+
+        $.ajax(
+            {
+                url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+                type: 'GET',
+                data: "",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    PopulateDropDown("#EdtSubProductId", data);
+
+                    //***************************** */
+                    $.ajax(
+                        {
+                            url: '/Master/GetProductGSTDetails?Id=' + valu,
+                            type: 'GET',
+                            data: "",
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (data) {
+
+                                debugger;
+                                var gstPercenVal = data.gstPercen;
+                                $("#EdtGSTPercen").val(gstPercenVal);
+                            },
+                            error: function () {
+                                alert("error");
+                            }
+                        });
+
+                    //**************************** */
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+
+    });
+
+    function PopulateDropDown(dropDownId, list) {
+
+        $(dropDownId).empty();
+        $.each(list, function (index, row) {
+            var a = row.value;
+            $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>")
+        });
+    }
+
+</script>

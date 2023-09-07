@@ -84,6 +84,25 @@
                     <input asp-for="AlternativeNo" class="form-control" type="number" />
                 </div>
             </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="PermanentAddress" class="control-label">Address</label>
+                    <textarea asp-for="PermanentAddress" class="form-control" type="text" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="GSTNo" class="control-label">GST Number</label>
+                    <input asp-for="GSTNo" class="form-control" type="text" />
+
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="UserCode" class="control-label">Vendor/Supplier Code</label>
+                    <input asp-for="UserCode" class="form-control" type="text" />
+                </div>
+            </div>
 
             <input type="submit" value="Update" class="data-save-btn" />
         </form>

@@ -113,6 +113,8 @@ namespace SecureGroup.Models
                     student.AadhaarCardName = rdr["AadhaarCardName"].ToString();
                     student.PanCardName = rdr["PanCardName"].ToString();
                     student.VoterCardName = rdr["VoterCardName"].ToString();
+                    student.GSTNo = rdr["GSTNo"].ToString();
+                    student.BloodGroup = rdr["BloodGroup"].ToString();
 
                     lstUser.Add(student);
                 }
@@ -479,6 +481,8 @@ namespace SecureGroup.Models
                 cmd.Parameters.AddWithValue("@PermanentAddress", userViewModel.PermanentAddress);
                 cmd.Parameters.AddWithValue("@PresentAddress", userViewModel.PresentAddress);
                 cmd.Parameters.AddWithValue("@JoiningDate", userViewModel.JoiningDate);
+                cmd.Parameters.AddWithValue("@GSTNo", userViewModel.GSTNo);
+                cmd.Parameters.AddWithValue("@BloodGroup", userViewModel.BloodGroup);
 
                 con.Open();
                 response = cmd.ExecuteNonQuery();
@@ -836,6 +840,9 @@ namespace SecureGroup.Models
                     _leaveApply.LeaveTypeValue = rdr["LeaveTypeValue"].ToString();
                     _leaveApply.LeaveType = (Int32)rdr["LeaveType"];
                     _leaveApply.UserName = rdr["UserName"].ToString();
+                    _leaveApply.ReportingUserLeaveStatusValue = rdr["ReportingUserLeaveStatusValue"].ToString();
+                    _leaveApply.ReportingUserId = Convert.ToInt32(rdr["ReportingUserId"]);
+                    _leaveApply.ReportingUserName = rdr["ReportingUserName"].ToString();
 
                     _leaveApplyList.Add(_leaveApply);
                 }
@@ -1294,8 +1301,296 @@ namespace SecureGroup.Models
                 {
                     PurchaseOrderDetailsViewModel _purchaseOrderItem = new PurchaseOrderDetailsViewModel();
 
+                    _purchaseOrderItem.RowId = Convert.ToInt32(rdr["RowId"]);
                     _purchaseOrderItem.PurchaseOrderDetailsId = Convert.ToInt32(rdr["PurchaseOrderDetailsId"]);
                     _purchaseOrderItem.PurchaseOrderId = Convert.ToInt32(rdr["PurchaseOrderId"]);
+                    _purchaseOrderItem.ProductId = Convert.ToInt32(rdr["ProductId"]);
+                    _purchaseOrderItem.SubProductId = Convert.ToInt32(rdr["SubProductId"]);
+                    _purchaseOrderItem.Thickness = Convert.ToDecimal(rdr["Thickness"]);
+                    _purchaseOrderItem.UnitId = Convert.ToInt32(rdr["UnitId"]);
+                    _purchaseOrderItem.Quantity = Convert.ToDecimal(rdr["Quantity"]);
+                    _purchaseOrderItem.UnitPrice = Convert.ToDecimal(rdr["UnitPrice"]);
+                    _purchaseOrderItem.Amount = Convert.ToDecimal(rdr["Amount"]);
+                    _purchaseOrderItem.GSTTypeId = Convert.ToInt32(rdr["GSTTypeId"]);
+                    _purchaseOrderItem.GSTAmount = Convert.ToDecimal(rdr["GSTAmount"]);
+                    _purchaseOrderItem.GSTPercen = Convert.ToDecimal(rdr["GSTPercen"]);
+                    _purchaseOrderItem.TotalAmount = Convert.ToDecimal(rdr["TotalAmount"]);
+                    _purchaseOrderItem.Comment = rdr["Comment"].ToString();
+                    _purchaseOrderItem.ProductName = rdr["ProductName"].ToString();
+                    _purchaseOrderItem.SubProductName = rdr["SubProductName"].ToString();
+                    _purchaseOrderItem.UnitName = rdr["UnitName"].ToString();
+                    _purchaseOrderItem.GSTType = rdr["GSTType"].ToString();
+                    _purchaseOrderItemList.Add(_purchaseOrderItem);
+                }
+                con.Close();
+            }
+            return _purchaseOrderItemList;
+        }
+
+
+        public IEnumerable<QuatationToPaymentDetailsViewModel> GetQuatationToPaymentListData(int ActionId, int QuatationToPaymentId, int CreatedBy)
+        {
+            List<QuatationToPaymentDetailsViewModel> _quatationToPaymentList = new List<QuatationToPaymentDetailsViewModel>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_QuatationToPaymentManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@QuatationToPaymentId", QuatationToPaymentId);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    QuatationToPaymentDetailsViewModel _quatationToPayment = new QuatationToPaymentDetailsViewModel();
+
+                    _quatationToPayment.QuatationToPaymentId = Convert.ToInt32(rdr["QuatationToPaymentId"]);
+                    _quatationToPayment.UserId = Convert.ToInt32(rdr["UserId"]);
+                    _quatationToPayment.UserName = rdr["UserName"].ToString();
+                    _quatationToPayment.Date = rdr["Date"].ToString();
+                    _quatationToPayment.QuatationFileName = rdr["QuatationFileName"].ToString();
+                    _quatationToPayment.PIFileName = rdr["PIFileName"].ToString();
+                    _quatationToPayment.POId =Convert.ToInt32( rdr["POId"]);
+                    _quatationToPayment.PaymentId =Convert.ToInt32( rdr["PaymentId"]);
+                    _quatationToPayment.IsQuatationComplete =Convert.ToBoolean( rdr["IsQuatationComplete"]);
+                    _quatationToPayment.IsPOComplete =Convert.ToBoolean( rdr["IsPOComplete"]);
+                    _quatationToPayment.IsPIComplete =Convert.ToBoolean( rdr["IsPIComplete"]);
+                    _quatationToPayment.IsPaymentComplete =Convert.ToBoolean( rdr["IsPaymentComplete"]);
+                    _quatationToPayment.IsVFinelBillComplete = Convert.ToBoolean( rdr["IsVFinelBillComplete"]);
+                    _quatationToPayment.VFinelBillFileName = rdr["VFinelBillFileName"].ToString();
+                    _quatationToPayment.QuatationAmount =Convert.ToDecimal(rdr["QuatationAmount"]);
+                    _quatationToPayment.PIAmount =Convert.ToDecimal(rdr["PIAmount"]);
+                    _quatationToPayment.AdvanceAmount =Convert.ToDecimal(rdr["AdvanceAmount"]);
+                    _quatationToPayment.FinalAmount =Convert.ToDecimal(rdr["FinalAmount"]);
+
+                    _quatationToPaymentList.Add(_quatationToPayment);
+                }
+                con.Close();
+            }
+            return _quatationToPaymentList;
+        }
+
+        public IEnumerable<QuatationToPaymentDetailsViewModel> GetVendorQuotationReportData(int ActionId, int QuatationToPaymentId, int CreatedBy)
+        {
+            List<QuatationToPaymentDetailsViewModel> _quatationToPaymentList = new List<QuatationToPaymentDetailsViewModel>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_QuatationToPaymentManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@QuatationToPaymentId", QuatationToPaymentId);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    QuatationToPaymentDetailsViewModel _quatationToPayment = new QuatationToPaymentDetailsViewModel();
+
+                   
+                    _quatationToPayment.UserId = Convert.ToInt32(rdr["UserId"]);
+                    _quatationToPayment.UserName = rdr["UserName"].ToString();                   
+                    _quatationToPayment.QuatationAmount = Convert.ToDecimal(rdr["QuatationAmount"]);
+                    _quatationToPayment.PIAmount = Convert.ToDecimal(rdr["PIAmount"]);
+                    _quatationToPayment.AdvanceAmount = Convert.ToDecimal(rdr["AdvanceAmount"]);
+                    _quatationToPayment.FinalAmount = Convert.ToDecimal(rdr["FinalAmount"]);
+
+                    _quatationToPaymentList.Add(_quatationToPayment);
+                }
+                con.Close();
+            }
+            return _quatationToPaymentList;
+        }
+
+        public int AddUpdateQuatationToPaymentData(int ActionId, QuatationToPaymentDetailsViewModel _quatationToPayment)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_QuatationToPaymentManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@QuatationToPaymentId", _quatationToPayment.QuatationToPaymentId);
+                cmd.Parameters.AddWithValue("@UserId", _quatationToPayment.UserId);
+                cmd.Parameters.AddWithValue("@Date", _quatationToPayment.Date);
+                cmd.Parameters.AddWithValue("@QuatationFileName", _quatationToPayment.QuatationFileName);
+                cmd.Parameters.AddWithValue("@POId", _quatationToPayment.POId);
+                cmd.Parameters.AddWithValue("@PIFileName", _quatationToPayment.PIFileName);
+                cmd.Parameters.AddWithValue("@PaymentId", _quatationToPayment.PaymentId);              
+                cmd.Parameters.AddWithValue("@IsQuatationComplete", _quatationToPayment.IsQuatationComplete);              
+                cmd.Parameters.AddWithValue("@IsPOComplete", _quatationToPayment.IsPOComplete);              
+                cmd.Parameters.AddWithValue("@IsPIComplete", _quatationToPayment.IsPIComplete);              
+                cmd.Parameters.AddWithValue("@IsPaymentComplete", _quatationToPayment.IsPaymentComplete);              
+                cmd.Parameters.AddWithValue("@CreatedBy", _quatationToPayment.CreatedBy);              
+                cmd.Parameters.AddWithValue("@VFinelBillFileName", _quatationToPayment.VFinelBillFileName);              
+                cmd.Parameters.AddWithValue("@IsVFinelBillComplete", _quatationToPayment.IsVFinelBillComplete);              
+                cmd.Parameters.AddWithValue("@QuatationAmount", _quatationToPayment.QuatationAmount);              
+                cmd.Parameters.AddWithValue("@PIAmount", _quatationToPayment.PIAmount);              
+                cmd.Parameters.AddWithValue("@AdvanceAmount", _quatationToPayment.AdvanceAmount);              
+                cmd.Parameters.AddWithValue("@FinalAmount", _quatationToPayment.FinalAmount);              
+
+                con.Open();
+               
+                var resp = cmd.ExecuteReader();
+                while (resp.Read())
+                {
+                    response = Convert.ToInt32(resp["Id"]);
+                }
+                con.Close();
+            }
+            return response;
+        }
+
+        public int AddUpdateInvoiceData(PaymentInvoiceViewModel _purchaseOrder, int ActionId)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_InvoiceManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@InvoiceId", _purchaseOrder.InvoiceId);
+                cmd.Parameters.AddWithValue("@InvoiceNo", _purchaseOrder.InvoiceNo);
+                //cmd.Parameters.AddWithValue("@PurchaseDate", _purchaseOrder.PurchaseDate);
+                cmd.Parameters.AddWithValue("@InvoiceDate", SqlDbType.DateTime).Value = (_purchaseOrder.InvoiceDate == null) ? (object)DBNull.Value : Convert.ToDateTime(_purchaseOrder.InvoiceDate, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+                cmd.Parameters.AddWithValue("@VendorId", _purchaseOrder.VendorId);
+                cmd.Parameters.AddWithValue("@VendorAddress", _purchaseOrder.VendorAddress);
+                cmd.Parameters.AddWithValue("@VendorEmail", _purchaseOrder.VendorEmail);
+                cmd.Parameters.AddWithValue("@VendorGSTNo", _purchaseOrder.VendorGSTNo);
+                cmd.Parameters.AddWithValue("@VendorMobileNo", _purchaseOrder.VendorMobileNo);
+                cmd.Parameters.AddWithValue("@VendorCode", _purchaseOrder.VendorCode);
+                cmd.Parameters.AddWithValue("@ShipTo", _purchaseOrder.ShipTo);
+                cmd.Parameters.AddWithValue("@ShipToAddress", _purchaseOrder.ShipToAddress);
+                cmd.Parameters.AddWithValue("@BillTo", _purchaseOrder.BillTo);
+                cmd.Parameters.AddWithValue("@BillToAddress", _purchaseOrder.BillToAddress);
+                cmd.Parameters.AddWithValue("@BillToGSTNo", _purchaseOrder.BillToGSTNo);
+                cmd.Parameters.AddWithValue("@TermsConditions", _purchaseOrder.TermsConditions);
+                cmd.Parameters.AddWithValue("@CreatedBy", _purchaseOrder.CreatedBy);
+                cmd.Parameters.AddWithValue("@AdvancePaymentPercentage", _purchaseOrder.AdvancePaymentPercentage);
+
+                con.Open();
+                var resp = cmd.ExecuteReader();
+                while (resp.Read())
+                {
+                    response = Convert.ToInt32(resp["Id"]);
+                }
+                con.Close();
+            }
+            return response;
+        }
+
+        public int AddUpdateInvoiceItemData(int ActionId, int InvoiceId, InvoiceItemDetailsViewModel _purchaseOrderItem)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_InvoiceManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@InvoiceItemDetailsId", _purchaseOrderItem.InvoiceItemDetailsId);
+                cmd.Parameters.AddWithValue("@InvoiceId", InvoiceId);
+                cmd.Parameters.AddWithValue("@ProductId", _purchaseOrderItem.ProductId);
+                cmd.Parameters.AddWithValue("@SubProductId", _purchaseOrderItem.SubProductId);
+                cmd.Parameters.AddWithValue("@Thickness", _purchaseOrderItem.Thickness);
+                cmd.Parameters.AddWithValue("@UnitId", _purchaseOrderItem.UnitId);
+                cmd.Parameters.AddWithValue("@Quantity", _purchaseOrderItem.Quantity);
+                cmd.Parameters.AddWithValue("@UnitPrice", _purchaseOrderItem.UnitPrice);
+                cmd.Parameters.AddWithValue("@Amount", _purchaseOrderItem.Amount);
+                cmd.Parameters.AddWithValue("@GSTTypeId", _purchaseOrderItem.GSTTypeId);
+                cmd.Parameters.AddWithValue("@GSTPercen", _purchaseOrderItem.GSTPercen);
+                cmd.Parameters.AddWithValue("@GSTAmount", _purchaseOrderItem.GSTAmount);
+                cmd.Parameters.AddWithValue("@TotalAmount", _purchaseOrderItem.TotalAmount);
+
+                con.Open();
+                response = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return response;
+        }
+
+        public IEnumerable<PaymentInvoiceViewModel> GetInvoiceListData(int ActionId, int InvoiceId, int CreatedBy)
+        {
+            List<PaymentInvoiceViewModel> _purchaseOrderList = new List<PaymentInvoiceViewModel>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_InvoiceManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@InvoiceId", InvoiceId);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    PaymentInvoiceViewModel _purchaseOrder = new PaymentInvoiceViewModel();
+
+                    _purchaseOrder.InvoiceId = Convert.ToInt32(rdr["InvoiceId"]);
+                    _purchaseOrder.InvoiceNo = rdr["InvoiceNo"].ToString();
+                    // _purchaseOrder.PurchaseDate = rdr["PurchaseDate"].ToString();                   
+                    _purchaseOrder.VendorId = Convert.ToInt32(rdr["VendorId"]);
+                    if (!(rdr["InvoiceDate"] is DBNull))
+                        _purchaseOrder.InvoiceDate = Convert.ToDateTime(rdr["InvoiceDate"], System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+                    _purchaseOrder.VendorName = rdr["VendorName"].ToString();
+                    _purchaseOrder.VendorAddress = rdr["VendorAddress"].ToString();
+                    _purchaseOrder.VendorEmail = rdr["VendorEmail"].ToString();
+                    _purchaseOrder.VendorGSTNo = rdr["VendorGSTNo"].ToString();
+                    _purchaseOrder.VendorMobileNo = rdr["VendorMobileNo"].ToString();
+                    _purchaseOrder.VendorCode = rdr["VendorCode"].ToString();
+                    _purchaseOrder.ShipTo = rdr["ShipTo"].ToString();
+                    _purchaseOrder.ShipToAddress = rdr["ShipToAddress"].ToString();
+                    _purchaseOrder.BillTo = rdr["BillTo"].ToString();
+                    _purchaseOrder.BillToAddress = rdr["BillToAddress"].ToString();
+                    _purchaseOrder.BillToGSTNo = rdr["BillToGSTNo"].ToString();
+                    _purchaseOrder.TermsConditions = rdr["TermsConditions"].ToString();
+                    _purchaseOrder.AdvancePaymentPercentage =Convert.ToDecimal(rdr["AdvancePaymentPercentage"]);
+
+
+                    if (InvoiceId > 0)
+                    {
+                        _purchaseOrder.InvoiceItemDetails = GetInvoiceItemListData(4, InvoiceId, 0, 0).ToList();
+                    }
+
+                    _purchaseOrderList.Add(_purchaseOrder);
+                }
+                con.Close();
+            }
+            return _purchaseOrderList;
+        }
+
+        public IEnumerable<InvoiceItemDetailsViewModel> GetInvoiceItemListData(int ActionId, int InvoiceId, int InvoiceItemDetailsId, int CreatedBy)
+        {
+            List<InvoiceItemDetailsViewModel> _purchaseOrderItemList = new List<InvoiceItemDetailsViewModel>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_InvoiceManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@InvoiceId", InvoiceId);
+                cmd.Parameters.AddWithValue("@InvoiceItemDetailsId", InvoiceItemDetailsId);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    InvoiceItemDetailsViewModel _purchaseOrderItem = new InvoiceItemDetailsViewModel();
+
+                    _purchaseOrderItem.RowId = Convert.ToInt32(rdr["RowId"]);
+                    _purchaseOrderItem.InvoiceItemDetailsId = Convert.ToInt32(rdr["InvoiceItemDetailsId"]);
+                    _purchaseOrderItem.InvoiceId = Convert.ToInt32(rdr["InvoiceId"]);
                     _purchaseOrderItem.ProductId = Convert.ToInt32(rdr["ProductId"]);
                     _purchaseOrderItem.SubProductId = Convert.ToInt32(rdr["SubProductId"]);
                     _purchaseOrderItem.Thickness = Convert.ToDecimal(rdr["Thickness"]);

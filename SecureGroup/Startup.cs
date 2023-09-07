@@ -64,7 +64,7 @@ namespace SecureGroup
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Login}/{id?}");
-                   // pattern: "{controller=Order}/{action=Abc}/{id?}");
+                    //pattern: "{controller=Order}/{action=Abc}/{id?}");
             });
         }
     }

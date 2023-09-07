@@ -372,11 +372,13 @@
                         var PermanentAddress = data.permanentAddress;
                         var PresentAddress = data.presentAddress;
                         var VendorEmail = data.email;
-                        var VendorMobileNo = data.MobileNo;
-                        var VendorCode = data.UserCode;
+                        var VendorMobileNo = data.mobileNo;
+                        var VendorCode = data.userCode;
+                        var GSTNo = data.gstNo;
                         $("#VendorAddress").val(PermanentAddress);
                         $("#VendorEmail").val(VendorEmail);
                         $("#VendorMobileNo").val(VendorMobileNo);
+                        $("#VendorGSTNo").val(GSTNo);
                         $("#VendorCode").val(VendorCode);
                     },
                     error: function () {
