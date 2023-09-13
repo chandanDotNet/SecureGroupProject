@@ -1,0 +1,141 @@
+﻿@model SecureGroup.ViewModel.SiteViewModel
+
+@{
+    ViewData["Title"] = "EditSites";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="common-title-headeer">
+    <h1>Edit Site</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i><a asp-controller="Operation" asp-action="SitesList"> Site List</a></button>
+        </li>
+    </ul>
+</div>
+
+
+
+<div class="form-inner">
+
+
+    <form asp-action="EditSites">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="SiteName" class="control-label">Site Name<span>*</span></label>
+                    <input asp-for="SiteName" class="form-control" />
+                    <span asp-validation-for="SiteName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Address" class="control-label">Address<span>*</span></label>
+                    <textarea asp-for="Address" rows="4" class="form-control"> </textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+                       
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="StateId" class="control-label">State</label>
+                    <select asp-for="StateId" id="ddlStateId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.StateList,"Value", "Text"))">
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="CityId" class="control-label">City</label>
+                    <select asp-for="CityId" id="ddlCityId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.CityList,"Value", "Text"))">
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Block" class="control-label">Block</label>
+                    <input asp-for="Block" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="Scheme" class="control-label">Scheme</label>
+                    <input asp-for="Scheme" class="form-control" />
+
+                </div>
+            </div>
+            @* <div class="col-md-12 mb-3">
+            <div class="custom-form-control">
+            <label asp-for="SchemeId" class="control-label">Scheme<span>*</span></label>
+            <select asp-for="SchemeId" id="ddlSchemeId"
+            class="form-control"
+            asp-items="@(new SelectList(Model.SchemeList,"Value", "Text"))">
+            </select>
+            <span asp-validation-for="SchemeId" class="text-danger"></span>
+            </div>
+            </div>*@
+
+            <input type="hidden" asp-for="CountryId" class="form-control" />
+            <input type="hidden" asp-for="SiteId" class="form-control" />
+            <input type="submit" value="Update" class="data-save-btn" />
+
+        </div>
+    </form>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+<script type="text/javascript">
+
+    $("#ddlStateId").on("change", function () {
+
+        var valu = $("#ddlStateId").val();
+        var ValueType = "City";
+        //debugger;
+        // alert(ValueType);
+        $.ajax(
+            {
+                url: '/Inventory/GetDropdownListDataById?Id=' + valu + '&DropdownDataType=' + ValueType,
+                type: 'GET',
+                data: "",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    PopulateDropDown("#ddlCityId", data);
+                    //$("#ddlStateId").html(data);
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+    });
+
+    function PopulateDropDown(dropDownId, list, selectedId) {
+
+        $(dropDownId).empty();
+        //$(dropDownId).append("<option>--Please Select--</option>")
+        $.each(list, function (index, row) {
+            //debugger;
+            var a = row.value;
+            $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>")
+        });
+    }
+
+</script>

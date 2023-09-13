@@ -222,16 +222,30 @@ namespace SecureGroup.Controllers
                 mailMsg.Subject = subject;
                 mailMsg.Body = emailBody;
                 mailMsg.IsBodyHtml = true;
-                SmtpClient smtpClient = new SmtpClient();
-                smtpClient.Host = "smtp.gmail.com";
-                smtpClient.EnableSsl = true;
-                NetworkCredential networkCredential = new NetworkCredential();
-                networkCredential.UserName = "crmsifsl@gmail.com";
-                networkCredential.Password = "Sifsl@12345";
-                smtpClient.UseDefaultCredentials = true;
-                smtpClient.Credentials = networkCredential;
-                smtpClient.Port = 587;
-                smtpClient.Send(mailMsg);
+
+                //SmtpClient smtpClient = new SmtpClient();
+                //smtpClient.Host = "smtp.gmail.com";
+                //smtpClient.EnableSsl = true;
+                //NetworkCredential networkCredential = new NetworkCredential();
+                //networkCredential.UserName = "crmsifsl@gmail.com";
+                //networkCredential.Password = "hkclryrjvlbfjcvy";
+                //smtpClient.UseDefaultCredentials = false;
+                //smtpClient.Credentials = networkCredential;
+                //smtpClient.Port = 587;
+                //smtpClient.Send(mailMsg);
+
+                using (SmtpClient client = new SmtpClient())
+                {
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential("crmsifsl@gmail.com", "hkclryrjvlbfjcvy");
+                    client.Host = "smtp.gmail.com";
+                    client.Port = 587;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+                    client.Send(mailMsg);
+                }
+
                 return true;
             }
             catch (Exception ex)

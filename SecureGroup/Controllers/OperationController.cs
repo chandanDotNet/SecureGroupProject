@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,13 +21,14 @@ namespace SecureGroup.Controllers
         private MsDBContext myDbContext;
         DataAccessLayer _dataAccessLayer = null;
         DataAccessLayerLinq _dataAccessLayerLinq = null;
-
-        public OperationController(ILogger<OperationController> logger, MsDBContext context)
+        private IWebHostEnvironment _env;
+        public OperationController(ILogger<OperationController> logger, MsDBContext context, IWebHostEnvironment env)
         {
             _logger = logger;
             myDbContext = context;
             _dataAccessLayer = new DataAccessLayer();
             _dataAccessLayerLinq = new DataAccessLayerLinq(context);
+            _env = env;
         }
 
         public IActionResult ProjectsList()
@@ -41,10 +43,10 @@ namespace SecureGroup.Controllers
         {
             List<ProjectViewModel> projectListViewModel = new List<ProjectViewModel>();
             int UserId = GetUserSession().UserId;
-            if(UserId > 0)
+            if (UserId > 0)
             {
                 projectListViewModel = _dataAccessLayer.GetAssignedProjectsListData(5, UserId).ToList();
-            }          
+            }
 
             return View(projectListViewModel);
         }
@@ -66,8 +68,8 @@ namespace SecureGroup.Controllers
             ProjectViewModel _projectViewModel = new ProjectViewModel();
             _projectViewModel.StateList = _dataAccessLayerLinq.GetDropDownListData("State", 101);
             _projectViewModel.CityList = _dataAccessLayerLinq.GetDropDownListData("City", 0);
-            _projectViewModel.UserList = _dataAccessLayerLinq.GetDropDownListData("UserByRole", 4);           
-            _projectViewModel.SchemeList = _dataAccessLayerLinq.GetDropDownListData("Scheme", 0);           
+            _projectViewModel.UserList = _dataAccessLayerLinq.GetDropDownListData("UserByRole", 4);
+            _projectViewModel.SchemeList = _dataAccessLayerLinq.GetDropDownListData("Scheme", 0);
             _projectViewModel.StatusList = _dataAccessLayerLinq.GetDropDownListData("SysVal", 0, "ProjectStatus");
             _projectViewModel.ProjectStartDate = DateTime.Now;
             _projectViewModel.ProjectDueDate = DateTime.Now;
@@ -94,7 +96,7 @@ namespace SecureGroup.Controllers
                 else
                 {
                     TempData["errormessage"] = "Something went wrong!";
-                }             
+                }
 
             }
             catch (Exception ex)
@@ -112,13 +114,13 @@ namespace SecureGroup.Controllers
         public IActionResult EditProjects(int Id)
         {
             ProjectViewModel _projectViewModel = new ProjectViewModel();
-            _projectViewModel= _dataAccessLayer.GetProjectsListData(3, Id).FirstOrDefault();
+            _projectViewModel = _dataAccessLayer.GetProjectsListData(3, Id).FirstOrDefault();
             _projectViewModel.StateList = _dataAccessLayerLinq.GetDropDownListData("State", 101);
             _projectViewModel.CityList = _dataAccessLayerLinq.GetDropDownListData("City", _projectViewModel.StateId);
             _projectViewModel.UserList = _dataAccessLayerLinq.GetDropDownListData("UserByRole", 4);
             _projectViewModel.SchemeList = _dataAccessLayerLinq.GetDropDownListData("Scheme", 0);
             _projectViewModel.StatusList = _dataAccessLayerLinq.GetDropDownListData("SysVal", 0, "ProjectStatus");
-            if(_projectViewModel.ProjectDueDate ==null)
+            if (_projectViewModel.ProjectDueDate == null)
             {
                 _projectViewModel.ProjectDueDate = DateTime.Now;
             }
@@ -163,7 +165,7 @@ namespace SecureGroup.Controllers
             {
                 ProjectViewModel _projectViewModel = new ProjectViewModel();
                 _projectViewModel = _dataAccessLayer.GetProjectsListData(3, Id).FirstOrDefault();
-               
+
                 _projectViewModel.CreatedBy = GetUserSession().UserId;
                 response = _dataAccessLayer.AddUpdateProjectsData(_projectViewModel, 4);
 
@@ -189,7 +191,110 @@ namespace SecureGroup.Controllers
 
         public IActionResult SitesList()
         {
-            return View();
+
+            List<SiteViewModel> siteViewModel = new List<SiteViewModel>();
+            siteViewModel = _dataAccessLayer.GetSiteListData(3, 0).ToList();
+
+            return View(siteViewModel);
+        }
+        public IActionResult AddSites()
+        {
+
+            SiteViewModel siteViewModel = new SiteViewModel();
+            siteViewModel.StateList = _dataAccessLayerLinq.GetDropDownListData("State", 101);
+            siteViewModel.CityList = _dataAccessLayerLinq.GetDropDownListData("City", 0);
+
+            return View(siteViewModel);
+        }
+        [HttpPost]
+        public IActionResult AddSites(SiteViewModel siteViewModel)
+        {
+            try
+            {
+                int Response = 0;
+                Response = _dataAccessLayer.AddUpdateSiteData(siteViewModel, 1);
+                if (Response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(SitesList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+
+            }
+            return RedirectToAction("SitesList");
+        }
+
+        public IActionResult EditSites(int Id)
+        {
+
+            SiteViewModel siteViewModel = new SiteViewModel();
+            siteViewModel = _dataAccessLayer.GetSiteListData(3, Id).FirstOrDefault();
+            siteViewModel.StateList = _dataAccessLayerLinq.GetDropDownListData("State", 101);
+            siteViewModel.CityList = _dataAccessLayerLinq.GetDropDownListData("City", siteViewModel.StateId);
+
+            return View(siteViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditSites(SiteViewModel siteViewModel)
+        {
+            try
+            {
+                int Response = 0;
+                Response = _dataAccessLayer.AddUpdateSiteData(siteViewModel, 2);
+                if (Response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(SitesList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+
+            }
+            return RedirectToAction("SitesList");
+        }
+
+        public IActionResult DeleteSites(int Id)
+        {
+
+            try
+            {
+                SiteViewModel siteViewModel = new SiteViewModel();
+                int Response = 0;
+                siteViewModel.SiteId = Id;
+                Response = _dataAccessLayer.AddUpdateSiteData(siteViewModel, 4);
+                if (Response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(SitesList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+
+            }
+            return RedirectToAction("SitesList");
         }
 
         [HttpGet]
@@ -223,11 +328,41 @@ namespace SecureGroup.Controllers
             {
                 TempData["TaskId"] = 0;
             }
+            if(_taskListViewModel.Count>0)
+            {
+                _taskListViewModel[0].TaskStatusList = _dataAccessLayerLinq.GetDropDownListData("SysVal", 0, "TaskStatus");
+            }else
+            {
+                return RedirectToAction("NoTaskAllocation");
+            }
+          
 
-            _taskListViewModel[0].TaskStatusList = _dataAccessLayerLinq.GetDropDownListData("SysVal", 0, "TaskStatus");
+
+
             return View(_taskListViewModel);
 
 
+        }
+
+        public IActionResult NoTaskAllocation()
+        {
+            TaskViewModel _taskViewModel = new TaskViewModel();
+            try
+            {
+
+                _taskViewModel.TaskStatusList = _dataAccessLayerLinq.GetDropDownListData("SysVal", 0, "TaskStatus");
+                _taskViewModel.ProjectList = _dataAccessLayerLinq.GetDropDownListData("Project", 0);
+                _taskViewModel.SiteList = _dataAccessLayerLinq.GetDropDownListData("Site", 0);
+                _taskViewModel.ProjectHeadList = _dataAccessLayerLinq.GetDropDownListData("User", 0);
+                _taskViewModel.UserList = _dataAccessLayerLinq.GetDropDownListData("UserByRole", 4);
+
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
+            return View(_taskViewModel);
         }
 
         public ActionResult _taskUpdateListPartial(int Id)
@@ -266,6 +401,7 @@ namespace SecureGroup.Controllers
             return View(_taskViewModel);
         }
 
+
         [HttpPost]
         public IActionResult AssignTask(TaskViewModel _taskViewModel)
         {
@@ -291,6 +427,46 @@ namespace SecureGroup.Controllers
 
                 if (response > 0)
                 {
+                    var user_Details = _dataAccessLayer.GetAllUser(4, _taskViewModel.AssignTo, 0).FirstOrDefault();
+                    var task_details = _dataAccessLayer.GetAllTaskAllocation(4, response, 0, 0).FirstOrDefault();
+                    var pathToFile = _env.WebRootPath
+                             + Path.DirectorySeparatorChar.ToString()
+                             + "Templates"
+                             + Path.DirectorySeparatorChar.ToString()
+                             + "EmailTemplate"
+                             + Path.DirectorySeparatorChar.ToString()
+                             + "TaskAssignEmail.html";
+
+                    string HtmlBody = string.Empty;
+                    using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+                    {
+                        HtmlBody = SourceReader.ReadToEnd();
+                    }
+
+                    string mailBody = string.Format(HtmlBody,
+                       task_details.AssignToName,
+                       task_details.TaskName,
+                       task_details.ProjectName,
+                       task_details.SiteName,
+                       task_details.TaskPriority,
+                       task_details.TaskDescription,
+                       task_details.TaskStatus,
+                       string.Format("{0:dddd, d MMMM yyyy}", task_details.TaskDueDateTime)
+                       );
+
+
+                    var result = sendEmail("New Task Assigned", mailBody,
+                                            "crmsifsl@gmail.com", user_Details.Email, "", "");
+                    if (result)
+                    {
+                        _dataAccessLayer.EmailConfirmation(1, _taskViewModel.TaskId, "success", _taskViewModel.CreatedBy);
+                    }
+                    else
+                    {
+                        _dataAccessLayer.EmailConfirmation(1, _taskViewModel.TaskId, "failed", _taskViewModel.CreatedBy);
+                    }
+
+
                     TempData["successmessage"] = "Your data has been saved successfully";
                     return RedirectToAction(nameof(TaskAllocation));
                 }
@@ -465,6 +641,7 @@ namespace SecureGroup.Controllers
                 response = _dataAccessLayer.AddUpdateTaskUpdateData(_taskViewModel.TaskUpdate, 6);
                 if (response > 0)
                 {
+                    TaskAllocationEmailManagement(_taskViewModel.AssignTo, TaskId, _taskViewModel.TaskUpdate.CreatedBy, "Assigned Task Updated", _taskViewModel);
                     TempData["successmessage"] = "Your data has been saved successfully";
                     return RedirectToAction("TaskAllocation", new { TaskId = TaskId });
                     //return RedirectToAction(nameof(TaskAllocation), _taskViewModel.TaskUpdate.TaskId);
@@ -485,6 +662,55 @@ namespace SecureGroup.Controllers
 
         }
 
+
+        public string getEmailHtmlTemplate()
+        {
+            var pathToFile = _env.WebRootPath
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "Templates"
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "EmailTemplate"
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "TaskAssignEmail.html";
+            string HtmlBody = string.Empty;
+            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                HtmlBody = SourceReader.ReadToEnd();
+            }
+            return HtmlBody;
+        }
+        public void TaskAllocationEmailManagement(int assignTo, int taskId, int createdBy, string subject, TaskViewModel _taskViewModel)
+        {
+            var task_details = _dataAccessLayer.GetAllTaskAllocation(4, taskId, 0, 0).FirstOrDefault();
+            var user_Details = _dataAccessLayer.GetAllUser(4, task_details.AssignTo, 0).FirstOrDefault();
+            string HtmlBody = getEmailHtmlTemplate();
+            string mailBody = string.Format(HtmlBody,
+               task_details.AssignToName,
+               task_details.TaskName,
+               task_details.ProjectName,
+               task_details.SiteName,
+               task_details.TaskPriority,
+               task_details.TaskDescription,
+               task_details.TaskStatus,
+               string.Format("{0:dddd, d MMMM yyyy}", task_details.TaskDueDateTime),
+               _taskViewModel.TaskUpdate.SpentTime,
+               _taskViewModel.TaskUpdate.TaskStatus,
+               _taskViewModel.TaskUpdate.Comment
+               );
+
+
+
+            var result = sendEmail(subject, mailBody,
+                                    "crmsifsl@gmail.com", user_Details.Email, "", "");
+            if (result)
+            {
+                _dataAccessLayer.EmailConfirmationLog(1, taskId, assignTo, user_Details.Email, "crmsifsl@gmail.com", "", "", subject, mailBody, createdBy, "succeed", "Task Updated Email");
+            }
+            else
+            {
+                _dataAccessLayer.EmailConfirmationLog(1, taskId, assignTo, user_Details.Email, "crmsifsl@gmail.com", "", "", subject, mailBody, createdBy, "failed", "Task Updated Email");
+            }
+        }
 
     }
 }

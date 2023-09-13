@@ -48,6 +48,17 @@
                         swal("Error!", '@TempData["errormessage"]', "error");
                     };
                 </script>
+            }          
+
+
+
+            @if (TempData["successmessage"] != null)
+            {
+                <script type="text/javascript">
+                    window.onload = function () {
+                        swal("success!", '@TempData["successmessage"]', "success");
+                    };
+                </script>
             }
 
             <div class="welcome-header">
@@ -77,7 +88,7 @@
                     <a href="javascript:void(0)" class="toggle-pass"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 </div>
 
-                <a href="" class="f-pass-btn">Forgot Password?</a>
+                <a class="f-pass-btn" asp-action="ForgotPassword" asp-controller="Home">Forgot Password?</a>
                 <img src="~/images/robot.png" class="rbt-png">
                 
                @* <a asp-controller="Home" asp-action="Dashboard" class="login-process-btn" style="display:flex; align-items:center; justify-content:center; text-decoration:none; margin:50px auto 0 auto;">

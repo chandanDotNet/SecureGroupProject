@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
 
@@ -27,11 +30,12 @@ namespace SecureGroup.Controllers
         DataAccessLayerLinq DataAccessLayerLinq = null;
        // HttpContext httpContext= _httpContext;
         public  HttpContext _httpContext;
-
-        public HomeController(ILogger<HomeController> logger, MsDBContext context)
+        private readonly IWebHostEnvironment _env;
+        public HomeController(ILogger<HomeController> logger, MsDBContext context, IWebHostEnvironment env)
         {
             _logger = logger;
             myDbContext = context;
+            this._env = env;
             DataAccessLayer = new DataAccessLayer();
             DataAccessLayerLinq = new DataAccessLayerLinq(context);
         }
@@ -42,14 +46,27 @@ namespace SecureGroup.Controllers
             return View();
         }
 
-        public IActionResult Dashboard(int RoleID)
+        public IActionResult Dashboard()
         {
             var _userSessionData = GetUserSession();
             DashboardViewModel _dModel = new DashboardViewModel();
-            _dModel.RoleId = RoleID;
+            _dModel.RoleId = _userSessionData.RoleId;
+            int UserId=_userSessionData.UserId;
             _dModel.RoleName = _userSessionData.RoleName.ToString();
-                 
+            if(_userSessionData.RoleId==1)
+            {
+                _dModel = DataAccessLayer.GetDashboardData(1, 0);
+            }
+            if(_userSessionData.RoleId == 4)
+            {
+                _dModel = DataAccessLayer.GetDashboardData(2, UserId);
+            }
             
+            _dModel.projectList = DataAccessLayer.GetProjectsListData(3, 0).ToList();
+            _dModel.taskList = DataAccessLayer.GetAllTaskAllocation(4, 0, UserId, 0).ToList();
+            _dModel.RoleId = _userSessionData.RoleId;
+            _dModel.RoleName = _userSessionData.RoleName.ToString();
+
             return View(_dModel);
         }
 
@@ -95,7 +112,7 @@ namespace SecureGroup.Controllers
         public IActionResult Login()
         {
             LoginViewModel _loginViewModel = new LoginViewModel();
-            _loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0).Where(x => x.Value == "1" || x.Value == "4" || x.Value == "2" || x.Value == "5").ToList(); ;
+            _loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0).Where(x => x.Value == "1" || x.Value == "4" || x.Value == "2" || x.Value == "5").ToList(); 
 
             return View(_loginViewModel);
         }
@@ -125,7 +142,7 @@ namespace SecureGroup.Controllers
                         InsertLogInfo(_userViewModel,true);
                         TempData["successmessage"] = "You are successfully logged in";
 
-                        return RedirectToAction("Dashboard", "Home", RoleID);
+                        return RedirectToAction("Dashboard", "Home");
                         //if (RoleID == 1) //Admin
                         //{
                         //    return RedirectToAction("Dashboard", "Home");
@@ -163,8 +180,62 @@ namespace SecureGroup.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult ForgotPasswordVerify()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ForgotPasswordVerify(string otp)
+        {
+            ChangePassword model = new ChangePassword();
+            var email = TempData["email"];
+            TempData.Keep("email");
+            if (otp == null)
+                return NoContent();
+            else 
+            {
+                //if ((DateTime.Now - Convert.ToDateTime(TempData["timestamp"])).TotalSeconds < 30)
+                var result = DataAccessLayer.OtpVerification(2, (string)email, otp);
+                if (result > 0)
+                {
+                    TempData["UserId"] = result;
+                    model.UserId = result;                    
+                    return View("ChangePassword", model);
+                }
+                
+            }
 
-      
+            return View("ChangePassword", model);
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePassword changePassword)
+        {
+            if (ModelState.IsValid)
+            {
+                changePassword.NewPassword = EncryptionLibrary.EncryptText(changePassword.NewPassword);
+                var response = DataAccessLayer.ChangePasswordManagement(3, changePassword);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Password changed successfully";
+                    return RedirectToAction("Login", "Home");
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+
+            }
+            return View();
+        }
+
+
 
         [HttpGet]
         public ActionResult Logout()
@@ -222,23 +293,60 @@ namespace SecureGroup.Controllers
 
 
         }
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
+       
+        [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
-
-
         }
 
-        public IActionResult ForgotPasswordVerify()
+
+
+        public string getPasswordEmailHtmlTemplate()
         {
-            return View();
-
-
+            var pathToFile = _env.WebRootPath
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "Templates"
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "EmailTemplate"
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "ForgetPasswordEmail.html";
+            string HtmlBody = string.Empty;
+            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                HtmlBody = SourceReader.ReadToEnd();
+            }
+            return HtmlBody;
         }
+
+
+
+        public int GenerateOtp()
+        {
+            int _min = 1000;
+            int _max = 9999;
+            Random _rdm = new Random();
+            return _rdm.Next(_min, _max);
+        }
+        [HttpPost]
+        public JsonResult ForgotPassword(string email)
+        {
+            string HtmlBody = getPasswordEmailHtmlTemplate();
+            var otp = GenerateOtp();
+            string mailBody = HtmlBody.Replace("{OTP}", otp.ToString());
+            var result = sendEmail("Forget Password", mailBody, "crmsifsl@gmail.com", email, "", "");
+            if (result)
+            {
+                DataAccessLayer.AddUpdateOtp(1, email, otp);
+            }
+            //DataAccessLayer.AddUpdateOtp(1, email, otp);
+            TempData["email"] = email;
+            TempData["timestamp"] = DateTime.Now;
+            return Json("Otp sent successfully");
+            //return View();
+        }
+
+       
 
         public IActionResult MyAccount()
         {
@@ -267,6 +375,8 @@ namespace SecureGroup.Controllers
                     _userKYC.AadhaarCardName = _user.AadhaarCardName;
                     _userKYC.PanCardName = _user.PanCardName;
                     _userKYC.VoterCardName = _user.VoterCardName;
+                    _userKYC.GSTFormName = _user.GSTFormName;
+                    _userKYC.VendorFormName = _user.VendorFormName;
                 }
             }
             return View(_userKYC);
@@ -320,7 +430,31 @@ namespace SecureGroup.Controllers
                             _userKYC.VoterCardName = _uploadFileResponse.FileName;
                         }
                     }
-                }        
+                }
+                if (_userKYC.GSTForm != null)
+                {
+                    UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();
+                    _uploadFileResponse = UploadFile(_userKYC.GSTForm, "Upload/UserKYC");
+                    if (_uploadFileResponse != null)
+                    {
+                        if (_uploadFileResponse.UploadSuccess == true)
+                        {
+                            _userKYC.GSTFormName = _uploadFileResponse.FileName;
+                        }
+                    }
+                }
+                if (_userKYC.VendorForm != null)
+                {
+                    UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();
+                    _uploadFileResponse = UploadFile(_userKYC.VendorForm, "Upload/UserKYC");
+                    if (_uploadFileResponse != null)
+                    {
+                        if (_uploadFileResponse.UploadSuccess == true)
+                        {
+                            _userKYC.VendorFormName = _uploadFileResponse.FileName;
+                        }
+                    }
+                }
 
                 response = DataAccessLayer.UpdateUserKYCData(5,_userKYC);              
                 if (response > 0)
@@ -409,6 +543,30 @@ namespace SecureGroup.Controllers
         {
             string subject="Test", emailBody="This is test email", fromEmail= "crmsifsl@gmail.com", toEmail="mr.cmandal@gmail.com", ccEmail=null, bccEmail=null;
            bool a= sendEmail(subject, emailBody, fromEmail, toEmail, ccEmail, bccEmail);
+
+
+            //MailMessage msg = new MailMessage();
+
+            //msg.From = new MailAddress("crmsifsl@gmail.com");
+            //msg.To.Add("mr.cmandal@gmail.com");
+            //msg.Subject = "test";
+            //msg.Body = "Test Content";
+            ////msg.Priority = MailPriority.High;
+
+
+            //using (SmtpClient client = new SmtpClient())
+            //{
+            //    client.EnableSsl = true;
+            //    client.UseDefaultCredentials = false;
+            //    client.Credentials = new NetworkCredential("crmsifsl@gmail.com", "hkclryrjvlbfjcvy");
+            //    client.Host = "smtp.gmail.com";
+            //    client.Port = 587;
+            //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+            //    client.Send(msg);
+            //}
+
+
             return View(a);
         }
     }

@@ -26,7 +26,7 @@
                 <div class="custom-form-control">
                     <label asp-for="AadhaarCard" class="control-label">Aadhaar Card<span>*</span></label>
                     <input asp-for="AadhaarCard" class="form-control" />
-                    <span asp-validation-for="AadhaarCard" class="text-danger"></span>
+                   @* <span asp-validation-for="AadhaarCard" class="text-danger"></span>*@
                 </div>
             </div>
             <div class="col-md-2 mb-3">
@@ -48,7 +48,7 @@
                 <div class="custom-form-control">
                     <label asp-for="PanCard" class="control-label">Pan Card<span>*</span></label>
                     <input asp-for="PanCard" class="form-control" />
-                    <span asp-validation-for="PanCard" class="text-danger"></span>
+                  @*  <span asp-validation-for="PanCard" class="text-danger"></span>*@
                 </div>
             </div>
             <div class="col-md-2 mb-3">
@@ -81,6 +81,44 @@
                     else
                     {
                         @Html.ActionLink("", "DownloadFile", new { filename=Model.VoterCardName}, new { @class = "text-success mt-5 fa fa-download",@id="btnVoterCardName"})
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-10 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="GSTForm" class="control-label">GST Form</label>
+                    <input asp-for="GSTForm" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2 mb-3">
+                <div class="custom-form-control">
+                    @if (Model.GSTFormName == null || Model.GSTFormName == "")
+                    {
+                        <i class="fa fa-times no-data-badge mt-4" aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("", "DownloadFile", new { filename=Model.GSTFormName}, new { @class = "text-success mt-5 fa fa-download",@id="btnGSTFormName"})
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-10 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="VendorForm" class="control-label">Vendor Form</label>
+                    <input asp-for="VendorForm" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-2 mb-3">
+                <div class="custom-form-control">
+                    @if (Model.VendorFormName == null || Model.VendorFormName == "")
+                    {
+                        <i class="fa fa-times no-data-badge mt-4" aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("", "DownloadFile", new { filename=Model.VendorFormName}, new { @class = "text-success mt-5 fa fa-download",@id="btnVendorFormName"})
                     }
                 </div>
             </div>

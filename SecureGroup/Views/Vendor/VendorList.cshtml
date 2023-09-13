@@ -64,6 +64,9 @@
                             <th>Name</th>
                             <th>Contact No</th>
                             <th>Email</th>
+                            <th>Vendor Code</th>
+                            <th>GST No</th>
+                            <th>Address</th>
                             <th>Action</th>
                         </tr>
 
@@ -76,7 +79,7 @@
                                 <td>#@Html.DisplayFor(modelItem => item.UserId)</td>
                                 <td>
                                     <div class="custom-author">
-                                        <div class="img"><img src="~/images\avatar.png" /></div>
+                                       @* <div class="img"><img src="~/images\avatar.png" /></div>*@
                                         <p>@Html.DisplayFor(modelItem => item.BusinessName)</p>
                                     </div>
                                 </td>
@@ -85,7 +88,9 @@
                                     <br />Mobile:<span class="bi bi-phone"></span> @Html.DisplayFor(modelItem => item.MobileNo)
                                     <br />Landline: @Html.DisplayFor(modelItem => item.LandlineNo)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
-
+                                <td>@Html.DisplayFor(modelItem => item.UserCode)</td>
+                                <td>@Html.DisplayFor(modelItem => item.GSTNo)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PermanentAddress)</td>
                                 <td>
 
                                     <div class="dropdown td-action-dot">
@@ -121,6 +126,9 @@
                             <th>Name</th>
                             <th>Contact No</th>
                             <th>Email</th>
+                            <th>Supplier Code</th>
+                            <th>GST No</th>
+                            <th>Address</th>
                             <th>Action</th>
                         </tr>
 
@@ -133,13 +141,16 @@
                                 <td>#@Html.DisplayFor(modelItem => item.UserId)</td>
                                 <td>
                                     <div class="custom-author">
-                                        <div class="img"><img src="~/images\avatar.png" /></div>
+                                      @*  <div class="img"><img src="~/images\avatar.png" /></div>*@
                                         <p>@Html.DisplayFor(modelItem => item.BusinessName)</p>
                                     </div>
                                 </td>
                                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                 <td>@Html.DisplayFor(modelItem => item.ContactNo)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => item.UserCode)</td>
+                                <td>@Html.DisplayFor(modelItem => item.GSTNo)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PermanentAddress)</td>
 
                                 <td>
 

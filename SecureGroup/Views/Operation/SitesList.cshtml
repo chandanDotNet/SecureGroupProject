@@ -1,23 +1,43 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<SecureGroup.ViewModel.SiteViewModel>
 @{
     ViewData["Title"] = "SitesList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!-- DataTable -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+
+<!-- End DataTable -->
 
 <ul class="addbtns">
     <li>
-        <button class="header-add-btn" data-widget="control-sidebar1" data-slide="false" href="#" role="button"><i class="fa fa-plus" aria-hidden="true"></i>ADD SITE</button>
+        <button class="header-add-btn"  role="button"><i class="fa fa-plus" aria-hidden="true"></i><a asp-controller="Operation" asp-action="AddSites">Add Site</a></button>
     </li>
 </ul>
 <div class="warehouse-data table-responsive">
 
-    <table>
+    <table id="example">
         <thead>
             <tr>
                 <th>SL No.</th>
                 <th>Site Name</th>
-                <th>Project Name</th>
-                <th>Location</th>
+                <th>Address</th>
+                <th>State</th>
+                <th>City</th>
+                <th>Block</th>
+                @*<th>ZipCode</th>*@
+                <th>Scheme</th>
 
                 <th></th>
             </tr>
@@ -25,11 +45,15 @@
         </thead>
 
         <tbody>
+             @foreach (var item in Model)
+                        {
             <tr>
-                <td>01</td>
-                <td>ERC Site</td>
+                    <td>@Html.DisplayFor(modelItem => item.SiteId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SiteName)</td>
                 <td>
-                    <div class="table-inner-card">
+                        @Html.DisplayFor(modelItem => item.Address)                       
+                       
+                   @* <div class="table-inner-card">
                         <div class="icon">
                             <img src="~/images/registgericon.svg" class="login-logo" alt="">
                         </div>
@@ -37,134 +61,33 @@
                             <h3>Construction Project</h3>
                             <p>Site Work</p>
                         </div>
-                    </div>
+                    </div>*@
                 </td>
-                <td>Hyderabad</td>
+                    <td>@Html.DisplayFor(modelItem => item.StateName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CityName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Block)</td>
+                   @* <td>@Html.DisplayFor(modelItem => item.ZipCode)</td>*@
+                    <td>@Html.DisplayFor(modelItem => item.Scheme)</td>
 
-                <td>
+              @*  <td>
                     <button class="location-map"><img src="~/images/treasure-map.svg" class="login-logo" alt=""></button>
-                </td>
+                </td>*@
 
-                <td>
+                    <td>
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>@Html.ActionLink("Edit", "EditSites", new { Id=item.SiteId}, new { @class = "dropdown-item"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteSites", new { Id=item.SiteId},new { @class = "dropdown-item"})</li>
 
-                    <div class="dropdown td-action-dot">
-                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                        </ul>
-                    </div>
-                </td>
+                            </ul>
+                        </div>
+                    </td>
             </tr>
-            <tr>
-                <td>01</td>
-                <td>ERC Site</td>
-                <td>
-                    <div class="table-inner-card">
-                        <div class="icon">
-                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
-                        </div>
-                        <div class="content">
-                            <h3>Construction Project</h3>
-                            <p>Site Work</p>
-                        </div>
-                    </div>
-                </td>
-                <td>Hyderabad</td>
-
-                <td>
-                    <button class="location-map"><img src="~/images/treasure-map.svg" class="login-logo" alt=""></button>
-                </td>
-
-                <td>
-
-                    <div class="dropdown td-action-dot">
-                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td>01</td>
-                <td>ERC Site</td>
-                <td>
-                    <div class="table-inner-card">
-                        <div class="icon">
-                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
-                        </div>
-                        <div class="content">
-                            <h3>Construction Project</h3>
-                            <p>Site Work</p>
-                        </div>
-                    </div>
-                </td>
-                <td>Hyderabad</td>
-
-                <td>
-                    <button class="location-map"><img src="~/images/treasure-map.svg" class="login-logo" alt=""></button>
-                </td>
-
-                <td>
-
-                    <div class="dropdown td-action-dot">
-                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td>01</td>
-                <td>ERC Site</td>
-                <td>
-                    <div class="table-inner-card">
-                        <div class="icon">
-                            <img src="~/images/registgericon.svg" class="login-logo" alt="">
-                        </div>
-                        <div class="content">
-                            <h3>Construction Project</h3>
-                            <p>Site Work</p>
-                        </div>
-                    </div>
-                </td>
-                <td>Hyderabad</td>
-
-                <td>
-                    <button class="location-map"><img src="~/images/treasure-map.svg" class="login-logo" alt=""></button>
-                </td>
-
-                <td>
-
-                    <div class="dropdown td-action-dot">
-                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-
+           
+            }
 
 
 
@@ -287,3 +210,16 @@
 
 </div>
 
+<script type="text/javascript">
+    //new DataTable('#example');
+    $('#example').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
+</script>

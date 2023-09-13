@@ -1301,7 +1301,13 @@ namespace SecureGroup.Controllers
             viewModel.ProductList = _dataAccessLayerLinq.GetDropDownListData("Product", 0);
             viewModel.SubProductList = _dataAccessLayerLinq.GetDropDownListData("AllSubProduct", 0);
             viewModel.UnitList = _dataAccessLayerLinq.GetDropDownListData("Unit", 0);
-            viewModel.VendorList = _dataAccessLayerLinq.GetDropDownListData("Vendor&Supplier", 0);            
+            viewModel.VendorList = _dataAccessLayerLinq.GetDropDownListData("Vendor&Supplier", 0);
+            //viewModel.PurchaseDate = DateTime.Now;
+            if (viewModel.PurchaseDate == Convert.ToDateTime("01-01-0001 00:00:00"))
+            {
+                //{01-01-0001 00:00:00}
+                viewModel.PurchaseDate= DateTime.Now;
+            }
 
             return View(viewModel);
 

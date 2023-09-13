@@ -115,6 +115,8 @@ namespace SecureGroup.Models
                     student.VoterCardName = rdr["VoterCardName"].ToString();
                     student.GSTNo = rdr["GSTNo"].ToString();
                     student.BloodGroup = rdr["BloodGroup"].ToString();
+                    student.GSTFormName = rdr["GSTFormName"].ToString();
+                    student.VendorFormName = rdr["VendorFormName"].ToString();
 
                     lstUser.Add(student);
                 }
@@ -123,6 +125,37 @@ namespace SecureGroup.Models
             return lstUser;
         }
 
+        public DashboardViewModel GetDashboardData(int ActionId, int Id)
+        {
+            DashboardViewModel _dashboard = new DashboardViewModel();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_DashboardManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@Id", Id);
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    //DashboardViewModel _dashboard = new DashboardViewModel();
+
+                    _dashboard.ProjectCount = Convert.ToInt32(rdr["ProjectCount"]);
+                    _dashboard.TaskCount = Convert.ToInt32(rdr["TaskCount"]);
+                    _dashboard.ActiveTaskCount = Convert.ToInt32(rdr["ActiveTaskCount"]);
+                    _dashboard.SiteCount = Convert.ToInt32(rdr["SiteCount"]);                    
+                    _dashboard.AdminCount = Convert.ToInt32(rdr["AdminCount"]);
+                    _dashboard.EmployeeCount = Convert.ToInt32(rdr["EmployeeCount"]);
+                    _dashboard.VendorCount = Convert.ToInt32(rdr["VendorCount"]);
+                    _dashboard.SupplierCount = Convert.ToInt32(rdr["SupplierCount"]);
+                    //_dashboardData.Add(_dashboard);
+                }
+                con.Close();
+            }
+            return _dashboard;
+        }
 
         public List<CountryMaster> GetCountry()
         {
@@ -505,6 +538,8 @@ namespace SecureGroup.Models
                 cmd.Parameters.AddWithValue("@AadhaarCardName", userKYC.AadhaarCardName);
                 cmd.Parameters.AddWithValue("@PanCardName", userKYC.PanCardName);
                 cmd.Parameters.AddWithValue("@VoterCardName", userKYC.VoterCardName);
+                cmd.Parameters.AddWithValue("@GSTFormName", userKYC.GSTFormName);
+                cmd.Parameters.AddWithValue("@VendorFormName", userKYC.VendorFormName);
 
                 con.Open();
                 response = cmd.ExecuteNonQuery();
@@ -553,11 +588,15 @@ namespace SecureGroup.Models
                 cmd.Parameters.AddWithValue("@TaskDescription", taskViewModel.TaskDescription);
                 cmd.Parameters.AddWithValue("@TaskDocument", taskViewModel.TaskDocumentName);
                 cmd.Parameters.AddWithValue("@TaskStatus", taskViewModel.TaskStatus);
-                cmd.Parameters.AddWithValue("@CreatedBy", taskViewModel.CreatedBy);             
+                cmd.Parameters.AddWithValue("@CreatedBy", taskViewModel.CreatedBy);
 
 
                 con.Open();
-                response = cmd.ExecuteNonQuery();
+                var resp = cmd.ExecuteReader();
+                while (resp.Read())
+                {
+                    response = Convert.ToInt32(resp["Id"]);
+                }
                 con.Close();
             }
             return response;
@@ -991,6 +1030,71 @@ namespace SecureGroup.Models
                 con.Close();
             }
             return _documentList;
+        }
+
+
+        public IEnumerable<SiteViewModel> GetSiteListData(int ActionId, int SiteId)
+        {
+            List<SiteViewModel> _siteList = new List<SiteViewModel>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_SiteManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@SiteId", SiteId);
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    SiteViewModel _site = new SiteViewModel();
+
+                    _site.SiteId = Convert.ToInt32(rdr["SiteId"]);
+                    _site.SiteName = rdr["SiteName"].ToString();
+                    _site.Address = rdr["Address"].ToString();
+                    _site.StateId = Convert.ToInt32(rdr["StateId"]);
+                    _site.StateName = rdr["StateName"].ToString();
+                    _site.CityId = Convert.ToInt32(rdr["CityId"]);
+                    _site.CityName = rdr["CityName"].ToString();
+                    _site.Block = rdr["Block"].ToString();
+                    _site.Scheme = rdr["Scheme"].ToString();
+                    _site.ZipCode = rdr["ZipCode"].ToString();
+                    _site.CountryId = Convert.ToInt32(rdr["CountryId"]);
+
+
+
+                    _siteList.Add(_site);
+                }
+                con.Close();
+            }
+            return _siteList;
+        }
+
+        public int AddUpdateSiteData(SiteViewModel _siteModel, int ActionId)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_SiteManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@SiteId", _siteModel.SiteId);
+                cmd.Parameters.AddWithValue("@SiteName", _siteModel.SiteName);
+                cmd.Parameters.AddWithValue("@Address", _siteModel.Address);
+                cmd.Parameters.AddWithValue("@StateId", _siteModel.StateId);
+                cmd.Parameters.AddWithValue("@CityId", _siteModel.CityId);
+                cmd.Parameters.AddWithValue("@Block", _siteModel.Block);
+                cmd.Parameters.AddWithValue("@Scheme", _siteModel.Scheme);
+                cmd.Parameters.AddWithValue("@ZipCode", _siteModel.ZipCode);
+                cmd.Parameters.AddWithValue("@CountryId", _siteModel.CountryId);
+                cmd.Parameters.AddWithValue("@CreatedBy", _siteModel.CreatedBy);
+                con.Open();
+                response = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return response;
         }
 
 
@@ -1613,6 +1717,109 @@ namespace SecureGroup.Models
             }
             return _purchaseOrderItemList;
         }
+
+        public void EmailConfirmation(int ActionId, int TaskId, string Result, int CreatedBy)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_EmailConfirmation", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@TaskId", TaskId);
+                cmd.Parameters.AddWithValue("@Result", Result);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                con.Open();
+                response = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        //R--
+        public void AddUpdateOtp(int ActionId, string Email, int Otp)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_OtpManagemnent", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@Email", Email);
+                cmd.Parameters.AddWithValue("@Otp", Otp);
+                con.Open();
+                response = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+
+
+        public int OtpVerification(int ActionId, string Email, string Otp)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_OtpManagemnent", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@Email", Email);
+                cmd.Parameters.AddWithValue("@Otp", Otp);
+                con.Open();
+                var resp = cmd.ExecuteReader();
+                while (resp.Read())
+                {
+                    response = Convert.ToInt32(resp["UserId"]);
+                }
+                con.Close();
+            }
+            return response;
+        }
+
+
+
+        public int ChangePasswordManagement(int ActionId, ChangePassword changePassword)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_PasswordManagemnent", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@UserId", changePassword.UserId);
+                cmd.Parameters.AddWithValue("@Password", changePassword.NewPassword);
+                con.Open();
+                response = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return response;
+        }
+
+        public void EmailConfirmationLog(int ActionId, int TaskId, int AssignTo, string ToEmail, string FromEmail, string CcEmail,
+            string BccEmail, string Subject, string MailBody, int CreatedBy, string Status, string Flag)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("usp_EmailConfirmation", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@TaskId", TaskId);
+                cmd.Parameters.AddWithValue("@AssignTo", AssignTo);
+                cmd.Parameters.AddWithValue("@ToEmail", ToEmail);
+                cmd.Parameters.AddWithValue("@FromEmail", FromEmail);
+                cmd.Parameters.AddWithValue("@CcEmail", CcEmail);
+                cmd.Parameters.AddWithValue("@BccEmail", BccEmail);
+                cmd.Parameters.AddWithValue("@Subject", Subject);
+                cmd.Parameters.AddWithValue("@MailBody", MailBody);
+                cmd.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                cmd.Parameters.AddWithValue("@Status", Status);
+                cmd.Parameters.AddWithValue("@Flag", Flag);
+                con.Open();
+                response = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+        //--
 
     }
 }

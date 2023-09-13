@@ -250,6 +250,9 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        //$('#PurchaseDate').val(dateToInput(new Date()));
+        //$('#PurchaseDate').val(moment().format('DD-MM-YYYY'));
         //$(document).on("click", ".classAdd", function () { //
         //    debugger;
         //    var rowCount = $('.data-contact-person').length;
@@ -570,6 +573,14 @@
             $('#partial-purchaseItem-load').load('/Order/_AddEditPurchaseItemPartial?PurchaseOrderDetailsId=' + PurchaseOrderDetailsId + '&PurchaseOrderId=' + PurchaseOrderId + '&QuatationToPaymentId=' + QuatationToPaymentId);
 
         });
+
+        function getDate() {
+            var today = new Date();
+
+            document.getElementById("date").value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+
+        }
 
     });
 </script>

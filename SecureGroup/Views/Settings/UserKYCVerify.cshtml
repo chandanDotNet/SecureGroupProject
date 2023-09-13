@@ -70,6 +70,34 @@
                 </div>
             </div>
 
+        <div class="col-md-12 mb-3">
+            <div class="custom-form-control  d-flex align-items-center gs-3 w-30">
+                <label asp-for="GSTFormName" class="control-label m-0">GST Form</label>
+                @if (Model.GSTFormName == null || Model.GSTFormName == "")
+                {
+                    <i class="fa fa-times no-data-badge" aria-hidden="true"></i>
+                }
+                else
+                {
+                    @Html.ActionLink(" Download", "DownloadFile", new { filename=Model.GSTFormName}, new { @class = "btn btn-info fa fa-download",@id="btnGSTFormName"})
+                }
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <div class="custom-form-control  d-flex align-items-center gs-3 w-30">
+                <label asp-for="VendorFormName" class="control-label m-0">Vendor Form</label>
+                @if (Model.VendorFormName == null || Model.VendorFormName == "")
+                {
+                    <i class="fa fa-times no-data-badge" aria-hidden="true"></i>
+                }
+                else
+                {
+                    @Html.ActionLink(" Download", "DownloadFile", new { filename=Model.VendorFormName}, new { @class = "btn btn-info fa fa-download",@id="btnVendorFormName"})
+                }
+            </div>
+        </div>
+
             <input type="hidden" asp-for="UserId" class="form-control" />
           @*  <input type="submit" value="Verify" class="data-save-btn" />*@
        @* <button type="submit" class="header-add-btn"><i class="fa fa-check" aria-hidden="true"></i><a asp-controller="Settings" asp-action="UpdateKYCVerify" asp-route-Id="@Model.UserId"> Verify</a></button>*@

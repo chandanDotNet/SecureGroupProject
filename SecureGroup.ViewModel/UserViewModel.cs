@@ -59,6 +59,8 @@ namespace SecureGroup.ViewModel
         public string VoterCardName { get; set; }
         public string GSTNo { get; set; }
         public string BloodGroup { get; set; }
+        public string GSTFormName { get; set; }
+        public string VendorFormName { get; set; }
 
         public IList<SelectListItem> RoleList { get; set; }
         public IList<SelectListItem> DepartmentList { get; set; }
@@ -73,9 +75,13 @@ namespace SecureGroup.ViewModel
         public string AadhaarCardName { get; set; }
         public string PanCardName { get; set; }
         public string VoterCardName { get; set; }
+        public string GSTFormName { get; set; }
+        public string VendorFormName { get; set; }
 
-        public IFormFile AadhaarCard { get; set; }
-        public IFormFile PanCard { get; set; }
+        public IFormFile? AadhaarCard { get; set; }
+        public IFormFile? PanCard { get; set; }
         public IFormFile? VoterCard { get; set; }
+        public IFormFile? GSTForm { get; set; }
+        public IFormFile? VendorForm { get; set; }
     }
 }

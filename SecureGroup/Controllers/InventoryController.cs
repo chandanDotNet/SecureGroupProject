@@ -166,6 +166,36 @@ namespace SecureGroup.Controllers
             
         }
 
+        public IActionResult DeleteWarehouse(int Id)
+        {
+            int response = 0;
+            WarehouseViewModel warehouseViewModel = new WarehouseViewModel();
+            try
+            {
+                warehouseViewModel.WarehouseId = Id;
+                response = _dataAccessLayer.AddWarehouse(warehouseViewModel, 8);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(WarehouseList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+
+            }
+            //}
+            return RedirectToAction(nameof(WarehouseList));
+            //return PartialView("_CreateWarehouse");
+
+        }
+
         //[HttpPost, ActionName("GetStateByCountryId")]
         [HttpGet]
         public JsonResult GetDropdownListDataById(string Id, string DropdownDataType)
