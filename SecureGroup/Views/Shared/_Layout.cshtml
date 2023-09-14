@@ -53,7 +53,13 @@
             string UserRoleId = @Context.Session.GetString("RoleID");
             string UserRoleName = @Context.Session.GetString("RoleName");
         }
-        
+@*
+        @if (UserRoleId == null || UserRoleId=="")
+        {
+            
+
+        }
+*@
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -166,7 +172,6 @@
                                     <i class="fa fa-user-o" aria-hidden="true"></i>
                                     <p>
                                         Vendor
-
                                     </p>
                                 </a>
                             </li>
@@ -347,6 +352,13 @@
                                             <p>Create Role</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="Home" asp-action="LogManagement" class="nav-link">
+                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            <p>Log Management</p>
+                                        </a>
+                                    </li>
+                                    
 
                                 </ul>
                             </li>

@@ -1800,7 +1800,7 @@ namespace SecureGroup.Models
             int response = 0;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("usp_EmailConfirmation", con);
+                SqlCommand cmd = new SqlCommand("SP_EmailConfirmation", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@ActionId", ActionId);
                 cmd.Parameters.AddWithValue("@TaskId", TaskId);
@@ -1820,6 +1820,42 @@ namespace SecureGroup.Models
             }
         }
         //--
+
+
+        public IEnumerable<LogManagementViewModel> GetAllUserLogManagement(int ActionId, int UserId, int RoleId)
+        {
+            List<LogManagementViewModel> UserLogManagement = new List<LogManagementViewModel>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_LogManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@UserId", UserId);
+                cmd.Parameters.AddWithValue("@RoleId", RoleId);
+
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    LogManagementViewModel logManagement = new LogManagementViewModel();
+
+                    logManagement.Id = Convert.ToInt32(rdr["Id"]);
+                    logManagement.UserId = Convert.ToInt32(rdr["UserId"]);
+                    logManagement.UserName = rdr["Name"].ToString();
+                    logManagement.RoleName = rdr["RoleName"].ToString();
+                    logManagement.Email = rdr["Email"].ToString();
+                    logManagement.IpAddress = rdr["IpAddress"].ToString();
+                    logManagement.LogDateTime = rdr["LogDateTime"].ToString();
+                    logManagement.LoginStatus = rdr["LoginStatus"].ToString();
+
+                    UserLogManagement.Add(logManagement);
+                }
+                con.Close();
+            }
+            return UserLogManagement;
+        }
 
     }
 }

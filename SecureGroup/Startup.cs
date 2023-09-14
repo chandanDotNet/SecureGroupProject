@@ -35,7 +35,9 @@ namespace SecureGroup
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContextPool<MsDBContext>(option => option.UseSqlServer(connectionString));
-          //  services.AddSingleton<IHR, HRConcrete>();
+            //  services.AddSingleton<IHR, HRConcrete>();
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

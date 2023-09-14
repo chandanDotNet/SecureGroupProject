@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using SecureGroup.DBContexts;
 using SecureGroup.Models;
 using SecureGroup.ViewModel;
+using SecureGroup.ViewModel.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -453,17 +454,18 @@ namespace SecureGroup.Controllers
                        task_details.TaskStatus,
                        string.Format("{0:dddd, d MMMM yyyy}", task_details.TaskDueDateTime)
                        );
-
+                    string subject = "New Task Assigned";
 
                     var result = sendEmail("New Task Assigned", mailBody,
                                             "crmsifsl@gmail.com", user_Details.Email, "", "");
                     if (result)
                     {
-                        _dataAccessLayer.EmailConfirmation(1, _taskViewModel.TaskId, "success", _taskViewModel.CreatedBy);
+                        // _dataAccessLayer.EmailConfirmation(1, _taskViewModel.TaskId, "success", _taskViewModel.CreatedBy);
+                        _dataAccessLayer.EmailConfirmationLog(1, _taskViewModel.TaskId, _taskViewModel.AssignTo, user_Details.Email, "crmsifsl@gmail.com", "", "", subject, mailBody, _taskViewModel.CreatedBy, "succeed", "New Task Email");
                     }
                     else
                     {
-                        _dataAccessLayer.EmailConfirmation(1, _taskViewModel.TaskId, "failed", _taskViewModel.CreatedBy);
+                        _dataAccessLayer.EmailConfirmationLog(1, _taskViewModel.TaskId, _taskViewModel.AssignTo, user_Details.Email, "crmsifsl@gmail.com", "", "", subject, mailBody, _taskViewModel.CreatedBy, "failed", "New Task Email");
                     }
 
 
@@ -671,7 +673,7 @@ namespace SecureGroup.Controllers
                     + Path.DirectorySeparatorChar.ToString()
                     + "EmailTemplate"
                     + Path.DirectorySeparatorChar.ToString()
-                    + "TaskAssignEmail.html";
+                    + "TaskAssignEmailUpdate.html";
             string HtmlBody = string.Empty;
             using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
             {

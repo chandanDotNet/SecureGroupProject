@@ -331,18 +331,32 @@ namespace SecureGroup.Controllers
         [HttpPost]
         public JsonResult ForgotPassword(string email)
         {
+            int UserId = 0;
             string HtmlBody = getPasswordEmailHtmlTemplate();
             var otp = GenerateOtp();
             string mailBody = HtmlBody.Replace("{OTP}", otp.ToString());
-            var result = sendEmail("Forget Password", mailBody, "crmsifsl@gmail.com", email, "", "");
-            if (result)
+
+            UserId= DataAccessLayer.OtpVerification(3,email,null);
+            if(UserId>0)
             {
-                DataAccessLayer.AddUpdateOtp(1, email, otp);
+                var result = sendEmail("Forget Password", mailBody, "crmsifsl@gmail.com", email, "", "");
+                if (result)
+                {
+                    DataAccessLayer.AddUpdateOtp(1, email, otp);
+                }
+
+                TempData["email"] = email;
+                TempData["timestamp"] = DateTime.Now;
+                return Json("Otp sent successfully");
             }
+            else
+            {
+                return Json("Invalid Email! Please Enter Valid Email");
+            }
+
+           
             //DataAccessLayer.AddUpdateOtp(1, email, otp);
-            TempData["email"] = email;
-            TempData["timestamp"] = DateTime.Now;
-            return Json("Otp sent successfully");
+           
             //return View();
         }
 
@@ -569,6 +583,23 @@ namespace SecureGroup.Controllers
 
             return View(a);
         }
+
+        public IActionResult LogManagement()
+        {
+            List<LogManagementViewModel> _logManagement = new List<LogManagementViewModel>();
+            _logManagement = DataAccessLayer.GetAllUserLogManagement(1, 0, 0).ToList();
+
+            //int UserId = GetUserSession().UserId;
+            //if (UserId > 0)
+            //{
+            //    // _userViewModel = _dataAccessLayerLinq.GetUserList(Id, 0).FirstOrDefault();
+               
+            //    //_userViewModel.Password = EncryptionLibrary.DecryptText(_userViewModel.Password);
+            //}
+            return View(_logManagement);
+
+        }
+
     }
 }
 

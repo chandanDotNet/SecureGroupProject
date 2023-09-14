@@ -8,6 +8,7 @@ using System.Linq;
 using System;
 using SecureGroup.Library;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace SecureGroup.Controllers
 {
@@ -19,12 +20,14 @@ namespace SecureGroup.Controllers
         DataAccessLayer _dataAccessLayer = null;
         DataAccessLayerLinq _dataAccessLayerLinq = null;
 
-        public SettingsController(ILogger<SettingsController> logger, MsDBContext context)
+        private IWebHostEnvironment _env;
+        public SettingsController(ILogger<SettingsController> logger, MsDBContext context, IWebHostEnvironment env)
         {
             _logger = logger;
             myDbContext = context;
             _dataAccessLayer = new DataAccessLayer();
             _dataAccessLayerLinq = new DataAccessLayerLinq(context);
+            _env = env;
         }
 
 
@@ -65,12 +68,35 @@ namespace SecureGroup.Controllers
 
             try
             {
-                             
+                var originalPassword = _userViewModel.Password;
                 _userViewModel.Password = EncryptionLibrary.EncryptText(_userViewModel.Password); //Encrypt the password
                 _userViewModel.CreatedBy = GetUserSession().UserId;
                 response = _dataAccessLayer.AddUpdateUserData(_userViewModel, 1);
                 if (response > 0)
                 {
+                    //******************
+
+                    string HtmlBody = getEmailHtmlTemplate();
+                    string mailBody = string.Format(HtmlBody,
+                      _userViewModel.Name,
+                      _userViewModel.Email,
+                      originalPassword
+                      );
+
+
+
+                    var result = sendEmail("Login Credential", mailBody,
+                                            "crmsifsl@gmail.com", _userViewModel.Email, "", "");
+                    if (result)
+                    {
+                        _dataAccessLayer.EmailConfirmationLog(1, 0, 0, _userViewModel.Email, "crmsifsl@gmail.com", "", "", "Login Credential", mailBody, _userViewModel.CreatedBy, "succeed", "New User Email");
+                    }
+                    else
+                    {
+                        _dataAccessLayer.EmailConfirmationLog(1, 0, 0, _userViewModel.Email, "crmsifsl@gmail.com", "", "", "Login Credential", mailBody, _userViewModel.CreatedBy, "failed", "New User Email");
+                    }
+
+                    //**************
                     TempData["successmessage"] = "Your data has been saved successfully";
                     return RedirectToAction(nameof(UsersList));
                 }
@@ -89,7 +115,22 @@ namespace SecureGroup.Controllers
 
         }
 
-
+        public string getEmailHtmlTemplate()
+        {
+            var pathToFile = _env.WebRootPath
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "Templates"
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "EmailTemplate"
+                    + Path.DirectorySeparatorChar.ToString()
+                    + "UserTemplate.html";
+            string HtmlBody = string.Empty;
+            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                HtmlBody = SourceReader.ReadToEnd();
+            }
+            return HtmlBody;
+        }
         public IActionResult EditUser(int Id)
         {
             UserViewModel _userViewModel = new UserViewModel();
