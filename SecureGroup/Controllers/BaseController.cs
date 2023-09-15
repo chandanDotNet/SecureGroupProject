@@ -18,6 +18,7 @@ using System.Net;
 
 namespace SecureGroup.Controllers
 {
+    
     public abstract class BaseController : Controller
     {
         public void InsertUserSession(UserViewModel _userViewModel)

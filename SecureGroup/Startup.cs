@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SecureGroup.Controllers;
 using SecureGroup.DBContexts;
 //using SecureGroup.Concrete;
 //using SecureGroup.Interface;
@@ -29,14 +30,16 @@ namespace SecureGroup
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSession(); //Add this line to register the session service
+            // services.AddSession(); //Add this line to register the session service
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
+            });
 
             services.AddMvc();
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContextPool<MsDBContext>(option => option.UseSqlServer(connectionString));
             //  services.AddSingleton<IHR, HRConcrete>();
-
            
         }
 

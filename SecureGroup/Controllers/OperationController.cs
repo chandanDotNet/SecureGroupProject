@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using SecureGroup.DBContexts;
 using SecureGroup.Models;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 namespace SecureGroup.Controllers
 {
     //AA
+    [ValidateSession]
     public class OperationController : BaseController
     {
 

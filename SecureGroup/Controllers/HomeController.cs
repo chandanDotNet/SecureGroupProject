@@ -238,10 +238,14 @@ namespace SecureGroup.Controllers
 
 
         [HttpGet]
-        public ActionResult Logout()
+        public ActionResult Logout(int? Type)
         {
             try
             {
+                if(Type==100)
+                {
+                    TempData["errormessage"] = "Session Expair!";
+                }
                 UserViewModel _userViewModel=new UserViewModel();
                 CookieOptions option = new CookieOptions();
 
