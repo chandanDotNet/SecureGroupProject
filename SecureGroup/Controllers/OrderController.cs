@@ -29,6 +29,7 @@ using System.Collections;
 
 namespace SecureGroup.Controllers
 {
+    [ValidateSession]
     public class OrderController : BaseController
     {
 

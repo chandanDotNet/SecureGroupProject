@@ -15,6 +15,7 @@ using System.Reflection;
 
 namespace SecureGroup.Controllers
 {
+    [ValidateSession]
     public class MasterController : Controller
     {
 

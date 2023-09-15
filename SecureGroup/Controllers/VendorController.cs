@@ -11,6 +11,7 @@ using System.Linq;
 
 namespace SecureGroup.Controllers
 {
+    [ValidateSession]
     public class VendorController : BaseController
     {
 

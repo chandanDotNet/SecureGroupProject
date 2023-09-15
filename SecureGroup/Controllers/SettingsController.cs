@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace SecureGroup.Controllers
 {
+    [ValidateSession]
     public class SettingsController : BaseController
     {
 

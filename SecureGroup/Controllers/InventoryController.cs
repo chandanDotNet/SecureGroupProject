@@ -15,6 +15,7 @@ using System.Reflection;
 
 namespace SecureGroup.Controllers
 {
+    [ValidateSession]
     public class InventoryController : BaseController
     {
         private readonly ILogger<InventoryController> _logger;
