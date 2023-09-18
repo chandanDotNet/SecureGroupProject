@@ -563,7 +563,7 @@ nav.main-header {
 
 .warehouse-data {
     background: #F8F8F8;
-    min-height: 701px;
+    /* min-height: 701px; */
     border-radius: 15px;
     padding: 20px;
 }
@@ -2233,9 +2233,13 @@ a#btnDownload {
     display: flex;
     align-items: center;
     gap: 10px;
-    max-width: 106px !important;
-    /* display: flex; */
+    max-width: 172px !important;
     justify-content: center;
+    background: linear-gradient(89.93deg, #1795C7 5.71%, #465F8B 97.94%);
+    border: 0px;
+    width: 184px !important;
+    height: 39px;
+    border-radius: 30px;
 }
 
 .tools {
@@ -2496,4 +2500,24 @@ div#exampleV_info {
 
 .brand-link {
     height: 61px !important;
+}
+
+.assigned-projects-list .approve-reject-btn {
+    height: 30px;
+    width: 30px;
+    background: linear-gradient(89.93deg, #1795C7 5.71%, #465F8B 97.94%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+}
+
+.assigned-projects-list .large-font {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.reimbursement-data-table .td-action-dot {
+    text-align: center;
 }
