@@ -32,7 +32,7 @@ namespace SecureGroup
             services.AddControllersWithViews();
             // services.AddSession(); //Add this line to register the session service
             services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.IdleTimeout = TimeSpan.FromMinutes(50);
             });
 
             services.AddMvc();
