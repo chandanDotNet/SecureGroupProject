@@ -1,0 +1,85 @@
+﻿@model IEnumerable<SecureGroup.ViewModel.OfficeAddressViewModel>
+
+@{
+    ViewData["Title"] = "OfficeAddressList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="common-title-headeer">
+    <h1>Office Address List</h1>
+
+    <ul class="addbtns">
+        <li>
+            <button class="header-add-btn"><i class="fa fa-plus" aria-hidden="true"></i><a asp-action="AddOfficeAddress"> ADD OFFICE ADDRESS</a></button>
+        </li>
+    </ul>
+</div>
+
+
+<div class="warehouse-data table-responsive">
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Office Address Name
+                </th>
+                <th>
+                    Full Address
+                </th>
+                <th>
+                    Office State
+                </th>
+                <th>
+                    Office Location
+                </th>                
+                <th>
+                    Lat & Long
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        #@Html.DisplayFor(modelItem => item.OfficeAddressId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OfficeAddressName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OfficeState)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OfficeLocation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Lat), @Html.DisplayFor(modelItem => item.Long)
+                    </td>
+                    <td>
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>@Html.ActionLink("Edit", "EditOfficeAddress", new { Id=item.OfficeAddressId}, new { @class = "dropdown-item"})</li>
+                                <li>@Html.ActionLink("Delete", "DeleteOfficeAddress", new { Id=item.OfficeAddressId},new { @class = "dropdown-item"})</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

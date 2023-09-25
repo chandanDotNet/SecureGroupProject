@@ -604,6 +604,22 @@ namespace SecureGroup.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult Notification()
+        {
+            List<EmailNotificationViewModel> emailNotifications = new List<EmailNotificationViewModel>();
+            int userRole = GetUserSession().RoleId;
+            if (userRole == 1)
+            {
+                emailNotifications = DataAccessLayer.GetEmailNotification(2).ToList();
+            }
+            else
+            {
+                emailNotifications = DataAccessLayer.GetEmailNotification(3).ToList();
+            }
+            return View(emailNotifications);
+        }
+
     }
 }
 

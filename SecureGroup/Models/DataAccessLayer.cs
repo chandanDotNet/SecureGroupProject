@@ -547,6 +547,67 @@ namespace SecureGroup.Models
             }
             return response;
         }
+
+        public int AddOfficeAddressData(OfficeAddressViewModel officeAddressViewModel, int ActionId)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_OfficeAddressManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@OfficeAddressId", officeAddressViewModel.OfficeAddressId);
+                cmd.Parameters.AddWithValue("@OfficeAddressName", officeAddressViewModel.OfficeAddressName);
+                cmd.Parameters.AddWithValue("@FullAddress", officeAddressViewModel.FullAddress);
+                cmd.Parameters.AddWithValue("@OfficeLocationId", officeAddressViewModel.OfficeLocationId);
+                cmd.Parameters.AddWithValue("@OfficeStateId", officeAddressViewModel.OfficeStateId);
+                cmd.Parameters.AddWithValue("@Lat", officeAddressViewModel.Lat);
+                cmd.Parameters.AddWithValue("@Long", officeAddressViewModel.Long);
+
+                con.Open();
+                response = cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return response;
+        }
+
+        public IEnumerable<OfficeAddressViewModel> GetOfficeAddressData(int ActionId,int OfficeAddressId)
+        {
+            List<OfficeAddressViewModel> _officeAddress = new List<OfficeAddressViewModel>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_OfficeAddressManagement", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@OfficeAddressId", OfficeAddressId);
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    OfficeAddressViewModel officeAddress = new OfficeAddressViewModel();
+
+                    // stock.Id = Convert.ToInt32(rdr["Id"]);
+                    officeAddress.OfficeAddressId = Convert.ToInt32(rdr["OfficeAddressId"]);
+                    officeAddress.OfficeAddressName = rdr["OfficeAddressName"].ToString();
+                    officeAddress.FullAddress = rdr["FullAddress"].ToString();
+                    officeAddress.OfficeLocationId = Convert.ToInt32(rdr["OfficeLocationId"]);
+                    officeAddress.OfficeStateId = Convert.ToInt32(rdr["OfficeStateId"]);
+                    officeAddress.Lat = Convert.ToDouble(rdr["Lat"]);
+                    officeAddress.Long = Convert.ToDouble(rdr["Long"]);
+                    officeAddress.OfficeLocation = rdr["OfficeLocation"].ToString();
+                    officeAddress.OfficeState = rdr["OfficeState"].ToString();
+                    _officeAddress.Add(officeAddress);
+                }
+                con.Close();
+            }
+            return _officeAddress;
+        }
+
+
+
         public int AddDepartmentData(DepartmentViewModel departmentViewModel, int ActionId)
         {
             int response = 0;
@@ -1855,6 +1916,39 @@ namespace SecureGroup.Models
                 con.Close();
             }
             return UserLogManagement;
+        }
+
+        public IEnumerable<EmailNotificationViewModel> GetEmailNotification(int actionId)
+        {
+            List<EmailNotificationViewModel> _notificationList = new List<EmailNotificationViewModel>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_EmailConfirmation", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", actionId);
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+
+
+                while (rdr.Read())
+                {
+                    EmailNotificationViewModel notification = new EmailNotificationViewModel();
+                    notification.Id = Convert.ToInt32(rdr["Id"]);
+                    notification.TaskName = rdr["TaskName"].ToString();
+                    notification.AssignToName = rdr["AssignToName"].ToString();
+                    notification.Email = rdr["Email"].ToString();
+                    notification.Subject = rdr["Subject"].ToString();
+                    notification.Status = rdr["Status"].ToString();
+                    notification.CreatedDate = rdr["CreatedDate"].ToString();
+
+
+
+                    _notificationList.Add(notification);
+                }
+                con.Close();
+            }
+            return _notificationList;
         }
 
     }

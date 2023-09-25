@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace SecureGroup.ViewModel
 {
-    public class UserViewModel    {
-        
+    public class UserViewModel
+    {
+
         public int UserId { get; set; }
         public string BusinessName { get; set; }
         public string Name { get; set; }
@@ -22,7 +23,7 @@ namespace SecureGroup.ViewModel
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string ContactNo { get; set; }
-        
+
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid mobile number")]
         public string? MobileNo { get; set; }
@@ -61,10 +62,12 @@ namespace SecureGroup.ViewModel
         public string BloodGroup { get; set; }
         public string GSTFormName { get; set; }
         public string VendorFormName { get; set; }
+        public int OfficeAddressId { get; set; }
 
         public IList<SelectListItem> RoleList { get; set; }
         public IList<SelectListItem> DepartmentList { get; set; }
         public IList<SelectListItem> UserList { get; set; }
+        public IList<SelectListItem> OfficeAddressList { get; set; }
 
     }
 
@@ -83,5 +86,21 @@ namespace SecureGroup.ViewModel
         public IFormFile? VoterCard { get; set; }
         public IFormFile? GSTForm { get; set; }
         public IFormFile? VendorForm { get; set; }
+    }
+
+    public class OfficeAddressViewModel
+    {
+        public int OfficeAddressId { get; set; }
+        public string OfficeAddressName { get; set; }
+        public string FullAddress { get; set; }
+        public int OfficeStateId { get; set; }
+        public int OfficeLocationId { get; set; }
+        public string OfficeLocation { get; set; }
+        public string OfficeState { get; set; }
+        public double Lat { get; set; }
+        public double Long { get; set; }
+
+        public IList<SelectListItem> LocationList { get; set; }
+        public IList<SelectListItem> StateList { get; set; }
     }
 }

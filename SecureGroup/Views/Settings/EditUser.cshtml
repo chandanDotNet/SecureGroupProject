@@ -45,7 +45,7 @@
             <div class="col-md-12 mb-3">
                 <div class="custom-form-control">
                     <label asp-for="BusinessName" class="control-label">Company Name<span>*</span></label>
-                    <input asp-for="BusinessName" class="form-control" value="Secure Group" />
+                    <input asp-for="BusinessName" class="form-control" />
 
                 </div>
             </div>
@@ -148,6 +148,16 @@
                     <label asp-for="PermanentAddress" class="control-label">Permanent Address<span>*</span></label>
                     <textarea asp-for="PermanentAddress" class="form-control"></textarea>
                     <span asp-validation-for="PermanentAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="custom-form-control">
+                    <label asp-for="OfficeAddressId" class="control-label">Office Address<span>*</span></label>
+                    <select asp-for="OfficeAddressId" id="ddlOfficeAddressId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.OfficeAddressList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="OfficeAddressId" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-12 mb-3">

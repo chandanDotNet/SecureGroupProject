@@ -9,6 +9,7 @@ using System;
 using SecureGroup.Library;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Azure;
 
 namespace SecureGroup.Controllers
 {
@@ -51,6 +52,7 @@ namespace SecureGroup.Controllers
                 _userViewModel.DepartmentList = _dataAccessLayerLinq.GetDropDownListData("Department", 0);
                 _userViewModel.RoleList = RoleList.Where(x => x.Value == "1" || x.Value == "4").ToList();
                 _userViewModel.UserCode = UserCode;
+                _userViewModel.OfficeAddressList = _dataAccessLayerLinq.GetDropDownListData("OfficeAddress", 0);
 
             }
             catch (Exception ex)
@@ -143,6 +145,7 @@ namespace SecureGroup.Controllers
                 _userViewModel.UserList = _dataAccessLayerLinq.GetDropDownListData("User", 0);
                 _userViewModel.DepartmentList = _dataAccessLayerLinq.GetDropDownListData("Department", 0);
                 _userViewModel.Password = EncryptionLibrary.DecryptText(_userViewModel.Password);
+                _userViewModel.OfficeAddressList = _dataAccessLayerLinq.GetDropDownListData("OfficeAddress", 0);
             }
 
             return View(_userViewModel);
@@ -599,5 +602,119 @@ namespace SecureGroup.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult AddOfficeAddress()
+        {
+            OfficeAddressViewModel _officeAddressViewModel = new OfficeAddressViewModel();
+            _officeAddressViewModel.StateList = _dataAccessLayerLinq.GetDropDownListData("State", 101);
+            _officeAddressViewModel.LocationList = _dataAccessLayerLinq.GetDropDownListData("City", 0);
+
+            return View(_officeAddressViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult AddOfficeAddress(OfficeAddressViewModel _officeAddressViewModel)
+        {
+            int response = 0;
+
+            try
+            {
+                response = _dataAccessLayer.AddOfficeAddressData(_officeAddressViewModel, 1);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(OfficeAddressList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
+
+            return RedirectToAction("OfficeAddressList");
+        }
+
+        [HttpGet]
+        public IActionResult OfficeAddressList()
+        {
+            List<OfficeAddressViewModel> _officeAddressListViewModel = new List<OfficeAddressViewModel>();
+            _officeAddressListViewModel = _dataAccessLayer.GetOfficeAddressData(4,0).ToList();
+            return View(_officeAddressListViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult EditOfficeAddress(int Id)
+        {
+            OfficeAddressViewModel _officeAddressViewModel = new OfficeAddressViewModel();
+            _officeAddressViewModel=_dataAccessLayer.GetOfficeAddressData(4, Id).FirstOrDefault();           
+            _officeAddressViewModel.StateList = _dataAccessLayerLinq.GetDropDownListData("State", 101);
+            _officeAddressViewModel.LocationList = _dataAccessLayerLinq.GetDropDownListData("City", _officeAddressViewModel.OfficeStateId);
+
+            return View(_officeAddressViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditOfficeAddress(OfficeAddressViewModel _officeAddressViewModel)
+        {
+            int response = 0;
+
+            try
+            {
+                response = _dataAccessLayer.AddOfficeAddressData(_officeAddressViewModel, 2);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been saved successfully";
+                    return RedirectToAction(nameof(OfficeAddressList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
+
+            return RedirectToAction("OfficeAddressList");
+        }
+
+
+        [HttpGet]
+        public IActionResult DeleteOfficeAddress(int Id)
+        {
+            OfficeAddressViewModel _officeAddressViewModel = new OfficeAddressViewModel();
+            int response = 0;
+            try
+            {
+                _officeAddressViewModel.OfficeAddressId= Id;
+                response = _dataAccessLayer.AddOfficeAddressData(_officeAddressViewModel, 3);
+                if (response > 0)
+                {
+                    TempData["successmessage"] = "Your data has been deleted successfully";
+                    return RedirectToAction(nameof(OfficeAddressList));
+                }
+                else
+                {
+                    TempData["errormessage"] = "Something went wrong!";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
+                throw ex;
+            }
+
+            return RedirectToAction("OfficeAddressList");
+        }
     }
 }

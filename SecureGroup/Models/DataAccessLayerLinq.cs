@@ -467,6 +467,18 @@ namespace SecureGroup.Models
                             Value = scheme.SchemeId.ToString(),
                         }).ToList();
             }
+            if (DDName == "OfficeAddress")
+            {
+                list = (from officeAddress in myDbContext.OfficeAddress
+                        where officeAddress.IsActive == true
+                        orderby officeAddress.OfficeAddressName ascending
+                        select new SelectListItem()
+                        {
+                            Text = officeAddress.OfficeAddressName,
+                            Value = officeAddress.OfficeAddressId.ToString(),
+                        }).ToList();
+            }
+
             if (DDName == "Year")
             {
                 list.Insert(0, new SelectListItem()
