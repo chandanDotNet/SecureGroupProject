@@ -8,10 +8,14 @@ using Microsoft.Extensions.Options;
 using SecureGroup.DBContexts;
 using SecureGroup.Models;
 using SecureGroup.ViewModel;
+using SecureGroup.ViewModel.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using static System.Net.WebRequestMethods;
 
 namespace SecureGroup.Controllers
 {
@@ -54,8 +58,46 @@ namespace SecureGroup.Controllers
             var LinUser = _dataAccessLayerLinq.GetDropDownListData("User", 0);
             warehouseRapViewModel.UserList = LinUser;
 
-
             return View(warehouseRapViewModel);
+        }
+
+        public IActionResult DownloadFile(int fileId)
+        {
+            if (fileId != 0)
+            {
+                string filename = _dataAccessLayer.GetDocumentFileName(1, fileId);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload/DocumentFiles", filename);
+                var fs = new FileStream(path, FileMode.Open);
+                return File(fs, "application/octet-stream", filename);
+            }
+            return new EmptyResult();
+        }
+
+        public ActionResult FileListPartial(int Id)
+        {
+            List<WarehouseFileHistoryListViewModel> _fileList = new List<WarehouseFileHistoryListViewModel>();
+            _fileList = _dataAccessLayer.GetDocumentFileHistoryName(2, Id).ToList();
+            return PartialView("_fileListPartial", _fileList);
+        }
+
+        public IActionResult DownloadFileByName(string fileName)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload/DocumentFiles", fileName);
+            var fs = new FileStream(path, FileMode.Open);
+            return File(fs, "application/octet-stream", fileName);
+        }
+        public IActionResult DeleteFile(int id, string fileName)
+        {
+            string dfilename = _dataAccessLayer.GetDocumentFileName(3, id);
+            TempData["successmessage"] = "Your data has been saved successfully";
+            return RedirectToAction(nameof(WarehouseList));
+            //if (dfilename == fileName)
+            //{
+            //    var file = Path.Combine(Directory.GetCurrentDirectory(), "Upload/DocumentFiles", fileName);
+            //    System.IO.File.Delete(file);
+
+            //}
+            //return new EmptyResult();
         }
 
         [HttpGet]
@@ -143,8 +185,22 @@ namespace SecureGroup.Controllers
             //{
             try
             {
-               
-                response = _dataAccessLayer.AddWarehouse(warehouseViewModel, 7);               
+
+                string customFileName = "File_" + DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToShortTimeString();
+                if (warehouseViewModel.DocumentFileUpload != null)
+                {
+                    UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();
+                    _uploadFileResponse = UploadFileWithName(warehouseViewModel.DocumentFileUpload, "Upload/DocumentFiles", customFileName);
+                    if (_uploadFileResponse != null)
+                    {
+                        if (_uploadFileResponse.UploadSuccess == true)
+                        {
+                            warehouseViewModel.DocumentFileName = _uploadFileResponse.FileName;
+                        }
+                    }
+                }
+
+                response = _dataAccessLayer.AddWarehouse(warehouseViewModel, 7);
                 if (response > 0)
                 {
                     TempData["successmessage"] = "Your data has been saved successfully";
@@ -164,7 +220,7 @@ namespace SecureGroup.Controllers
             //}
             return RedirectToAction(nameof(WarehouseList));
             //return PartialView("_CreateWarehouse");
-            
+
         }
 
         public IActionResult DeleteWarehouse(int Id)
@@ -235,8 +291,21 @@ namespace SecureGroup.Controllers
             //{
             try
             {
+                string customFileName = "File_" + DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToShortTimeString();
+                if (warehouseViewModel.DocumentFileUpload != null)
+                {
+                    UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();
+                    _uploadFileResponse = UploadFileWithName(warehouseViewModel.DocumentFileUpload, "Upload/DocumentFiles", customFileName);
+                    if (_uploadFileResponse != null)
+                    {
+                        if (_uploadFileResponse.UploadSuccess == true)
+                        {
+                            warehouseViewModel.DocumentFileName = _uploadFileResponse.FileName;
+                        }
+                    }
+                }
                 // TODO: Add insert logic here
-                response= _dataAccessLayer.AddWarehouse(warehouseViewModel, 1);
+                response = _dataAccessLayer.AddWarehouse(warehouseViewModel, 1);
                 if (response > 0)
                 {
                     TempData["successmessage"] = "Your data has been saved successfully";
@@ -246,7 +315,7 @@ namespace SecureGroup.Controllers
                 {
                     TempData["errormessage"] = "Something went wrong!";
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -256,7 +325,7 @@ namespace SecureGroup.Controllers
             // }
             return RedirectToAction(nameof(WarehouseList));
             //return PartialView("_CreateWarehouse", warehouseViewModel);
-            
+
         }
 
 
@@ -282,10 +351,10 @@ namespace SecureGroup.Controllers
             return View(_whProductList);
         }
 
-        public IActionResult WHProductPurchaseDetails(int WareHouseId,int ProductId,int SubProductId)
+        public IActionResult WHProductPurchaseDetails(int WareHouseId, int ProductId, int SubProductId)
         {
             List<WHProductPurchaseInOutDetailsViewModel> _wHPurchaseInOutDetailsList = new List<WHProductPurchaseInOutDetailsViewModel>();
-            _wHPurchaseInOutDetailsList= _dataAccessLayer.GetWarehouseStockPurchaseInOutDetails(3,WareHouseId,ProductId,SubProductId).ToList();
+            _wHPurchaseInOutDetailsList = _dataAccessLayer.GetWarehouseStockPurchaseInOutDetails(3, WareHouseId, ProductId, SubProductId).ToList();
 
             //List<WHStockProductDetailsViewModel> _whProductList = new List<WHStockProductDetailsViewModel>();
             ////_whProductList = _dataAccessLayerLinq.GetWarehouseProductStockList(0);
@@ -300,7 +369,7 @@ namespace SecureGroup.Controllers
         public IActionResult WHProductStockInDetails(int WareHouseId, int ProductId, int SubProductId)
         {
             List<WHProductPurchaseInOutDetailsViewModel> _wHPurchaseInOutDetailsList = new List<WHProductPurchaseInOutDetailsViewModel>();
-            _wHPurchaseInOutDetailsList = _dataAccessLayer.GetWarehouseStockPurchaseInOutDetails(4, WareHouseId, ProductId, SubProductId).ToList();          
+            _wHPurchaseInOutDetailsList = _dataAccessLayer.GetWarehouseStockPurchaseInOutDetails(4, WareHouseId, ProductId, SubProductId).ToList();
 
             return View(_wHPurchaseInOutDetailsList);
         }
@@ -318,7 +387,7 @@ namespace SecureGroup.Controllers
             Response = _dataAccessLayer.DeleteWarehouseStockPurchaseInOutData(6, Id);
 
             //return RedirectToAction("WHProductPurchaseDetails", new { WareHouseId = WareHouseId, ProductId= ProductId, SubProductId= SubProductId });
-            return RedirectToAction("WarehouseStockDetails", new { WareHouseId = WareHouseId, ProductId= ProductId, SubProductId= SubProductId });
+            return RedirectToAction("WarehouseStockDetails", new { WareHouseId = WareHouseId, ProductId = ProductId, SubProductId = SubProductId });
         }
         public IActionResult DeleteWHProductStockInDetails(int Id, int WareHouseId, int ProductId, int SubProductId)
         {
@@ -405,7 +474,7 @@ namespace SecureGroup.Controllers
             try
             {
                 wHStockTransferManageViewModel.TransferBy = GetUserSession().UserId;
-                 response = _dataAccessLayer.TransferProductItem(wHStockTransferManageViewModel);
+                response = _dataAccessLayer.TransferProductItem(wHStockTransferManageViewModel);
                 if (response > 0)
                 {
                     TempData["successmessage"] = "Your data has been saved successfully";
@@ -414,7 +483,7 @@ namespace SecureGroup.Controllers
                 else
                 {
                     TempData["errormessage"] = "Something went wrong!";
-                }                
+                }
 
             }
             catch (Exception ex)
@@ -458,7 +527,7 @@ namespace SecureGroup.Controllers
             try
             {
                 // TODO: Add insert logic here
-                response= _dataAccessLayer.AddProductItem(wHStockProduct, 2);
+                response = _dataAccessLayer.AddProductItem(wHStockProduct, 2);
                 if (response > 0)
                 {
                     TempData["successmessage"] = "Your data has been saved successfully";
@@ -468,7 +537,7 @@ namespace SecureGroup.Controllers
                 {
                     TempData["errormessage"] = "Something went wrong!";
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -521,7 +590,7 @@ namespace SecureGroup.Controllers
             try
             {
                 // TODO: Add insert logic here
-                response= _dataAccessLayer.AddProductItem(wHStockProduct, 5);
+                response = _dataAccessLayer.AddProductItem(wHStockProduct, 5);
                 if (response > 0)
                 {
                     TempData["successmessage"] = "Your data has been saved successfully";
@@ -531,7 +600,7 @@ namespace SecureGroup.Controllers
                 {
                     TempData["errormessage"] = "Something went wrong!";
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -549,7 +618,7 @@ namespace SecureGroup.Controllers
             WHStockProductViewModel wHStockProduct = new WHStockProductViewModel();
 
             wHStockProduct.Id = Id;
-            response= _dataAccessLayer.AddProductItem(wHStockProduct, 6);
+            response = _dataAccessLayer.AddProductItem(wHStockProduct, 6);
             if (response > 0)
             {
                 TempData["successmessage"] = "Your data has been deleted successfully";

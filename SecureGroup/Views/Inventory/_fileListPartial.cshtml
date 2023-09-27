@@ -1,0 +1,96 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<SecureGroup.ViewModel.WarehouseFileHistoryListViewModel>
+
+@{
+    string UserRoleId = @Context.Session.GetString("RoleID");
+    string UserRoleName = @Context.Session.GetString("RoleName");
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                Document Name
+            </th>
+            <th>
+                Uploaded Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UploadedDate)
+                </td>
+                <td>
+                    <div class="dropdown td-action-dot">
+                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            @*@if (UserRoleId == "4")
+                        {
+                        <li><a asp-controller="Inventory" asp-action="DownloadFileByName" asp-route-fileName="@item.FileName"><i class="fa fa-download" aria-hidden="true"></i></a></li>
+                        <li>
+                        <a data-fileName="@item.FileName" data-id="@item.FileId" class="dropdown-item delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </li>
+                        }
+                        @if (UserRoleId == "1")
+                        {
+                        <a asp-controller="Inventory" asp-action="DownloadFileByName" asp-route-fileName="@item.FileName"><i class="fa fa-download" aria-hidden="true"></i></a>
+                        }*@
+
+                            <li><a asp-controller="Inventory" asp-action="DownloadFileByName" asp-route-fileName="@item.FileName"><i class="fa fa-download" aria-hidden="true"></i></a></li>
+                            <li>
+                                <a href="javascript:void(0);" data-fileName="@item.FileName" data-id="@item.FileId" class="dropdown-item delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    //$(".delete").click(function () {
+    //    alert("delete");
+    //});
+    $(".delete").click(function () {
+        var id = $(this).attr("data-id");
+        var fileName = $(this).attr("data-fileName");
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            //swal(
+            //    'Deleted!',
+            //    'Your file has been deleted.',
+            //    'success')
+            window.location.href = '/Inventory/DeleteFile?id=' + id + '&fileName=' + fileName;
+            return true;
+        }, function (dismiss) {
+            if (dismiss === 'cancel') {
+                swal(
+                    'Cancelled',
+                    'Your file is safe :)',
+                    'error')
+            }
+            return false;
+        })
+    });
+</script>

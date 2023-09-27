@@ -208,7 +208,8 @@ namespace SecureGroup.Models
                 cmd.Parameters.AddWithValue("@AdminContactNo", warehouseViewModel.AdminContactNo);
                 cmd.Parameters.AddWithValue("@AdminEmailId", warehouseViewModel.AdminEmailId);                
                 cmd.Parameters.AddWithValue("@Status", warehouseViewModel.StateId);                
-                cmd.Parameters.AddWithValue("@AdminId", warehouseViewModel.UserId);                
+                cmd.Parameters.AddWithValue("@AdminId", warehouseViewModel.UserId);
+                cmd.Parameters.AddWithValue("@DocumentFileName", warehouseViewModel.DocumentFileName);
                 //cmd.Parameters.AddWithValue("@StartDate", warehouseViewModel.St);                
 
                 con.Open();
@@ -1951,5 +1952,50 @@ namespace SecureGroup.Models
             return _notificationList;
         }
 
+
+        public string GetDocumentFileName(int actionId, int fileId)
+        {
+            string response = string.Empty;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_GetDocumentFileName", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", actionId);
+                cmd.Parameters.AddWithValue("@WarehouseId", fileId);
+                con.Open();
+                var resp = cmd.ExecuteReader();
+                while (resp.Read())
+                {
+                    response = Convert.ToString(resp["DocumentName"]);
+                }
+                con.Close();
+            }
+            return response;
+        }
+
+        public IEnumerable<WarehouseFileHistoryListViewModel> GetDocumentFileHistoryName(int actionId, int id)
+        {
+            List<WarehouseFileHistoryListViewModel> _fileHistoryList = new List<WarehouseFileHistoryListViewModel>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_GetDocumentFileName", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", actionId);
+                cmd.Parameters.AddWithValue("@WarehouseId", id);
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    WarehouseFileHistoryListViewModel fileHistory = new WarehouseFileHistoryListViewModel();
+                    fileHistory.FileId = Convert.ToInt32(rdr["Id"]);
+                    fileHistory.WarehouseId = Convert.ToInt32(rdr["WarehouseId"]);
+                    fileHistory.FileName = rdr["DocumentName"].ToString();
+                    fileHistory.UploadedDate = rdr["CreatedDate"].ToString();
+                    _fileHistoryList.Add(fileHistory);
+                }
+                con.Close();
+            }
+            return _fileHistoryList;
+        }
     }
 }

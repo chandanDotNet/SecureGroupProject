@@ -23,7 +23,7 @@
 
 <div class="form-inner">
     <div class="row">
-        <form asp-action="EditWarehouse">
+        <form asp-action="EditWarehouse" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="WarehouseId" class="form-control" type="hidden" />
             <div class="col-md-12 mb-3">
@@ -125,6 +125,27 @@
                     <label asp-for="AdminEmailId" class="control-label">Admin EmailId</label>
                     <input asp-for="AdminEmailId" class="form-control" id="AdminEmailId" />
                     <span asp-validation-for="AdminEmailId" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="col-md-10 mb-3">
+                <div>
+                    <label asp-for="DocumentFileUpload" class="control-label">Document Upload<span></span></label>
+                    <input asp-for="DocumentFileUpload" class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-2 mb-3">
+                <div class="custom-form-control">
+                    @if (Model.WarehouseId == null || Model.WarehouseId == 0)
+                    {
+                        <i class="fa fa-times no-data-badge mt-4" aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("", "DownloadFile","Inventory" ,new { fileId=Model.WarehouseId}, new { @class = "text-success mt-5 fa fa-download"})
+                    }
                 </div>
             </div>
 

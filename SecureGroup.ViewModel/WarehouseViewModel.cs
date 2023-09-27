@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -53,7 +54,8 @@ namespace SecureGroup.ViewModel
         public IList<SelectListItem> CityList { get; set;}
       
         public IList<SelectListItem> UserList { get; set;}
-
+        public IFormFile? DocumentFileUpload { get; set; }
+        public string DocumentFileName { get; set; }
     }
 
 
@@ -65,5 +67,12 @@ namespace SecureGroup.ViewModel
         public IList<SelectListItem> StateList { get; set; }
         public IList<SelectListItem> CityList { get; set; }
         public IList<SelectListItem> UserList { get; set; }
+    }
+    public class WarehouseFileHistoryListViewModel
+    {
+        public int FileId { get; set; }
+        public int WarehouseId { get; set; }
+        public string FileName { get; set; }
+        public string UploadedDate { get; set; }
     }
 }

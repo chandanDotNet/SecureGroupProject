@@ -30,7 +30,25 @@
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
 
 <!-- End DataTable -->
+@if (TempData["errormessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("Error!", '@TempData["errormessage"]', "error");
+        };
+    </script>
+}
 
+
+
+@if (TempData["successmessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            swal("success!", '@TempData["successmessage"]', "success");
+        };
+    </script>
+}
 
 <div class="common-title-headeer">
     <h1>Warehouse List</h1>
@@ -55,6 +73,8 @@
                 <th>Location</th>
                 <th>Admin Name</th>
                 <th>Admin Contact Details (PH/EMAIL)</th>
+                <th>View</th>
+                <th>Download</th>
                 <th>Action</th>
             </tr>
 
@@ -64,106 +84,134 @@
 
             @foreach (var item in Model.warehouseViewModel)
             {
-            <tr>
+                <tr>
                     <td>@Html.DisplayFor(modelItem => item.WarehouseId)</td>
                     <td>@Html.DisplayFor(modelItem => item.WarehouseName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Address),@Html.DisplayFor(modelItem => item.City),@Html.DisplayFor(modelItem => item.State),
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address),@Html.DisplayFor(modelItem => item.City),@Html.DisplayFor(modelItem => item.State),
                         @Html.DisplayFor(modelItem => item.Country),@Html.DisplayFor(modelItem => item.ZipCode)
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.AdminName)</td>
                     <td>@Html.DisplayFor(modelItem => item.AdminContactNo) / @Html.DisplayFor(modelItem => item.AdminEmailId)</td>
-                <td>
+                    <td>
+                        <a class="btn btn-secondary approve-reject-btn btnFileHistory" data-bs-toggle="modal" data-bs-target="#comment-modal1" data-id="@item.WarehouseId"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        @*<input type="button" value="Show" data-id="@item.WarehouseId" class="btn btn-secondary approve-reject-btn btnFileHistory" data-bs-toggle="modal" data-bs-target="#comment-modal1" />*@
+                    </td>
+                    <td>
+                        <a asp-controller="Inventory" asp-action="DownloadFile" asp-route-fileId="@item.WarehouseId"><i class="fa fa-download" aria-hidden="true"></i></a>
+                    </td>
+                    <td>
 
-                    <div class="dropdown td-action-dot">
-                        <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <div class="dropdown td-action-dot">
+                            <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li>@Html.ActionLink("Edit", "EditWarehouse", new { Id=item.WarehouseId}, new { @id="btnShow",@class = "dropdown-item fa fa-pencil-square-o"})</li>
                                 <li>@Html.ActionLink("Delete", "DeleteWarehouse", new { Id=item.WarehouseId},new { @class = "dropdown-item fa fa-trash-o"})</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
 
             }
-           
+
         </tbody>
     </table>
 
     <!-- addwarehouse -->
-@*    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-        <div class="side-slide-form">
-            <div class="side-slide-header">
-                <h2>Add Warehouse</h2>
-                <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
-            </div>
+    @*    <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+    <div class="side-slide-form">
+    <div class="side-slide-header">
+    <h2>Add Warehouse</h2>
+    <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
 
-            <form>
-                <div class="form-inner">
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Warehouse Name<span>*</span></label>
-                                <select name="" id="">
-                                    <option value="" disabled selected hidden>Warehouse Name</option>
-                                    <option value="a">Warehouse Name</option>
-                                </select>
-                            </div>
-                        </div>
+    <form>
+    <div class="form-inner">
+    <div class="row">
+    <div class="col-md-12 mb-3">
+    <div class="custom-form-control">
+    <label>Warehouse Name<span>*</span></label>
+    <select name="" id="">
+    <option value="" disabled selected hidden>Warehouse Name</option>
+    <option value="a">Warehouse Name</option>
+    </select>
+    </div>
+    </div>
 
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Warehouse Location<span>*</span></label>
-                                <select name="" id="">
-                                    <option value="" disabled selected hidden>Warehouse Location</option>
-                                    <option value="a">Warehouse Location</option>
-                                </select>
-                            </div>
-                        </div>
+    <div class="col-md-12 mb-3">
+    <div class="custom-form-control">
+    <label>Warehouse Location<span>*</span></label>
+    <select name="" id="">
+    <option value="" disabled selected hidden>Warehouse Location</option>
+    <option value="a">Warehouse Location</option>
+    </select>
+    </div>
+    </div>
 
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Select Admin<span>*</span></label>
-                                <select name="" id="">
-                                    <option value="" disabled selected hidden>Select</option>
-                                    <option value="a">Select</option>
-                                </select>
-                            </div>
-                        </div>
+    <div class="col-md-12 mb-3">
+    <div class="custom-form-control">
+    <label>Select Admin<span>*</span></label>
+    <select name="" id="">
+    <option value="" disabled selected hidden>Select</option>
+    <option value="a">Select</option>
+    </select>
+    </div>
+    </div>
 
 
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Admin Phone No<span>*</span></label>
-                                <input type="number" placeholder="Warehouse Admin Phone No" />
-                            </div>
-                        </div>
+    <div class="col-md-12 mb-3">
+    <div class="custom-form-control">
+    <label>Admin Phone No<span>*</span></label>
+    <input type="number" placeholder="Warehouse Admin Phone No" />
+    </div>
+    </div>
 
-                        <div class="col-md-12 mb-3">
-                            <div class="custom-form-control">
-                                <label>Admin Email Id<span>*</span></label>
-                                <input type="email" placeholder="Warehouse Admin Email Id" />
-                            </div>
-                        </div>
+    <div class="col-md-12 mb-3">
+    <div class="custom-form-control">
+    <label>Admin Email Id<span>*</span></label>
+    <input type="email" placeholder="Warehouse Admin Email Id" />
+    </div>
+    </div>
 
-                    </div>
+    </div>
 
-                </div>
+    </div>
 
-                <button class="data-save-btn">Save</button>
-            </form>
+    <button class="data-save-btn">Save</button>
+    </form>
 
-            @{
-                Layout = "_CreateWarehouse";
-            }
+    @{
+    Layout = "_CreateWarehouse";
+    }
 
-        </div>
+    </div>
     </aside>
-*@
+    *@
 
     <div id="dialog">
+    </div>
+
+
+
+    <div class="modal fade " id="comment-modal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Document List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="warehouse-data table-responsive">
+                        <div id="partial-FileList-load">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 
@@ -175,17 +223,17 @@
                 <button data-widget="control-sidebar" data-slide="true"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div>
             <div id="popupdata">
-
             </div>
-            
-           
+
+
         </div>
-            
+
     </aside>
 
 </div>
 
 <script>
+
     $('#example').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -195,7 +243,15 @@
             'pdfHtml5'
         ]
     });
-   
+
+    //$(".btnFileHistory").click(function () {
+    $("#example").on("click", ".btnFileHistory", function () {
+        debugger;
+        //var tr = $(this).closest('tr');
+        var id = $(this).attr("data-id");
+        //alert(id);
+        $('#partial-FileList-load').load('/Inventory/FileListPartial?Id=' + id);
+    });
 
 </script>
 
