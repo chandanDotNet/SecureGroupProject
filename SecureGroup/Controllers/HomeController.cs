@@ -282,7 +282,6 @@ namespace SecureGroup.Controllers
         }
 
 
-
         [HttpGet]
         public ActionResult Logout(int? Type)
         {
