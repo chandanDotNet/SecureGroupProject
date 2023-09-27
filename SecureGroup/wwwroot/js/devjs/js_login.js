@@ -1,9 +1,9 @@
 ﻿$(document).ready(function () {
 
     //************* */
-    $(document).bind("contextmenu", function (e) {
-        return false;
-    });
+    //$(document).bind("contextmenu", function (e) {
+    //    return false;
+    //});
 
 
     // Check if geolocation is supported by the browser
@@ -23,7 +23,7 @@
 
                 //var vasteras = { lat: 22.579169, lng: 88.387761 };
                 //var stockholm = { lat: lat, lng: lng };                    
-
+               // displayLocation(lat, lng);
 
 
                 //var n = arePointsNear(vasteras, stockholm, 1);
@@ -106,40 +106,193 @@
 
 
     //Due to SSL log
-    $("#btnLogin").on('click', function (event) {
+    var lStatusGo = false;
+    var _isstatus = false;
+    $("#btnLogin_1").on('click', function (event) {
 
+        //event.preventDefault();
+        
+        var latData = 0;
+        var longData = 0;
+        lStatusGo = true;
+        _isstatus = true;
         var RoleId = document.getElementById("ddlRoleId").value;
-        if (RoleId != 1) {
-            var lat = document.getElementById("lat").value;
-            var lng = document.getElementById("lng").value;
-            //var vasteras = { lat: 22.579169, lng: 88.387761 };22.613797880751562, 88.41316028586681
-            //var vasteras = { lat: 22.582369, lng: 88.477582 };
-            var vasteras = { lat: 22.613797880751562, lng: 88.41316028586681 };
-            var stockholm = { lat: lat, lng: lng };
-            if (lat != "" && lng != "") {
-                //alert(lat+'-not null');
-
-
-                var n = arePointsNear(vasteras, stockholm, 10);
-                // getAddress(lat, lng).then(console.log).catch(console.error);
-                //return false;
-                if (n == false) {
-                    sweetAlert("Oops...", "Your current location out of coverage area!", "error");
-                    return false;
-                } else {
-                    //alert('Your Status - ' + n);
-                    return true;
-                }
-
+        debugger;
+         
+        if (lStatusGo) {
+            addToCart();
+            if (_isstatus) {
+                return true;
             } else {
-                //alert(lat + '-is null');
-                sweetAlert("Oops...", "Please allow your location!", "error");
-                return false;
-
+                return false
             }
+
+        } else {
+
+            return false;
+        }
+     // var ss=  checkOfficeLocationCoverage1(latData, longData);
+        //if (RoleId != 1) {
+
+            ////*********************** */
+
+            //var email = $("#Username").val();
+            //debugger;
+            //// alert(ValueType);
+        //$.ajax(
+        //        {
+        //            url: '/Home/GetUserOfficeAddress?Email=' + email,
+        //            type: 'GET',
+        //            data: "",
+        //            contentType: 'application/json; charset=utf-8',
+        //            success: function (data) {
+        //                latData = data.lat;
+        //                longData = data.long;
+        //                debugger;
+        //                lStatus = checkOfficeLocationCoverage(latData, longData);
+        //                debugger;
+        //                if (lStatus == false) {
+        //                    sweetAlert("Oops...", "Your current location out of coverage area!", "error");
+        //                    lStatus = false;
+        //                    return false;
+        //                } else {
+        //                    lStatus = true;
+        //                    //return true;
+        //                }
+        //                alert(lStatus);
+        //                return false;
+        //            },
+        //            error: function () {
+        //                return lStatus;
+        //            }
+        //        });
+
+            ////********************** */
+            //debugger;
+            //return lStatus;
+
+           // return true;
+
+        //} else {
+
+        //    debugger;
+        //   // return false;
+        //}
+        
+        //return false;
+    });
+
+
+    function addToCart(id) {
+
+        $.get("/Home/GetUserOfficeAddress", { Email: 'Deepak' }, function (data) {
+            //alert(data);
+            debugger;
+            /*id.preventDefault();*/
+            $("#btnLogin").prop("disabled", false);
+            debugger;
+            lStatusGo = false;
+            _isstatus = true;
+            return true;
+            
+        });  
+       
+    };
+
+    function checkOfficeLocationCoverage(latData, longData) {
+
+        var lat = document.getElementById("lat").value;
+        var lng = document.getElementById("lng").value;
+        //var vasteras = { lat: 22.579169, lng: 88.387761 };22.613797880751562, 88.41316028586681
+        //var vasteras = { lat: 22.582369, lng: 88.477582 };
+        //var vasteras = { lat: 22.613797880751562, lng: 88.41316028586681 }; //DumDum Office
+        var vasteras = { lat: latData, lng: longData }; //DumDum Office
+        var stockholm = { lat: lat, lng: lng };
+        if (lat != "" && lng != "") {
+            //alert(lat+'-not null');
+
+            debugger;
+
+
+            var lStatus = arePointsNear(vasteras, stockholm, 2);
+
+            return lStatus;
+            // getAddress(lat, lng).then(console.log).catch(console.error);
+            //return false;
+            //if (lStatus == false) {
+            //    sweetAlert("Oops...", "Your current location out of coverage area!", "error");
+            //    return false;
+            //} else {
+            //    //alert('Your Status - ' + n);
+            //    return true;
+            //}
+
+        } else {
+            //alert(lat + '-is null');
+            sweetAlert("Oops...", "Please allow your location!", "error");
+            return false;
+
         }
 
+    };
 
-    });
+
+    function checkOfficeLocationCoverage1(latData, longData) {
+
+        //*********************** */
+
+        var email = $("#Username").val();
+        debugger;
+        // alert(ValueType);
+        $.ajax(
+            {
+                url: '/Home/GetUserOfficeAddress?Email=' + email,
+                type: 'GET',
+                data: "",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    latData = data.lat;
+                    longData = data.long;
+                    debugger;
+                    lStatus = checkOfficeLocationCoverage(latData, longData);
+                    debugger;
+                    if (lStatus == false) {
+                        sweetAlert("Oops...", "Your current location out of coverage area!", "error");
+                        lStatus = false;
+                        return false;
+                    } else {
+                        lStatus = true;
+                        return true;
+                    }
+                    alert(lStatus);
+                    return lStatus;
+                },
+                error: function () {
+                    return lStatus;
+                }
+            });
+
+            //********************** */
+
+    };
+
+
+    function displayLocation(latitude, longitude) {
+        var request = new XMLHttpRequest();
+
+        var method = 'GET';
+        var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitude + ',' + longitude + '&sensor=true';
+        var async = true;
+
+        request.open(method, url, async);
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                var data = JSON.parse(request.responseText);
+                var address = data.results[0];
+                document.write(address.formatted_address);
+            }
+        };
+        request.send();
+    };
 
 });

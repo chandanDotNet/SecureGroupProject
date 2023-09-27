@@ -18,6 +18,8 @@ namespace SecureGroup.ViewModel
 
         [Required, Range(1, int.MaxValue, ErrorMessage = "Must Choose a Role")]
         public int RoleId { get; set; }
+        public float Lat { get; set; }
+        public float Long { get; set; }
 
         public IList<SelectListItem> RoleList { get; set; }
     }

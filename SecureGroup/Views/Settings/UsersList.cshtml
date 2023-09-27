@@ -43,6 +43,7 @@
                 <th>Email</th>
                 <th>Role</th>
                 <th>Department</th>
+                <th>Office Address</th>
                 <th>Is KYC Verified</th>
                 <th hidden="hidden">Present Address</th>
                 <th hidden="hidden">Permanent Address</th>
@@ -53,6 +54,7 @@
                 <th hidden="hidden">Blood Group</th>
                 <th hidden="hidden">Reporting To</th>
                 <th hidden="hidden">Joining Date</th>
+               
                
                 <th>Action</th>
             </tr>
@@ -75,6 +77,7 @@
                     <td>@Html.DisplayFor(modelItem => item.Email)</td>
                     <td>@Html.DisplayFor(modelItem => item.RoleName)</td>
                     <td>@Html.DisplayFor(modelItem => item.DepartmentName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.OfficeAddress)</td>
                     <td> 
                         @if(item.IsVerifiedKYC==true)
                         {
@@ -95,6 +98,7 @@
                     <td hidden="hidden">@Html.DisplayFor(modelItem => item.BloodGroup)</td>
                     <td hidden="hidden">@Html.DisplayFor(modelItem => item.ReportingTo)</td>
                     <td hidden="hidden">@Html.DisplayFor(modelItem => item.JoiningDate)</td>
+                   
                    
                     <td>
 

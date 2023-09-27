@@ -920,5 +920,33 @@ namespace SecureGroup.Models
             return _response;
         }
 
+        public int InsertFailedLoginAttempts(FailedLoginAttempts _failedLoginAttempts)
+        {
+            int _response = 0;
+
+
+            if (_failedLoginAttempts != null)
+            {
+
+                // UserRole userRole = new UserRole() { UserRoleId = _userRoleViewModel.UserRoleId, RoleName = _userRoleViewModel.RoleName, IsActive = true };
+                // Add the new object to the Orders collection.
+
+
+                // Submit the change to the database.
+                try
+                {
+                    myDbContext.FailedLoginAttempts.Add(_failedLoginAttempts);
+                    myDbContext.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+
+                }
+            }
+
+            return _response;
+        }
+
     }
 }

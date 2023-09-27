@@ -12,6 +12,7 @@ using SecureGroup.ViewModel.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.CodeAnalysis;
 using Microsoft.Build.Evaluation;
+using static iTextSharp.awt.geom.Point2D;
 
 namespace SecureGroup.Models
 {
@@ -117,6 +118,8 @@ namespace SecureGroup.Models
                     student.BloodGroup = rdr["BloodGroup"].ToString();
                     student.GSTFormName = rdr["GSTFormName"].ToString();
                     student.VendorFormName = rdr["VendorFormName"].ToString();
+                    student.OfficeAddressId =Convert.ToInt32(rdr["OfficeAddressId"]);
+                    student.OfficeAddress = rdr["OfficeAddress"].ToString();
 
                     lstUser.Add(student);
                 }
@@ -516,6 +519,7 @@ namespace SecureGroup.Models
                 cmd.Parameters.AddWithValue("@JoiningDate", userViewModel.JoiningDate);
                 cmd.Parameters.AddWithValue("@GSTNo", userViewModel.GSTNo);
                 cmd.Parameters.AddWithValue("@BloodGroup", userViewModel.BloodGroup);
+                cmd.Parameters.AddWithValue("@OfficeAddressId", userViewModel.OfficeAddressId);
 
                 con.Open();
                 response = cmd.ExecuteNonQuery();
@@ -1951,5 +1955,31 @@ namespace SecureGroup.Models
             return _notificationList;
         }
 
+
+        public int ValidateUserGeoLocation(int ActionId, LoginViewModel loginViewModel)
+        {
+            int response = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SP_UserLogin", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ActionId", ActionId);
+                cmd.Parameters.AddWithValue("@Email", loginViewModel.Username);
+                cmd.Parameters.AddWithValue("@Password", loginViewModel.Password);
+                cmd.Parameters.AddWithValue("@RoleId", loginViewModel.RoleId);
+                cmd.Parameters.AddWithValue("@Lat", loginViewModel.Lat);
+                cmd.Parameters.AddWithValue("@Long", loginViewModel.Long);
+                
+                con.Open();
+                var resp = cmd.ExecuteReader();
+                while (resp.Read())
+                {
+                    response = Convert.ToInt32(resp["DistanceStatus"]);
+                    double Distance = Convert.ToDouble(resp["Distance"]);
+                }
+                con.Close();
+            }
+            return response;
+        }
     }
 }

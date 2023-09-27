@@ -77,7 +77,7 @@
                 </div>
                 <div class="mb-3 custom-form-control">                  
                     
-                    <input asp-for="Username" class="form-control" placeholder="Phone No or Email Address" />
+                    <input asp-for="Username" class="form-control" id="Username" placeholder="Phone No or Email Address" />
                     <span asp-validation-for="Username" class="text-danger"></span>
 
                 </div>
@@ -94,8 +94,8 @@
                     Submit                   
                 </a>*@
                 
-                <input class="form-control" type="hidden" id="lat" />
-                <input class="form-control" type="hidden" id="lng" />
+                <input asp-for="Lat" class="form-control" type="hidden"  id="lat" />
+                <input asp-for="Long" class="form-control" type="hidden" id="lng" />
                 
 
                 <input type="submit" value="Login" class="login-process-btn" id="btnLogin" />

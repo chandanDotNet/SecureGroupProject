@@ -63,6 +63,9 @@ namespace SecureGroup.ViewModel
         public string GSTFormName { get; set; }
         public string VendorFormName { get; set; }
         public int OfficeAddressId { get; set; }
+        public string OfficeAddress { get; set; }
+        public double Lat { get; set; }
+        public double Long { get; set; }
 
         public IList<SelectListItem> RoleList { get; set; }
         public IList<SelectListItem> DepartmentList { get; set; }

@@ -37,6 +37,7 @@ namespace SecureGroup.DBContexts
         public DbSet<Scheme> Scheme { get; set; }
         public DbSet<QuatationToPaymentDetails> QuatationToPaymentDetails { get; set; }
         public DbSet<OfficeAddress> OfficeAddress { get; set; }
+        public DbSet<FailedLoginAttempts> FailedLoginAttempts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -68,6 +69,7 @@ namespace SecureGroup.DBContexts
             modelBuilder.Entity<Scheme>().ToTable("Scheme");
             modelBuilder.Entity<QuatationToPaymentDetails>().ToTable("QuatationToPaymentDetails");
             modelBuilder.Entity<OfficeAddress>().ToTable("OfficeLocation");
+            modelBuilder.Entity<FailedLoginAttempts>().ToTable("FailedLoginAttempts");
         }
 
         

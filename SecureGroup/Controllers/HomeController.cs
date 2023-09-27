@@ -11,6 +11,7 @@ using SecureGroup.ViewModel.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -123,61 +124,106 @@ namespace SecureGroup.Controllers
         {
             try
             {
-                
+                int DistanceStatus = 0;
+                UserViewModel _userViewModel = new UserViewModel();
+                _userViewModel.Lat = loginViewModel.Lat;
+                _userViewModel.Long = loginViewModel.Long;
+                _userViewModel.Email = loginViewModel.Username;
+                _userViewModel.Password = loginViewModel.Password;
+
                 if (!string.IsNullOrEmpty(loginViewModel.Username) && !string.IsNullOrEmpty(loginViewModel.Password) && loginViewModel.RoleId > 0)
                 {
-                    UserViewModel _userViewModel = new UserViewModel();
+                    
                     var Username = loginViewModel.Username;
-                    var password = EncryptionLibrary.EncryptText(loginViewModel.Password);
+                    var password = EncryptionLibrary.EncryptText(loginViewModel.Password);                    
 
-                    _userViewModel = DataAccessLayerLinq.ValidateUser(Username, password, loginViewModel.RoleId);
-
-                    if (_userViewModel != null && _userViewModel.UserId > 0)
+                    if(loginViewModel.RoleId==1 || loginViewModel.RoleId == 2 || loginViewModel.RoleId == 5)
                     {
-                        var RoleID = _userViewModel.RoleId;
-                        //remove_Anonymous_Cookies(); //Remove Anonymous_Cookies
-                        
-                        InsertUserSession(_userViewModel); //Store Session data                      
-
-                        InsertLogInfo(_userViewModel,true);
-                        TempData["successmessage"] = "You are successfully logged in";
-
-                        return RedirectToAction("Dashboard", "Home");
-                        //if (RoleID == 1) //Admin
-                        //{
-                        //    return RedirectToAction("Dashboard", "Home");
-                        //}
-                        //else if (RoleID == 2) //Vendor
-                        //{
-                        //    return RedirectToAction("VDashboard", "Home");
-                        //}
-                        //else if (RoleID == 3) //Client
-                        //{
-                        //    return RedirectToAction("CDashboard", "Home");
-                        //}
-                        //else if (RoleID == 4) //Employee
-                        //{
-                        //    return RedirectToAction("EDashboard", "Home");
-                        //}
-
+                        DistanceStatus = 1;
                     }
                     else
                     {
+                        DistanceStatus = DataAccessLayer.ValidateUserGeoLocation(1, loginViewModel);
+                    }                    
+
+
+                    if (DistanceStatus == 1)
+                    {                       
+                       
+                        _userViewModel = DataAccessLayerLinq.ValidateUser(Username, password, loginViewModel.RoleId);
+
+                        if (_userViewModel != null && _userViewModel.UserId > 0)
+                        {
+                            _userViewModel.Lat = loginViewModel.Lat;
+                            _userViewModel.Long = loginViewModel.Long;
+
+                            var RoleID = _userViewModel.RoleId;
+                            //remove_Anonymous_Cookies(); //Remove Anonymous_Cookies
+
+                            InsertUserSession(_userViewModel); //Store Session data                      
+
+                            InsertLogInfo(_userViewModel, true);
+                            TempData["successmessage"] = "You are successfully logged in";
+
+                            return RedirectToAction("Dashboard", "Home");
+                            //if (RoleID == 1) //Admin
+                            //{
+                            //    return RedirectToAction("Dashboard", "Home");
+                            //}
+                            //else if (RoleID == 2) //Vendor
+                            //{
+                            //    return RedirectToAction("VDashboard", "Home");
+                            //}
+                            //else if (RoleID == 3) //Client
+                            //{
+                            //    return RedirectToAction("CDashboard", "Home");
+                            //}
+                            //else if (RoleID == 4) //Employee
+                            //{
+                            //    return RedirectToAction("EDashboard", "Home");
+                            //}
+
+                        }
+                        else
+                        {
+
+                            UserViewModel _userViewModel1 = new UserViewModel();
+                            _userViewModel1.Lat = loginViewModel.Lat;
+                            _userViewModel1.Long = loginViewModel.Long;
+                            _userViewModel1.Email = loginViewModel.Username;
+                            _userViewModel1.Password = loginViewModel.Password;
+                            InsertFailedLoginAttemptsInfo(_userViewModel1, "Entered Invalid Username and Password");
+
+                            loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0);
+                            TempData["errormessage"] = "Entered Invalid Username and Password";
+                            return View(loginViewModel);
+                        }
+
+                    }else if (DistanceStatus == -1)
+                    {
+                        TempData["errormessage"] = "Your current location out of coverage area!";
+                        InsertFailedLoginAttemptsInfo(_userViewModel, "Your current location out of coverage area!");
                         loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0);
-                        TempData["errormessage"] = "Entered Invalid Username and Password";
                         return View(loginViewModel);
+
                     }
                 }
+                else
+                {
+                    TempData["errormessage"] = "Entered Invalid Username and Password";
+                    loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0);
+                    InsertFailedLoginAttemptsInfo(_userViewModel, "Entered Invalid Username and Password");
+                    return View(loginViewModel);
+                }
 
-                TempData["errormessage"] = "Entered Invalid Username and Password";
-                loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0);
-                return View(loginViewModel);
+               
             }
             catch (Exception ex)
             {
                 TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
             }
+            return View(loginViewModel);
         }
 
         [HttpGet]
@@ -277,6 +323,8 @@ namespace SecureGroup.Controllers
             logManagement.LogDateTime = DateTime.Now;
             logManagement.IsLogin = IsLogin;
             logManagement.IpAddress= remoteIpAddress.ToString();
+            logManagement.Lat= _userViewModel.Lat;
+            logManagement.Long = _userViewModel.Long;
             DataAccessLayerLinq.InsertLogManagement(logManagement);
 
 
@@ -297,7 +345,22 @@ namespace SecureGroup.Controllers
 
 
         }
-       
+
+        public void InsertFailedLoginAttemptsInfo(UserViewModel _userViewModel,string Reason)
+        {
+            var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
+            var mackAddress = HttpContext.Connection.LocalIpAddress;
+            FailedLoginAttempts _failedLoginAttempts = new FailedLoginAttempts();
+            _failedLoginAttempts.Email = _userViewModel.Email;
+            _failedLoginAttempts.Password = _userViewModel.Password;
+            _failedLoginAttempts.LogDateTime = DateTime.Now;
+            _failedLoginAttempts.IpAddress = remoteIpAddress.ToString();
+            _failedLoginAttempts.Lat = _userViewModel.Lat;
+            _failedLoginAttempts.Long = _userViewModel.Long;
+            _failedLoginAttempts.Reason = Reason;
+            DataAccessLayerLinq.InsertFailedLoginAttempts(_failedLoginAttempts);
+        }
+
         [HttpGet]
         public IActionResult ForgotPassword()
         {
@@ -618,6 +681,38 @@ namespace SecureGroup.Controllers
                 emailNotifications = DataAccessLayer.GetEmailNotification(3).ToList();
             }
             return View(emailNotifications);
+        }
+
+        [HttpGet]
+        public JsonResult GetUserOfficeAddress(string Email)
+        {
+            int UserId = 0;
+            UserViewModel _userViewModel = new UserViewModel();
+            OfficeAddressViewModel _officeAddressViewModel = new OfficeAddressViewModel();
+
+            UserId = DataAccessLayer.OtpVerification(3, Email, null);
+            if (UserId > 0)
+            {
+                _userViewModel = DataAccessLayer.GetAllUser(4, UserId, 0).FirstOrDefault();
+                if(_userViewModel != null)
+                {
+                    if(_userViewModel.OfficeAddressId >0)
+                    {                       
+                        _officeAddressViewModel = DataAccessLayer.GetOfficeAddressData(4, _userViewModel.OfficeAddressId).FirstOrDefault();
+                    }
+                }
+
+                return Json(_officeAddressViewModel);
+            }
+            else
+            {
+                return Json("Invalid Email! Please Enter Valid Email");
+            }
+
+
+            //DataAccessLayer.AddUpdateOtp(1, email, otp);
+
+            //return View();
         }
 
     }
