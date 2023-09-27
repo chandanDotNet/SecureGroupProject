@@ -66,11 +66,18 @@ namespace SecureGroup.Controllers
             if (fileId != 0)
             {
                 string filename = _dataAccessLayer.GetDocumentFileName(1, fileId);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload/DocumentFiles", filename);
-                var fs = new FileStream(path, FileMode.Open);
-                return File(fs, "application/octet-stream", filename);
+                if (filename != string.Empty)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "Upload/DocumentFiles", filename);
+                    var fs = new FileStream(path, FileMode.Open);
+                    return File(fs, "application/octet-stream", filename);
+                }
+                else
+                {
+                    TempData["errormessage"] = "File not exist!";
+                }              
             }
-            return new EmptyResult();
+            return RedirectToAction(nameof(WarehouseList));
         }
 
         public ActionResult FileListPartial(int Id)
