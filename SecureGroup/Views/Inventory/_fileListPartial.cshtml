@@ -37,13 +37,16 @@
                             @if (UserRoleId == "4")
                             {
                                 <li><a asp-controller="Inventory" asp-action="DownloadFileByName" asp-route-fileName="@item.FileName"><i class="fa fa-download" aria-hidden="true"></i></a></li>
-                                <li>
-                                    <a href="javascript:void(0);" data-fileName="@item.FileName" data-id="@item.FileId" class="dropdown-item delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                </li>
+                              
                             }
                             @if (UserRoleId == "1")
                             {
-                                <a asp-controller="Inventory" asp-action="DownloadFileByName" asp-route-fileName="@item.FileName"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                <li>
+                                <a asp-controller="Inventory" asp-action="DownloadFileByName" asp-route-fileName="@item.FileName"><i class="fa fa-download" aria-hidden="true"></i>Download</a>
+                                   </li>
+                                <li>
+                                    <a href="javascript:void(0);" data-fileName="@item.FileName" data-id="@item.FileId" class="dropdown-item delete"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a>
+                                </li>
                             }
                             @* <li><a asp-controller="Inventory" asp-action="DownloadFileByName" asp-route-fileName="@item.FileName"><i class="fa fa-download" aria-hidden="true"></i></a></li>
                         <li>
