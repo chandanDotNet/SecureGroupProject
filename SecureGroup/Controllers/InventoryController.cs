@@ -75,7 +75,7 @@ namespace SecureGroup.Controllers
                 else
                 {
                     TempData["errormessage"] = "File not exist!";
-                }              
+                }
             }
             return RedirectToAction(nameof(WarehouseList));
         }
@@ -197,7 +197,32 @@ namespace SecureGroup.Controllers
                 if (warehouseViewModel.DocumentFileUpload != null)
                 {
                     UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();
-                    _uploadFileResponse = UploadFileWithName(warehouseViewModel.DocumentFileUpload, "Upload/DocumentFiles", customFileName);
+                    //_uploadFileResponse = UploadFileWithName(warehouseViewModel.DocumentFileUpload, "Upload/DocumentFiles", customFileName);
+
+                    string path = "";
+                    bool iscopied = false;
+
+                    if (warehouseViewModel.DocumentFileUpload.Length > 0)
+                    {
+                        customFileName = customFileName + Path.GetExtension(warehouseViewModel.DocumentFileUpload.FileName);
+                        path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Upload/DocumentFiles"));
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        using (var filestream = new FileStream(Path.Combine(path, customFileName), FileMode.Create))
+                        {
+                            warehouseViewModel.DocumentFileUpload.CopyToAsync(filestream);
+                        }
+                        iscopied = true;
+
+                        _uploadFileResponse.UploadSuccess = iscopied;
+                        _uploadFileResponse.FileName = customFileName;
+                        _uploadFileResponse.FilePath = path;
+                    }
+
+
+                    //
                     if (_uploadFileResponse != null)
                     {
                         if (_uploadFileResponse.UploadSuccess == true)

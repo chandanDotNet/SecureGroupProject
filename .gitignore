@@ -361,5 +361,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/SecureGroup/Utility/ConnectionString.cs
-/SecureGroup/appsettings.json
