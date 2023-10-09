@@ -6,6 +6,8 @@
 }
 
 
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
+
 <div class="common-title-headeer">
     <h1> Purchase Order</h1>
 
@@ -193,6 +195,7 @@
 
                             <td>
                                 <input type="button" value="Show" class="btn btn-secondary approve-reject-btn editPurchaseItem" data-bs-toggle="modal" data-bs-target="#comment-modal1" />
+                                @*<input type="button" value="Show" class="btn btn-secondary approve-reject-btn editPurchaseItem" />*@
                                 <input type="submit" value="Remove" class="btn-Remove" asp-controller="Order" asp-action="DeletePurchaseItem" asp-route-PurchaseOrderDetailsId="@Model.PurchaseOrderDetails[i].PurchaseOrderDetailsId" asp-route-PurchaseOrderId="@Model.PurchaseOrderDetails[i].PurchaseOrderId" />
 
 
@@ -222,9 +225,11 @@
 
 </div>
 
+@*<div id="partiaload1">
+    hi
+</div>*@
 
-
-<div class="modal fade " id="comment-modal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+<div class="modal fade" id="comment-modal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -552,35 +557,64 @@
                 var a = row.value;
                 $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>")
             });
-        }
+        };
+
+        //$(".editPurchaseItem1").click(function () {
+
+        //    debugger;
+        //    var currentRow = $(this).closest("tr");
+        //    var PurchaseOrderDetailsId = currentRow.find(".PurchaseOrderDetailsId").val();
+        //    var PurchaseOrderId = currentRow.find(".PurchaseOrderId").val();
+            
+        //    $("#partiaload1").load('/Order/_AddEditPurchaseItemPartial?PurchaseOrderDetailsId=' + PurchaseOrderDetailsId + '&PurchaseOrderId=' + PurchaseOrderId + '&QuatationToPaymentId=' + QuatationToPaymentId);
+
+        //});
 
         $(".editPurchaseItem").click(function () {
-
-            var currentRow = $(this).closest("tr");
-            var PurchaseOrderDetailsId = currentRow.find(".PurchaseOrderDetailsId").val();
-            var PurchaseOrderId = currentRow.find(".PurchaseOrderId").val();
-            $('#partial-purchaseItem-load').load('/Order/_AddEditPurchaseItemPartial?PurchaseOrderDetailsId=' + PurchaseOrderDetailsId + '&PurchaseOrderId=' + PurchaseOrderId + '&QuatationToPaymentId=' + QuatationToPaymentId);
-
+            
+                var currentRow = $(this).closest("tr");
+                var PurchaseOrderDetailsId = currentRow.find(".PurchaseOrderDetailsId").val();
+                var PurchaseOrderId = currentRow.find(".PurchaseOrderId").val();
+            // alert("PurchaseOrderDetailsId=" + PurchaseOrderDetailsId + '&PurchaseOrderId=' + PurchaseOrderId );
+                debugger;
+                $.ajax({
+                    type: "GET",
+                    url: "/Order/_AddEditPurchaseItemPartial",
+                    data: 'PurchaseOrderDetailsId=' + PurchaseOrderDetailsId + '&PurchaseOrderId=' + PurchaseOrderId + '&QuatationToPaymentId=' + QuatationToPaymentId,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                    $('#partial-purchaseItem-load').html(response);
+                   // $('#partiaload1').html(response);
+                      //  $('#dialog').dialog('open');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
         });
 
-        $("#btnAddItem").click(function () {
+            $("#btnAddItem").click(function () {
 
-            //var currentRow = $(this).closest("tr");
-            var PurchaseOrderDetailsId = "0";
-            var PurchaseOrderId = $("#PurchaseOrderId").val();
-            var QuatationToPaymentId = $("#QuatationToPaymentId").val();
-            // alert(PurchaseOrderId);
-            $('#partial-purchaseItem-load').load('/Order/_AddEditPurchaseItemPartial?PurchaseOrderDetailsId=' + PurchaseOrderDetailsId + '&PurchaseOrderId=' + PurchaseOrderId + '&QuatationToPaymentId=' + QuatationToPaymentId);
+                //var currentRow = $(this).closest("tr");
+                var PurchaseOrderDetailsId = "0";
+                var PurchaseOrderId = $("#PurchaseOrderId").val();
+                var QuatationToPaymentId = $("#QuatationToPaymentId").val();
+                // alert(PurchaseOrderId);
+                $('#partial-purchaseItem-load').load('/Order/_AddEditPurchaseItemPartial?PurchaseOrderDetailsId=' + PurchaseOrderDetailsId + '&PurchaseOrderId=' + PurchaseOrderId + '&QuatationToPaymentId=' + QuatationToPaymentId);
+
+            });
+
+            function getDate() {
+                var today = new Date();
+
+                document.getElementById("date").value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+
+            };
 
         });
-
-        function getDate() {
-            var today = new Date();
-
-            document.getElementById("date").value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-
-
-        }
-
-    });
 </script>

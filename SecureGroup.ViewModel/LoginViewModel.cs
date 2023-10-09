@@ -20,6 +20,7 @@ namespace SecureGroup.ViewModel
         public int RoleId { get; set; }
         public float Lat { get; set; }
         public float Long { get; set; }
+        public bool IsDesktopPCLogin { get; set; }
 
         public IList<SelectListItem> RoleList { get; set; }
     }

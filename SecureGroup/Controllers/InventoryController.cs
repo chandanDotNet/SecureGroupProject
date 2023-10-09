@@ -75,7 +75,7 @@ namespace SecureGroup.Controllers
                 else
                 {
                     TempData["errormessage"] = "File not exist!";
-                }
+                }              
             }
             return RedirectToAction(nameof(WarehouseList));
         }
@@ -193,36 +193,12 @@ namespace SecureGroup.Controllers
             try
             {
 
-                string customFileName = "File_" + DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToShortTimeString();
+                string customFileName = "File_" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() +
+                     DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
                 if (warehouseViewModel.DocumentFileUpload != null)
                 {
                     UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();
-                    //_uploadFileResponse = UploadFileWithName(warehouseViewModel.DocumentFileUpload, "Upload/DocumentFiles", customFileName);
-
-                    string path = "";
-                    bool iscopied = false;
-
-                    if (warehouseViewModel.DocumentFileUpload.Length > 0)
-                    {
-                        customFileName = customFileName + Path.GetExtension(warehouseViewModel.DocumentFileUpload.FileName);
-                        path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Upload/DocumentFiles"));
-                        if (!Directory.Exists(path))
-                        {
-                            Directory.CreateDirectory(path);
-                        }
-                        using (var filestream = new FileStream(Path.Combine(path, customFileName), FileMode.Create))
-                        {
-                            warehouseViewModel.DocumentFileUpload.CopyToAsync(filestream);
-                        }
-                        iscopied = true;
-
-                        _uploadFileResponse.UploadSuccess = iscopied;
-                        _uploadFileResponse.FileName = customFileName;
-                        _uploadFileResponse.FilePath = path;
-                    }
-
-
-                    //
+                    _uploadFileResponse = UploadFileWithName(warehouseViewModel.DocumentFileUpload, "Upload/DocumentFiles", customFileName);
                     if (_uploadFileResponse != null)
                     {
                         if (_uploadFileResponse.UploadSuccess == true)
@@ -231,7 +207,7 @@ namespace SecureGroup.Controllers
                         }
                     }
                 }
-
+                //UploadFileNew(warehouseViewModel.DocumentFileUpload, "Upload/DocumentFiles", customFileName);
                 response = _dataAccessLayer.AddWarehouse(warehouseViewModel, 7);
                 if (response > 0)
                 {
@@ -323,7 +299,8 @@ namespace SecureGroup.Controllers
             //{
             try
             {
-                string customFileName = "File_" + DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToShortTimeString();
+                string customFileName = "File_" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() +
+                     DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
                 if (warehouseViewModel.DocumentFileUpload != null)
                 {
                     UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();

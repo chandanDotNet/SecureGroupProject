@@ -1127,6 +1127,8 @@ namespace SecureGroup.Models
                     _site.Scheme = rdr["Scheme"].ToString();
                     _site.ZipCode = rdr["ZipCode"].ToString();
                     _site.CountryId = Convert.ToInt32(rdr["CountryId"]);
+                    _site.Lat = (float?)Convert.ToDouble(rdr["Lat"]);
+                    _site.Long = (float?)Convert.ToDouble(rdr["Long"]);
 
 
 
@@ -1156,6 +1158,8 @@ namespace SecureGroup.Models
                 cmd.Parameters.AddWithValue("@ZipCode", _siteModel.ZipCode);
                 cmd.Parameters.AddWithValue("@CountryId", _siteModel.CountryId);
                 cmd.Parameters.AddWithValue("@CreatedBy", _siteModel.CreatedBy);
+                cmd.Parameters.AddWithValue("@Lat", _siteModel.Lat);
+                cmd.Parameters.AddWithValue("@Long", _siteModel.Long);
                 con.Open();
                 response = cmd.ExecuteNonQuery();
                 con.Close();

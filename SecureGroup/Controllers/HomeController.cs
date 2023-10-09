@@ -29,8 +29,8 @@ namespace SecureGroup.Controllers
         private MsDBContext myDbContext;
         DataAccessLayer DataAccessLayer = null;
         DataAccessLayerLinq DataAccessLayerLinq = null;
-       // HttpContext httpContext= _httpContext;
-        public  HttpContext _httpContext;
+        // HttpContext httpContext= _httpContext;
+        public HttpContext _httpContext;
         private readonly IWebHostEnvironment _env;
         public HomeController(ILogger<HomeController> logger, MsDBContext context, IWebHostEnvironment env)
         {
@@ -52,17 +52,17 @@ namespace SecureGroup.Controllers
             var _userSessionData = GetUserSession();
             DashboardViewModel _dModel = new DashboardViewModel();
             _dModel.RoleId = _userSessionData.RoleId;
-            int UserId=_userSessionData.UserId;
+            int UserId = _userSessionData.UserId;
             _dModel.RoleName = _userSessionData.RoleName.ToString();
-            if(_userSessionData.RoleId==1)
+            if (_userSessionData.RoleId == 1)
             {
                 _dModel = DataAccessLayer.GetDashboardData(1, 0);
             }
-            if(_userSessionData.RoleId == 4)
+            if (_userSessionData.RoleId == 4)
             {
                 _dModel = DataAccessLayer.GetDashboardData(2, UserId);
             }
-            
+
             _dModel.projectList = DataAccessLayer.GetProjectsListData(3, 0).ToList();
             _dModel.taskList = DataAccessLayer.GetAllTaskAllocation(4, 0, UserId, 0).ToList();
             _dModel.RoleId = _userSessionData.RoleId;
@@ -74,7 +74,7 @@ namespace SecureGroup.Controllers
         public IActionResult EDashboard()
         {
             var SessionData = GetUserSession();
-           
+
             return View();
         }
 
@@ -113,7 +113,7 @@ namespace SecureGroup.Controllers
         public IActionResult Login()
         {
             LoginViewModel _loginViewModel = new LoginViewModel();
-            _loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0).Where(x => x.Value == "1" || x.Value == "4" || x.Value == "2" || x.Value == "5").ToList(); 
+            _loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0).Where(x => x.Value == "1" || x.Value == "4" || x.Value == "2" || x.Value == "5").ToList();
 
             return View(_loginViewModel);
         }
@@ -133,23 +133,36 @@ namespace SecureGroup.Controllers
 
                 if (!string.IsNullOrEmpty(loginViewModel.Username) && !string.IsNullOrEmpty(loginViewModel.Password) && loginViewModel.RoleId > 0)
                 {
-                    
-                    var Username = loginViewModel.Username;
-                    var password = EncryptionLibrary.EncryptText(loginViewModel.Password);                    
 
-                    if(loginViewModel.RoleId==1 || loginViewModel.RoleId == 2 || loginViewModel.RoleId == 5)
+                    var Username = loginViewModel.Username;
+                    var password = EncryptionLibrary.EncryptText(loginViewModel.Password);
+
+                    if (loginViewModel.RoleId == 1 || loginViewModel.RoleId == 2 || loginViewModel.RoleId == 5)
                     {
                         DistanceStatus = 1;
                     }
                     else
                     {
                         DistanceStatus = DataAccessLayer.ValidateUserGeoLocation(1, loginViewModel);
-                    }                    
+                    }
 
+                    if (loginViewModel.IsDesktopPCLogin == true)
+                    {
+                        bool KeyValidateStatus = ValidateKey();
+                        if (KeyValidateStatus)
+                        {
+                            DistanceStatus = 1;
+                        }
+                        else
+                        {
+                            DistanceStatus = -2;
+                        }
+
+                    }
 
                     if (DistanceStatus == 1)
-                    {                       
-                       
+                    {
+
                         _userViewModel = DataAccessLayerLinq.ValidateUser(Username, password, loginViewModel.RoleId);
 
                         if (_userViewModel != null && _userViewModel.UserId > 0)
@@ -199,9 +212,18 @@ namespace SecureGroup.Controllers
                             return View(loginViewModel);
                         }
 
-                    }else if (DistanceStatus == -1)
+                    }
+                    else if (DistanceStatus == -1)
                     {
                         TempData["errormessage"] = "Your current location out of coverage area!";
+                        InsertFailedLoginAttemptsInfo(_userViewModel, "Your current location out of coverage area!");
+                        loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0);
+                        return View(loginViewModel);
+
+                    }
+                    else if (DistanceStatus == -2)
+                    {
+                        TempData["errormessage"] = "Your don't have access to login! Please contact with- Admin";
                         InsertFailedLoginAttemptsInfo(_userViewModel, "Your current location out of coverage area!");
                         loginViewModel.RoleList = DataAccessLayerLinq.GetDropDownListData("UserRole", 0);
                         return View(loginViewModel);
@@ -216,7 +238,7 @@ namespace SecureGroup.Controllers
                     return View(loginViewModel);
                 }
 
-               
+
             }
             catch (Exception ex)
             {
@@ -239,17 +261,17 @@ namespace SecureGroup.Controllers
             TempData.Keep("email");
             if (otp == null)
                 return NoContent();
-            else 
+            else
             {
                 //if ((DateTime.Now - Convert.ToDateTime(TempData["timestamp"])).TotalSeconds < 30)
                 var result = DataAccessLayer.OtpVerification(2, (string)email, otp);
                 if (result > 0)
                 {
                     TempData["UserId"] = result;
-                    model.UserId = result;                    
+                    model.UserId = result;
                     return View("ChangePassword", model);
                 }
-                
+
             }
 
             return View("ChangePassword", model);
@@ -287,11 +309,11 @@ namespace SecureGroup.Controllers
         {
             try
             {
-                if(Type==100)
+                if (Type == 100)
                 {
                     TempData["errormessage"] = "Session Expair!";
                 }
-                UserViewModel _userViewModel=new UserViewModel();
+                UserViewModel _userViewModel = new UserViewModel();
                 CookieOptions option = new CookieOptions();
 
                 if (Request.Cookies["SGChannel"] != null)
@@ -300,7 +322,7 @@ namespace SecureGroup.Controllers
                     Response.Cookies.Append("SGChannel", "", option);
                 }
                 _userViewModel.UserId = GetUserSession().UserId;
-                _userViewModel.RoleId= GetUserSession().RoleId;
+                _userViewModel.RoleId = GetUserSession().RoleId;
                 InsertLogInfo(_userViewModel, false);
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Home");
@@ -312,7 +334,7 @@ namespace SecureGroup.Controllers
 
         }
 
-        public void InsertLogInfo(UserViewModel _userViewModel,Boolean IsLogin)
+        public void InsertLogInfo(UserViewModel _userViewModel, Boolean IsLogin)
         {
             var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
             var mackAddress = HttpContext.Connection.LocalIpAddress;
@@ -321,8 +343,8 @@ namespace SecureGroup.Controllers
             logManagement.RoleId = _userViewModel.RoleId;
             logManagement.LogDateTime = DateTime.Now;
             logManagement.IsLogin = IsLogin;
-            logManagement.IpAddress= remoteIpAddress.ToString();
-            logManagement.Lat= _userViewModel.Lat;
+            logManagement.IpAddress = remoteIpAddress.ToString();
+            logManagement.Lat = _userViewModel.Lat;
             logManagement.Long = _userViewModel.Long;
             DataAccessLayerLinq.InsertLogManagement(logManagement);
 
@@ -330,14 +352,15 @@ namespace SecureGroup.Controllers
             AttendanceViewModel attendanceViewModel = new AttendanceViewModel();
             attendanceViewModel.CreatedBy = GetUserSession().UserId;
             attendanceViewModel.UserId = GetUserSession().UserId;
-            if(IsLogin==true)
+            if (IsLogin == true)
             {
                 attendanceViewModel.AttendanceStatusId = 1;
-            }else if(IsLogin==false)
+            }
+            else if (IsLogin == false)
             {
                 attendanceViewModel.AttendanceStatusId = 2;
             }
-            
+
 
             DataAccessLayer.UpdateUserAttendanceeTimeData(attendanceViewModel, 9);
 
@@ -345,7 +368,7 @@ namespace SecureGroup.Controllers
 
         }
 
-        public void InsertFailedLoginAttemptsInfo(UserViewModel _userViewModel,string Reason)
+        public void InsertFailedLoginAttemptsInfo(UserViewModel _userViewModel, string Reason)
         {
             var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
             var mackAddress = HttpContext.Connection.LocalIpAddress;
@@ -402,8 +425,8 @@ namespace SecureGroup.Controllers
             var otp = GenerateOtp();
             string mailBody = HtmlBody.Replace("{OTP}", otp.ToString());
 
-            UserId= DataAccessLayer.OtpVerification(3,email,null);
-            if(UserId>0)
+            UserId = DataAccessLayer.OtpVerification(3, email, null);
+            if (UserId > 0)
             {
                 var result = sendEmail("Forget Password", mailBody, "crmsifsl@gmail.com", email, "", "");
                 if (result)
@@ -420,13 +443,13 @@ namespace SecureGroup.Controllers
                 return Json("Invalid Email! Please Enter Valid Email");
             }
 
-           
+
             //DataAccessLayer.AddUpdateOtp(1, email, otp);
-           
+
             //return View();
         }
 
-       
+
 
         public IActionResult MyAccount()
         {
@@ -435,7 +458,7 @@ namespace SecureGroup.Controllers
             if (UserId > 0)
             {
                 // _userViewModel = _dataAccessLayerLinq.GetUserList(Id, 0).FirstOrDefault();
-                _userViewModel = DataAccessLayer.GetAllUser(4, UserId, 0).FirstOrDefault();                
+                _userViewModel = DataAccessLayer.GetAllUser(4, UserId, 0).FirstOrDefault();
                 //_userViewModel.Password = EncryptionLibrary.DecryptText(_userViewModel.Password);
             }
             return View(_userViewModel);
@@ -444,12 +467,12 @@ namespace SecureGroup.Controllers
 
         public IActionResult UserKYCUpload(int UserId)
         {
-            UserKYC _userKYC = new UserKYC();           
+            UserKYC _userKYC = new UserKYC();
             //int UserId = GetUserSession().UserId;
             if (UserId > 0)
             {
                 _userKYC.UserId = UserId;
-                var _user = DataAccessLayer.GetAllUser(4,UserId, 0).FirstOrDefault();
+                var _user = DataAccessLayer.GetAllUser(4, UserId, 0).FirstOrDefault();
                 if (_user != null)
                 {
                     _userKYC.AadhaarCardName = _user.AadhaarCardName;
@@ -536,7 +559,7 @@ namespace SecureGroup.Controllers
                     }
                 }
 
-                response = DataAccessLayer.UpdateUserKYCData(5,_userKYC);              
+                response = DataAccessLayer.UpdateUserKYCData(5, _userKYC);
                 if (response > 0)
                 {
                     _userKYC.IsVerifiedKYC = true;
@@ -548,7 +571,7 @@ namespace SecureGroup.Controllers
                 else
                 {
                     TempData["errormessage"] = "Something went wrong!";
-                }              
+                }
 
             }
             catch (Exception ex)
@@ -556,8 +579,8 @@ namespace SecureGroup.Controllers
                 TempData["errormessage"] = "Error: Something went wrong! -" + ex.Message;
                 throw ex;
 
-            }            
-           
+            }
+
             return RedirectToAction("MyAccount");
 
         }
@@ -569,7 +592,7 @@ namespace SecureGroup.Controllers
             int UserId = GetUserSession().UserId;
             if (UserId > 0)
             {
-                _userKYC.UserId = UserId;              
+                _userKYC.UserId = UserId;
             }
 
             response = DataAccessLayer.UpdateUserKYCData(6, _userKYC);
@@ -590,7 +613,7 @@ namespace SecureGroup.Controllers
         public IActionResult DownloadFile(string filename)
         {
 
-            if (filename==null)
+            if (filename == null)
             {
                 TempData["errormessage"] = "Something went wrong!- File Not Exists!";
                 return RedirectToAction("UserKYCUpload");
@@ -621,8 +644,8 @@ namespace SecureGroup.Controllers
 
         public IActionResult CreateRole()
         {
-            string subject="Test", emailBody="This is test email", fromEmail= "crmsifsl@gmail.com", toEmail="mr.cmandal@gmail.com", ccEmail=null, bccEmail=null;
-           bool a= sendEmail(subject, emailBody, fromEmail, toEmail, ccEmail, bccEmail);
+            string subject = "Test", emailBody = "This is test email", fromEmail = "crmsifsl@gmail.com", toEmail = "mr.cmandal@gmail.com", ccEmail = null, bccEmail = null;
+            bool a = sendEmail(subject, emailBody, fromEmail, toEmail, ccEmail, bccEmail);
 
 
             //MailMessage msg = new MailMessage();
@@ -659,7 +682,7 @@ namespace SecureGroup.Controllers
             //if (UserId > 0)
             //{
             //    // _userViewModel = _dataAccessLayerLinq.GetUserList(Id, 0).FirstOrDefault();
-               
+
             //    //_userViewModel.Password = EncryptionLibrary.DecryptText(_userViewModel.Password);
             //}
             return View(_logManagement);
@@ -693,10 +716,10 @@ namespace SecureGroup.Controllers
             if (UserId > 0)
             {
                 _userViewModel = DataAccessLayer.GetAllUser(4, UserId, 0).FirstOrDefault();
-                if(_userViewModel != null)
+                if (_userViewModel != null)
                 {
-                    if(_userViewModel.OfficeAddressId >0)
-                    {                       
+                    if (_userViewModel.OfficeAddressId > 0)
+                    {
                         _officeAddressViewModel = DataAccessLayer.GetOfficeAddressData(4, _userViewModel.OfficeAddressId).FirstOrDefault();
                     }
                 }
@@ -712,6 +735,33 @@ namespace SecureGroup.Controllers
             //DataAccessLayer.AddUpdateOtp(1, email, otp);
 
             //return View();
+        }
+
+        public bool ValidateKey()
+        {
+            string Key = null, fileData = null;
+            bool Status = false;
+
+            string file = @"C:\Program Files (x30)\SGeba0145d\eba0145d-d502-4d55-9a73-9236aeed67eb.txt";
+            var path = Path.Combine(Directory.GetCurrentDirectory(), file);
+            if (System.IO.File.Exists(path))
+            {
+                fileData = System.IO.File.ReadAllText(file);
+                if (fileData != null)
+                {
+                    //Key = EncryptionLibrary.EncryptText("Sgl0-l0gIn-f0Rd-esPc");
+                    Key = EncryptionLibrary.DecryptText(fileData);
+                    {
+                        if (Key == "Sgl0-l0gIn-f0Rd-esPc")
+                        {
+                            Status = true;
+                        }
+                    }
+                }
+            }
+
+            return Status;
+
         }
 
     }

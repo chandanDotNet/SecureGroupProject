@@ -38,6 +38,7 @@
                 <th>Block</th>
                 @*<th>ZipCode</th>*@
                 <th>Scheme</th>
+                <th>Lat,Long</th>
 
                 <th></th>
             </tr>
@@ -68,6 +69,7 @@
                     <td>@Html.DisplayFor(modelItem => item.Block)</td>
                    @* <td>@Html.DisplayFor(modelItem => item.ZipCode)</td>*@
                     <td>@Html.DisplayFor(modelItem => item.Scheme)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Lat),@Html.DisplayFor(modelItem => item.Long)</td>
 
               @*  <td>
                     <button class="location-map"><img src="~/images/treasure-map.svg" class="login-logo" alt=""></button>

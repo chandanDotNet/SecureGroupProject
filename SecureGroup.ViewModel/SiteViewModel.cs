@@ -21,6 +21,8 @@ namespace SecureGroup.ViewModel
         public string Scheme { get; set; }
         public string ZipCode { get; set; }
         public int CountryId { get; set; }
+        public float? Lat { get; set; }
+        public float? Long { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
         public DateTime UpdateDate { get; set; }

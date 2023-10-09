@@ -1,5 +1,4 @@
-﻿
-@using Microsoft.AspNetCore.Http;
+﻿@using Microsoft.AspNetCore.Http;
 
 
 <!DOCTYPE html>
@@ -20,7 +19,7 @@
     <link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-@*    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    @*    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />*@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
 
@@ -52,16 +51,17 @@
         @{
             string UserRoleId = @Context.Session.GetString("RoleID");
             string UserRoleName = @Context.Session.GetString("RoleName");
+            string UserId = @Context.Session.GetString("UserID");
 
-         
+
         }
-@*
+        @*
         @if (UserRoleId == null || UserRoleId=="")
         {
-            
+
 
         }
-*@
+        *@
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -78,18 +78,18 @@
                 <li>
                     <div class="dropdown notifiction-drop">
                         <a asp-controller="Home" asp-action="Notification">
-                        <button class="btn dropdown-toggle" >
-                            <img src="~/images/notification.svg" />
-                            <span></span>
-                        </button>
-                       </a>
+                            <button class="btn dropdown-toggle">
+                                <img src="~/images/notification.svg" />
+                                <span></span>
+                            </button>
+                        </a>
                     </div>
                 </li>
 
                 <li>
                     <div class="user-profile">
                         <div class="p-img"><img src="~/images/avatar.png" /></div>
-                       @* <p>Ravi Sharma</p>*@
+                        @* <p>Ravi Sharma</p>*@
                         <p>@Context.Session.GetString("Name") - (@UserRoleName)</p>
                     </div>
                 </li>
@@ -136,12 +136,12 @@
                                             <p>Projects</p>
                                         </a>
                                     </li>
-                                  @*  <li class="nav-item">
-                                        <a  class="nav-link">
-                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                            <p>Projects</p>
-                                        </a>
-                                    </li>*@
+                                    @*  <li class="nav-item">
+                                <a  class="nav-link">
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                <p>Projects</p>
+                                </a>
+                                </li>*@
                                     <li class="nav-item active-sub-menu">
                                         <a asp-controller="Operation" asp-action="SitesList" class="nav-link">
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
@@ -157,12 +157,12 @@
                                         </a>
                                     </li>
 
-                                   @* <li class="nav-item">
-                                        <a asp-controller="Operation" asp-action="DocumentList" class="nav-link">
-                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                            <p>Docs Upload</p>
-                                        </a>
-                                    </li>*@
+                                    @* <li class="nav-item">
+                                <a asp-controller="Operation" asp-action="DocumentList" class="nav-link">
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                <p>Docs Upload</p>
+                                </a>
+                                </li>*@
 
                                 </ul>
                             </li>
@@ -174,14 +174,14 @@
                                     </p>
                                 </a>
                             </li>
-                          @*  <li class="nav-item">
-                                <a asp-controller="Client" asp-action="ClientList" class="nav-link">
-                                    <i class="fa fa-male" aria-hidden="true"></i>
-                                    <p>
-                                        client
-                                    </p>
-                                </a>
-                            </li>*@
+                            @*  <li class="nav-item">
+                        <a asp-controller="Client" asp-action="ClientList" class="nav-link">
+                        <i class="fa fa-male" aria-hidden="true"></i>
+                        <p>
+                        client
+                        </p>
+                        </a>
+                        </li>*@
 
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
@@ -193,7 +193,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a  asp-controller="Inventory" asp-action="WarehouseList" class="nav-link">
+                                        <a asp-controller="Inventory" asp-action="WarehouseList" class="nav-link">
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
                                             <p>WareHouse</p>
 
@@ -211,7 +211,7 @@
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
                                             <p>Stock Transfer</p>
                                         </a>
-                                    </li>                               
+                                    </li>
 
                                 </ul>
                             </li>
@@ -252,12 +252,12 @@
                                             <p>Leave Approval</p>
                                         </a>
                                     </li>
-                                  @*  <li class="nav-item">
-                                        <a asp-controller="HR" asp-action="Attendance" class="nav-link">
-                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                            <p>Attendance Approval</p>
-                                        </a>
-                                    </li>*@
+                                    @*  <li class="nav-item">
+                                <a asp-controller="HR" asp-action="Attendance" class="nav-link">
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                <p>Attendance Approval</p>
+                                </a>
+                                </li>*@
                                     <li class="nav-item">
                                         <a asp-controller="HR" asp-action="Reimbursement" class="nav-link">
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
@@ -266,11 +266,11 @@
                                     </li>
 
                                     @*<li class="nav-item">
-                                        <a asp-controller="HR" asp-action="WorkingHour" class="nav-link">
-                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                            <p>Docs Upload</p>
-                                        </a>
-                                    </li>*@
+                                <a asp-controller="HR" asp-action="WorkingHour" class="nav-link">
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                <p>Docs Upload</p>
+                                </a>
+                                </li>*@
 
                                 </ul>
                             </li>
@@ -363,7 +363,7 @@
                                             <p>Log Management</p>
                                         </a>
                                     </li>
-                                    
+
 
                                 </ul>
                             </li>
@@ -396,12 +396,12 @@
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                   @* <li class="nav-item">
-                                        <a asp-controller="Operation" asp-action="ProjectsList" class="nav-link">
-                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                            <p>Assigned Projects</p>
-                                        </a>
-                                    </li>*@
+                                    @* <li class="nav-item">
+                                <a asp-controller="Operation" asp-action="ProjectsList" class="nav-link">
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                <p>Assigned Projects</p>
+                                </a>
+                                </li>*@
                                     <li class="nav-item">
                                         <a asp-controller="Operation" asp-action="AssignedProjectsList" class="nav-link">
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
@@ -416,16 +416,50 @@
                                     </li>
 
                                     @*<li class="nav-item">
-                                        <a asp-controller="Operation" asp-action="DocumentList" class="nav-link">
-                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                            <p>Docs Upload</p>
-                                        </a>
-                                    </li>*@
+                                <a asp-controller="Operation" asp-action="DocumentList" class="nav-link">
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                <p>Docs Upload</p>
+                                </a>
+                                </li>*@
 
                                 </ul>
-                            </li>                       
+                            </li>
 
+                            @if (UserId == "57")
+                            {
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                        <p>
+                                            Inventory
+                                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a asp-controller="Inventory" asp-action="WarehouseList" class="nav-link">
+                                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                <p>WareHouse</p>
 
+                                            </a>
+                                        </li>
+                                        <li class="nav-item active-sub-menu">
+                                            <a asp-controller="Inventory" asp-action="WarehouseStock" class="nav-link">
+                                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                <p>Stock</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a asp-controller="Inventory" asp-action="Transferproduct" class="nav-link">
+                                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                <p>Stock Transfer</p>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            }
 
 
                             <li class="nav-item">
@@ -436,7 +470,7 @@
                                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">                                   
+                                <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a asp-controller="HR" asp-action="Attendance" asp-route-IsMyAttendance="true" class="nav-link">
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
@@ -461,15 +495,51 @@
                                             <p>Reimbursement</p>
                                         </a>
                                     </li>
-                                   @* <li class="nav-item">
-                                        <a asp-controller="HR" asp-action="WorkingHour" class="nav-link">
-                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                            <p>Docs Upload</p>
-                                        </a>
-                                    </li>*@
+                                    @* <li class="nav-item">
+                                <a asp-controller="HR" asp-action="WorkingHour" class="nav-link">
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                <p>Docs Upload</p>
+                                </a>
+                                </li>*@
 
                                 </ul>
                             </li>
+
+                            @if (UserId == "57")
+                            {
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-cog" aria-hidden="true"></i>
+                                        <p>
+                                            Settings
+                                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+
+                                        <li class="nav-item">
+                                            <a asp-controller="Master" asp-action="MasterProductList" class="nav-link">
+                                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                <p>Master Product</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="Master" asp-action="SubMasterProductList" class="nav-link">
+                                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                <p>Master Sub Product</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-controller="Order" asp-action="QuatationToPayment" class="nav-link">
+                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                <p>
+                                                    Quotation
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
 
                             <li class="nav-item">
                                 <a asp-controller="Home" asp-action="MyAccount" class="nav-link">
@@ -485,10 +555,9 @@
                                     <i class="fa fa-bell-o" aria-hidden="true"></i>
                                     <p>
                                         Notification
-
                                     </p>
                                 </a>
-                            </li>                          
+                            </li>
 
                             <li class="nav-item">
                                 <a asp-controller="Home" asp-action="Logout" class="nav-link">
@@ -517,19 +586,19 @@
                                         <i class="fa fa-angle-down" aria-hidden="true"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">                                   
+                                <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a asp-controller="Order" asp-action="PurchaseOrderList" class="nav-link">
                                             <i class="fa fa-circle-o" aria-hidden="true"></i>
                                             <p>Purchase Order</p>
                                         </a>
                                     </li>
-                                   @* <li class="nav-item">
-                                        <a  class="nav-link">
-                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
-                                            <p>Purchase Order Pdf</p>
-                                        </a>
-                                    </li>        *@                     
+                                    @* <li class="nav-item">
+                                <a  class="nav-link">
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                <p>Purchase Order Pdf</p>
+                                </a>
+                                </li>        *@
 
                                 </ul>
                             </li>
@@ -590,16 +659,16 @@
 
     @*<form id="form1" runat="server">
     <div>
-        <table style="width:100%;">
-            <tr>
-                <td><h2>Welcome to my webiste</h2></td>
-                <td style="text-align:right;"><span id="spanTimeLeft"></span> seconds left</td>
-            </tr>
-        </table>
-        <hr />
-        Content goes here. Content goes here. Content goes here. Content goes here. 
-        Content goes here. Content goes here. Content goes here. Content goes here. 
-        Content goes here. Content goes here. 
+    <table style="width:100%;">
+    <tr>
+    <td><h2>Welcome to my webiste</h2></td>
+    <td style="text-align:right;"><span id="spanTimeLeft"></span> seconds left</td>
+    </tr>
+    </table>
+    <hr />
+    Content goes here. Content goes here. Content goes here. Content goes here.
+    Content goes here. Content goes here. Content goes here. Content goes here.
+    Content goes here. Content goes here.
     </div>
     </form>*@
 
@@ -609,7 +678,7 @@
     <script src="~/js/adminlte.min.js"></script>
     @RenderSection("Scripts", required: false)
 
-   
+
 
     <script>
         $(function () {
@@ -630,10 +699,9 @@
             var timeLeft = ((timeInSecondsAfterSessionOut - secondTick) / 60).toFixed(0); // in minutes
             timeLeft = timeInSecondsAfterSessionOut - secondTick; // override, we have 30 secs only
 
-            if(timeLeft==15)
-            {
+            if (timeLeft == 15) {
                 debugger;
-               //swal("success!", timeLeft, "success");
+                //swal("success!", timeLeft, "success");
                 swal({
                     title: 'Are you sure?',
                     text: "Your Session will be expir soon! are you wont to login again? " + timeLeft,
@@ -651,8 +719,8 @@
                         )
                     }
                 });
-                      
-            }          
+
+            }
 
             if (secondTick > timeInSecondsAfterSessionOut) {
                 clearTimeout(tick);
@@ -662,7 +730,7 @@
             tick = setTimeout("StartThisSessionTimer()", 1000);
         }
 
-        //StartThisSessionTimer();
+                //StartThisSessionTimer();
     </script>
 </body>
 </html>

@@ -1347,7 +1347,7 @@ namespace SecureGroup.Controllers
             return RedirectToAction("QuatationToPaymentDetails", new { QuatationToPaymentId = viewModel.QuatationToPaymentId });
         }
 
-
+        [HttpGet]
         public IActionResult _AddEditPurchaseItemPartial(int PurchaseOrderDetailsId, int PurchaseOrderId,int QuatationToPaymentId)
         {
 

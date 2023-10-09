@@ -1,9 +1,12 @@
 ﻿$(document).ready(function () {
 
+   // debugger;
+    document.getElementById("lat").value = null;
+    document.getElementById("lng").value = null;
     //************* */
-    //$(document).bind("contextmenu", function (e) {
-    //    return false;
-    //});
+    $(document).bind("contextmenu", function (e) {
+        return false;
+    });
 
 
     // Check if geolocation is supported by the browser

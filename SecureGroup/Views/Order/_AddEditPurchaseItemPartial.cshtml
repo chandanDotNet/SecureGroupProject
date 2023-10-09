@@ -92,7 +92,7 @@
                 </div>
 
 
-                <input type="submit" value="Submit" class="data-save-btn" />
+                <input id="btnSaveData" type="submit" value="Submit" class="data-save-btn" />
 
 
             </div>
@@ -220,5 +220,16 @@
             $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>")
         });
     }
+
+    $("#btnSaveData").click(function () {
+        if ($('input[type=radio][name=GSTTypeId]:checked').length == 0) {
+            alert("Please select GST type one");
+            return false;
+        }
+        else {
+           // alert("radio button selected value: ");
+            return true;
+        }
+    });
 
 </script>

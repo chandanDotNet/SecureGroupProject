@@ -111,12 +111,13 @@ body {
     margin-bottom: 22px;
 }
 
+
 .welcome-wrapper form input {
     background: #FFFFFF;
     border: 1px solid #1795C7;
     border-radius: 8px;
     height: 45px;
-    width: 100%;
+    /*width: 100%;*/
 }
     .welcome-wrapper form input:focus {
         border-color: #166CBC !important;
@@ -2129,13 +2130,14 @@ button.download-btn {
 .content table tbody tr:last-child {
     border-bottom: 0px !important;
 }
-
 .logas {
     display: flex;
-    align-items: center;
+    align-items: center !important;
     justify-content: center;
     gap: 10px;
+   
 }
+
     .logas select {
         max-width: 117px;
         border: 1.4px solid #1795c7;
@@ -2521,3 +2523,27 @@ div#exampleV_info {
 .reimbursement-data-table .td-action-dot {
     text-align: center;
 }
+
+.custom-checkbox-login welcome-wrapper form input {
+    background: #FFFFFF;
+    border: 1px solid #1795C7;
+    border-radius: 8px;
+    height: 45px;
+    width: 45px !important;
+}
+.custom-checkbox-login {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: flex-end;
+}
+    .custom-checkbox-login label.form-check-label {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        color: #666666;
+    }
+    .custom-checkbox-login input {
+        width: 17px;
+        margin-bottom: 7px !important;
+    }

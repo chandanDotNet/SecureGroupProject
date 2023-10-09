@@ -61,7 +61,7 @@ namespace SecureGroup.Controllers
                     }
                     using (var filestream = new FileStream(Path.Combine(path, filename), FileMode.Create))
                     {
-                        file.CopyToAsync(filestream);
+                        file.CopyTo(filestream);
                     }
                     iscopied = true;
                 }
@@ -100,7 +100,7 @@ namespace SecureGroup.Controllers
                     }
                     using (var filestream = new FileStream(Path.Combine(path, filename), FileMode.Create))
                     {
-                        file.CopyToAsync(filestream);
+                        file.CopyTo(filestream);
                     }
                     iscopied = true;
                 }
@@ -256,6 +256,39 @@ namespace SecureGroup.Controllers
         }
 
 
+        public async Task<bool> UploadFileNew(IFormFile file, string fileLocation, string filename)
+        {
+            UploadFileResponseViewModel _uploadFileResponse = new UploadFileResponseViewModel();
+            string path = "";
+            bool iscopied=false;
+            try
+            {
+                if (file.Length > 0)
+                {
+                    path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, fileLocation));
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    using (var fileStream = new FileStream(Path.Combine(path, filename), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                    return iscopied;
+                }
+                else
+                {
+                    return iscopied;
+                }
 
+                _uploadFileResponse.UploadSuccess = iscopied;
+                _uploadFileResponse.FileName = filename;
+                _uploadFileResponse.FilePath = path;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("File Copy Failed", ex);
+            }
+        }
     }
 }

@@ -554,13 +554,40 @@
             });
         }
 
+        //$(".editPurchaseItem").click(function () {
+
+        //    var currentRow = $(this).closest("tr");
+        //    var InvoiceItemDetailsId = currentRow.find(".InvoiceItemDetailsId").val();
+        //    var InvoiceId = currentRow.find(".InvoiceId").val();
+        //    $('#partial-purchaseItem-load').load('/Order/_AddEditInvoiceItemPartial?InvoiceItemDetailsId=' + InvoiceItemDetailsId + '&InvoiceId=' + InvoiceId + '&QuatationToPaymentId=' + QuatationToPaymentId);
+
+        //});
+
         $(".editPurchaseItem").click(function () {
 
             var currentRow = $(this).closest("tr");
             var InvoiceItemDetailsId = currentRow.find(".InvoiceItemDetailsId").val();
             var InvoiceId = currentRow.find(".InvoiceId").val();
-            $('#partial-purchaseItem-load').load('/Order/_AddEditInvoiceItemPartial?InvoiceItemDetailsId=' + InvoiceItemDetailsId + '&InvoiceId=' + InvoiceId + '&QuatationToPaymentId=' + QuatationToPaymentId);
+            //$('#partial-purchaseItem-load').load('/Order/_AddEditInvoiceItemPartial?InvoiceItemDetailsId=' + InvoiceItemDetailsId + '&InvoiceId=' + InvoiceId + '&QuatationToPaymentId=' + QuatationToPaymentId);
 
+            $.ajax({
+                type: "GET",
+                url: "/Order/_AddEditInvoiceItemPartial",
+                data: 'InvoiceItemDetailsId=' + InvoiceItemDetailsId + '&InvoiceId=' + InvoiceId + '&QuatationToPaymentId=' + QuatationToPaymentId,
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#partial-purchaseItem-load').html(response);
+                    // $('#partiaload1').html(response);
+                    //  $('#dialog').dialog('open');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
         });
 
         $("#btnAddItem").click(function () {

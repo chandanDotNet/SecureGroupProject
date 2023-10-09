@@ -30,14 +30,14 @@
 
         <div class="welcome-wrapper">
 
-           @* @if (ViewBag.errormessage != null)
+            @* @if (ViewBag.errormessage != null)
             {
-                <p class="alert alert-danger" id="successMessage">@ViewBag.errormessage</p>
-                <script type="text/javascript">
-                    window.onload = function () {
-                        swal("Good job!", '@ViewBag.errormessage, "error");
-                    };
-                </script>
+            <p class="alert alert-danger" id="successMessage">@ViewBag.errormessage</p>
+            <script type="text/javascript">
+            window.onload = function () {
+            swal("Good job!", '@ViewBag.errormessage, "error");
+            };
+            </script>
             }*@
 
             @if (TempData["errormessage"] != null)
@@ -47,7 +47,7 @@
                         swal("Error!", '@TempData["errormessage"]', "error");
                     };
                 </script>
-            }          
+            }
 
 
 
@@ -64,39 +64,46 @@
                 <img src="~/images/logo.svg" class="login-logo" alt="">
             </div>
 
-            
+
             <form asp-action="Login">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="logas">
                     <h2>Login as </h2>
-                <select asp-for="RoleId" id="ddlRoleId"
-                        class="form-control"
-                        asp-items="@(new SelectList(Model.RoleList,"Value", "Text"))">
-                </select>
-                <span asp-validation-for="RoleId" class="text-danger"></span>
+                    <select asp-for="RoleId" id="ddlRoleId"
+                            class="form-control"
+                            asp-items="@(new SelectList(Model.RoleList,"Value", "Text"))">
+                    </select>
+                    <span asp-validation-for="RoleId" class="text-danger"></span>
                 </div>
-                <div class="mb-3 custom-form-control">                  
-                    
+                <div class="mb-3 custom-form-control">
+
                     <input asp-for="Username" class="form-control" id="Username" placeholder="Phone No or Email Address" />
                     <span asp-validation-for="Username" class="text-danger"></span>
 
                 </div>
                 <div class="mb-3 custom-form-control" id="show_hide_password">
                     <input asp-for="Password" class="form-control" placeholder="Password" type="password" />
-                    <span asp-validation-for="Username" class="text-danger"></span>                   
+                    <span asp-validation-for="Username" class="text-danger"></span>
                     <a href="javascript:void(0)" class="toggle-pass"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                 </div>
 
+               @* <div class="custom-checkbox-login">
+
+                <input asp-for="IsDesktopPCLogin" type="checkbox" />
+                <label class="form-check-label">Is Desktop PC Login Login?</label>
+                </div>*@
+
+
                 <a class="f-pass-btn" asp-action="ForgotPassword" asp-controller="Home">Forgot Password?</a>
                 <img src="~/images/robot.png" class="rbt-png">
-                
-               @* <a asp-controller="Home" asp-action="Dashboard" class="login-process-btn" style="display:flex; align-items:center; justify-content:center; text-decoration:none; margin:50px auto 0 auto;">
-                    Submit                   
+
+                @* <a asp-controller="Home" asp-action="Dashboard" class="login-process-btn" style="display:flex; align-items:center; justify-content:center; text-decoration:none; margin:50px auto 0 auto;">
+                Submit
                 </a>*@
-                
-                <input asp-for="Lat" class="form-control" type="hidden"  id="lat" />
+
+                <input asp-for="Lat" class="form-control" type="hidden" id="lat" />
                 <input asp-for="Long" class="form-control" type="hidden" id="lng" />
-                
+
 
                 <input type="submit" value="Login" class="login-process-btn" id="btnLogin" />
             </form>
@@ -113,7 +120,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/devjs/js_login.js"></script>         
+    <script src="~/js/devjs/js_login.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
 
